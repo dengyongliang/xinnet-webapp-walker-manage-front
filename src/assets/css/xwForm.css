@@ -1,0 +1,603 @@
+.vuelidateInput{
+    position: relative;
+}
+.vuelidateInput .iconleft{
+    position: absolute;
+    left:15px;
+    top:16px;
+    font-size: 17px;
+}
+/* xwInput */
+.xwInput{
+    width: 200px;
+    line-height: 36px;
+    padding:0 10px;
+    border: 1px solid #e0e0e0;
+    color: #333;
+    background: #fff;
+    min-height: 36px;
+}
+/* xwTextarea */
+.xwTextarea{
+    width: 200px;
+    line-height: 16px;
+    padding:10px;
+    border: 1px solid #e0e0e0;
+    color: #333;
+    background: #fff;
+}
+
+/* xwRadio : radio  */
+.xwRadio{
+    display: inline-block;
+    vertical-align: middle;
+    height: 36px;
+    line-height: 36px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.xwRadio input,
+.xwRadio .text,
+.xwRadio a{
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.xwRadio .text{
+    margin-left: 5px;
+}
+.xwRadio.disabled input,
+.xwRadio.disabled .text{
+    cursor: default!important;
+}
+/* .xwRadio2 */
+.xwRadio2{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    border:1px solid transparent;
+    padding:0 15px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius:3px;
+    cursor: pointer;
+    position: relative;
+}
+.xwRadio2 input{
+    display: none;
+}
+.xwRadio2 .arrow{
+    border-color: transparent transparent #00a1f1 transparent;
+    border-style: solid;
+    border-width:  0  0 15px 15px;
+    height: 0;
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+    display: none;
+}
+.xwRadio2 .icon{
+    color: #fff;
+    position: absolute;
+    right: -1px;
+    bottom: -3px;
+    display: none;
+    font-size: 12px;
+    -webkit-transform:scale(0.7);
+    -moz-transform:scale(0.7);
+    -o-transform:scale(0.7);
+}
+.xwRadio2.on{
+    border:1px solid #00a1f1!important;
+    color: #00a1f1!important;
+}
+.xwRadio2.on .icon,
+.xwRadio2.on .arrow{
+    display: block;
+}
+/* xwCheckbox : 模拟checkbox */
+.xwCheckbox{
+    display: inline-block;
+    vertical-align: middle;
+    height: 36px;
+    line-height: 36px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.xwCheckbox input,
+.xwCheckbox .text,
+.xwCheckbox a{
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.xwCheckbox a{
+    color: #00a1f1;
+}
+.xwCheckbox .text{
+    margin-left: 5px;
+}
+.xwCheckbox.disabled input,
+.xwCheckbox.disabled .text{
+    cursor: default!important;
+}
+
+
+/* select : 模拟select */
+.xwSelect{
+    min-width: 100px;
+    height: 36px;
+    position: relative;
+    display: inline-block;
+    background-color: #fff;
+    border:1px solid #e0e0e0;
+    vertical-align: middle;
+}
+.xwSelect .selectLabel{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    text-align: left;
+    display: block;
+    color: #333333;
+    cursor: pointer;
+    padding: 0 35px 0 10px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    position: absolute;
+    z-index: 2;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.xwSelect .defaultColor{
+    color: #d3d3d3;
+}
+.xwSelect .selectIcon{
+    width:24px;
+    height:24px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 9;
+    top: 6px;
+    right: 5px;
+    display:block;
+    border-left:1px solid #e0e0e0;
+    text-align: right;
+}
+.xwSelect .selectIcon .arrow{
+    width: 0;
+    height: 0;
+    line-height: 0px;
+    font-size: 0px;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #ccc;
+    border-left: 5px solid transparent;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    overflow: hidden;
+    margin: -2px 0 0 -3px;
+}
+.xwSelect.disabled .selectLabel,
+.xwSelect.disabled .selectIcon{
+    cursor: default!important;
+}
+.xwSelect .selectLst{
+    display: none;
+    width: 100%;
+    max-height: 150px;
+    position: absolute;
+    z-index: 10;
+    border:1px solid #e0e0e0;
+    background-color: #fff;
+    text-align: left;
+    left: -1px;
+    top: 100%;
+    overflow-y: auto;
+}
+.xwSelect .selectLst li{
+    height: 30px;
+    line-height:30px;
+    font-size: 12px;
+    padding:0 10px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    white-space: nowrap;
+}
+.xwSelect .selectLst li.selected{
+    background-color: #fafafa;
+    color: #333333;
+}
+.xwSelect .selectLst li:hover{
+    background-color: #fafafa;
+}
+.xwSelect .selectLst li label{
+    display: block;
+    cursor: pointer;
+}
+.xwSelect .selectLst li input{
+    margin: -2px 3px 0 0;
+}
+.xwSelect .inputSelect{
+    display:none;
+    position: absolute;
+    top: 6px;
+    right: 0;
+    z-index: -1;
+    filter:alpha(opacity=0);
+    -moz-opacity:0;
+    opacity:0;
+    cursor: pointer;
+}
+/* input/xwSelect/xwTextarea error style */
+input.error,
+.xwSelect.error,
+.xwTextarea.error{
+    border-color: #ff7373!important;
+}
+
+/* xwPwStrength : 密码强弱表 */
+.xwPwStrength{
+    width:90px;
+    height: 14px;
+    line-height: 14px;
+    vertical-align: middle;
+    display: none;
+    white-space: nowrap;
+    position: absolute;
+    right: 250px;
+    top: 12px;
+}
+.xwPwStrength span{
+    float: left;
+    width: 18px;
+    height: 4px;
+    border: 1px solid #ff7372;
+    margin-right: 2px;
+    position: relative;
+    top: 4px;
+}
+.xwPwStrength em{
+    float:left;
+    margin-left: 7px;
+    font-size: 12px;
+    vertical-align: middle;
+    display: none;
+}
+.xwPwStrength.strengthLv1 .x1{
+    background: #ff7372;
+}
+.xwPwStrength.strengthLv1 .r{
+    display: inline-block;
+    color: #ff7372;
+}
+.xwPwStrength.strengthLv2 span{
+    border-color: #ff972e;
+}
+.xwPwStrength.strengthLv2 .x1,
+.xwPwStrength.strengthLv2 .x2{
+    background: #ff972e;
+}
+.xwPwStrength.strengthLv2 .z{
+    display: inline-block;
+    color: #ff972e;
+}
+.xwPwStrength.strengthLv3 span{
+    border-color: #62c71f;
+}
+.xwPwStrength.strengthLv3 .x1,
+.xwPwStrength.strengthLv3 .x2,
+.xwPwStrength.strengthLv3 .x3{
+    background: #62c71f;
+}
+.xwPwStrength.strengthLv3 .q{
+    display: inline-block;
+    color: #62c71f;
+}
+/* xwFormTable : 表单所用 */
+.xwFormTable td.n,
+.xwFormTable td.v span.n{
+    width: 120px;
+    text-align: right;
+}
+.xwFormTable td.n span,
+.xwFormTable td.v span.n{
+    line-height: 38px;
+    display: inline-block;
+    color: #999;
+}
+.xwFormTable td.v{
+    padding: 0 0 15px 10px;
+}
+.xwFormTable .eleWrap{
+    min-height: 38px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+.xwFormTable .verifyMsg{
+    left: 100%;
+    top:50%;
+    margin:-8px 0 0 10px;
+}
+.xwFormTable .inputInfo{
+    font-size: 12px;
+    color: #999;
+    padding: 10px 10px;
+}
+.xwFormTable .inputExample{
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    display: inline-block;
+    line-height: 38px;
+    margin: -19px 0 0 10px;
+    white-space: nowrap;
+    cursor: default;
+}
+.xwFormTable .inputExample .text,.xwFormTable .inputExample .icon{
+    color: #999;
+    font-size: 12px;
+    line-height: 38px;
+    display: inline-block;
+}
+.xwFormTable .inputExample .icon{
+    font-size: 16px;
+}
+.xwFormTable .inputExample .ui-tooltip{
+    background: #fff;
+    display: none;
+    mix-width: 100px;
+    top: 100%;
+    left: 0px;
+}
+/* verifyMsg : form信息提示 */
+.verifyMsg{
+    display: inline-block;
+}
+.verifyMsg .msg{
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    white-space: nowrap;
+    font-style: normal;
+    font-size: 12px;
+}
+.verifyMsg .msgError{
+    color: #ff7373;
+}
+.verifyMsg .msgOk{
+    color: green;
+}
+
+/* xwSmsVeriCode */
+.xwSmsVeriCode{
+    width:270px;
+    position: relative;
+    display: inline-block;
+}
+.xwSmsVeriCode .xwInput{
+    width: 248px!important;
+}
+.xwSmsVeriCode .getCode{
+    position: absolute;
+    top: 6px;
+    right: 1px;
+    width: 89px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-left: 1px solid #e0e0e0;
+    color: #666;
+    cursor: pointer;
+}
+.xwSmsVeriCode .getCode .ing{
+    display: none;
+}
+.xwSmsVeriCode .getCode.xwLoading{
+    cursor: default;
+}
+.xwSmsVeriCode .getCode.xwLoading .text{
+    display: none;
+}
+.xwSmsVeriCode .getCode.xwLoading .ing{
+    display: inline-block;
+}
+.xwSmsVeriCode.width200{
+    width:200px;
+}
+.xwSmsVeriCode.width200 .xwInput{
+    width: 178px!important;
+}
+.xwSmsVeriCode .xwTips{
+    display: none;
+}
+/* 文本限制 */
+.xwInputLimit{
+    display: inline-block;
+    position: relative;
+}
+.xwInputLimit .outputInfo{
+    text-align: right;
+    line-height: 12px!important;
+    font-size: 12px!important;
+    margin:10px 0 0 0px!important;
+    white-space: nowrap;
+
+}
+.xwInputLimit .outputInfo.error,
+.xwInputLimit .outputInfo.error i{
+    color: #f00;
+}
+
+/* 日期选择 */
+.xwDateSelect{
+    width: 235px;
+    height: 177px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    z-index: 99;
+}
+.xwDateSelect .year{
+    width: 70px;
+    height: 140px;
+    float: left;
+    overflow: auto;
+}
+.xwDateSelect .yearWrap{
+    padding: 10px 0;
+}
+.xwDateSelect .year span{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+.xwDateSelect .year span.on,
+.xwDateSelect .year span:hover{
+    color: #00a1f1;
+}
+.xwDateSelect .month{
+    overflow: hidden;
+    padding: 10px 0;
+}
+.xwDateSelect .month span{
+    float: left;
+    width: 33%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+.xwDateSelect .month span.on,
+.xwDateSelect .month span:hover{
+    color: #00a1f1;
+}
+.xwDateSelect .month span.disabled,
+.xwDateSelect .month span.disabled:hover{
+    color: #aaa;
+    cursor: default;
+}
+.xwDateSelect .tool{
+    height: 35px;
+    line-height: 35px;
+    border-top: 1px solid #e0e0e0;
+}
+.xwDateSelect .today{
+    float: left;
+    margin-left: 15px;
+    cursor:pointer;
+    color: #00a1f1;
+}
+.xwDateSelect .close{
+    float: right;
+    margin-right: 15px;
+    cursor:pointer;
+}
+
+.xwInputNum{
+    display: inline-block;
+}
+.xwInputNum input{
+    width: 48px;
+    height: 36px;
+    line-height: 36px;
+    float: left;
+    border-color: #dfe0e2;
+}
+.xwInputNum .bar{
+    float: left;
+}
+.xwInputNum .bar .btn{
+    width: 17px;
+    height: 14px;
+    line-height: 10px;
+    display: block;
+    border:1px solid #dfe0e2;
+    margin-left: 4px;
+    text-align:center;
+    cursor: pointer;
+}
+.xwInputNum .bar .btn.btnAdd{
+    margin-top:1px;
+    margin-bottom:4px;
+}
+.xwInputNum .bar .btn.btnAdd::after{
+    content:"";
+    display:inline-block;
+    width: 0;
+    height: 0;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #cccccc;
+    border-left: 5px solid transparent;
+}
+.xwInputNum .bar .btn.btnAdd.ing{
+    background: no-repeat;
+}
+.xwInputNum .bar .btn.btnReduce::after{
+    content:"";
+    display:inline-block;
+    width: 0;
+    height: 0;
+    border-top: 5px solid #cccccc;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+}
+.xwInputNum .bar .btn.btnReduce.ing{
+    background: no-repeat;
+}
+.xwTimeSelect{
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.xwTimeSelect .timeList{
+    position: absolute;
+    width: 300px;
+    background: #fff;
+    left: 0px;
+    top: 100%;
+    z-index: 10;
+    border:1px solid #ccc;
+    display:none;
+}
+.xwTimeSelect .timeList ul{
+    float: left;
+    height: 150px;
+    overflow: auto;
+    padding:10px 0;
+}
+.xwTimeSelect .timeList li{
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.xwTimeSelect .timeList li:hover{
+    background: #eaeaea;
+}
+.xwTimeSelect .timeList li.on{
+    background: #00a1f1;
+    color: #fff;
+}
+.xwTimeSelect .timeList li.disabled{
+    color: #ccc
+}
+.xwTimeSelect .timeHour{
+    width: 100px;
+}
+.xwTimeSelect .timeMins{
+    width: 200px;
+}
+.xwTimeSelect .timeMins li{
+    float: left;
+    width: 25%;
+}

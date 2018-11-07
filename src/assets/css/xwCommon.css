@@ -1,0 +1,380 @@
+/* 公共基础样式 */
+/* display : none */
+.hidden{
+    display: none!important;
+}
+/* overflow:hidden */
+.overflowHidden{
+    overflow: hidden!important;
+}
+.showed{
+    display: inline-block!important;
+}
+/* 清除浮动 */
+.clear {
+    display: block;
+    #zoom:1;
+    /*ie6-ie7*/;
+}
+.clear:after {
+    content: '';
+    overflow: hidden;
+    width: 100%;
+    height: 0px;
+    font-size: 0px;
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    clear: both;
+}
+.borderBox{
+    box-sizing: border-box;
+}
+/* 字体颜色 - 红色 */
+.textRed{
+    color: #f00;
+}
+/* 圆角 - 3px */
+.borderRadius3px{
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius:3px;
+}
+/* 圆角 - 100% */
+.borderRadius100per{
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius:100%;
+}
+/* 背景平铺 : cover */
+.backgroundSizeCover{
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+/* box-sizing : border-box */
+.borderBox{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/* disabled : 禁用 */
+.disabled{
+    cursor: default!important;
+}
+
+/* required : 必填 */
+.required{color: #e50011;padding-right: 2px;}
+/* on - tab current */
+.on{cursor: default!important;}
+/* superslide : next/prev btn stop style */
+.nextStop,
+.prevStop{display: none!important;}
+
+.ing{
+    background: url(../../../static/img/loading.gif)no-repeat center center!important;
+}
+.showBlock{
+    display: block!important;
+}
+.showInlineBlock{
+    display: inline-block!important;
+}
+.showTableRow{
+    display: table-row!important;
+}
+.xwMsg{
+    height: 16px;
+    font-size:12px;
+    vertical-align: middle;
+}
+.xwMsg.error .text{
+    color: #f00;
+    vertical-align: middle;
+    display:inline-block;
+}
+.xwMsg.error .font{
+    color: #f00;
+    font-size: 16px;
+    vertical-align: middle;
+    display:inline-block;
+    margin-right: 5px;
+}
+
+/* pageTitle */
+.pageTitle{
+    font-size: 16px;
+    font-weight: 200;
+    min-height: 34px;
+    line-height: 34px;
+    padding:0 20px;
+    margin-bottom: 20px;
+}
+.secMain{
+    background: #fff;
+    padding:0;
+    margin:0 20px 20px 20px;
+    min-height: 101px;
+    position: relative;
+}
+.secMain .ivu-spin{
+    position:absolute;
+    top: 0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: #fff;
+    z-index: 9;
+}
+.secMain .ivu-spin-main{
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+}
+.secMain .xwFormTable{
+    font-size: 12px;
+}
+/* secFilter */
+.secFilter{
+    font-size: 12px;
+}
+.secFilter .filterWrap{
+    padding: 17px 0 26px 0;
+}
+.secFilter .xwSelect .selectIcon{
+    height: 20px;
+}
+.secFilter .row1,
+.secFilter .row1 td{
+    position: relative;
+    z-index: 6;
+}
+.secFilter .row2,
+.secFilter .row2 td{
+    position: relative;
+    z-index: 5;
+}
+.secFilter .row3,
+.secFilter .row3 td{
+    position: relative;
+    z-index: 4;
+}
+.secFilter .row4,
+.secFilter .row4 td{
+    position: relative;
+    z-index: 3;
+}
+.secFilter .row5,
+.secFilter .row5 td{
+    position: relative;
+    z-index: 2;
+}
+.secFilter td{
+    width: 25%;
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 3;
+}
+.secFilter .n{
+    height: 32px;
+    line-height:32px;
+    color: #666;
+    font-size: 12px;
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+.secFilter .n.line{
+    text-align: center;
+}
+.secFilter .inputWrap{
+    margin-left: 110px;
+    border:1px solid #e0e0e0;
+    background:#fff;
+    padding: 0 10px;
+}
+.secFilter .inputSelect{
+    padding-right: 0px;
+}
+.secFilter .inputDate{
+    padding-left: 32px;
+    position: relative;
+}
+.secFilter .inputDate .icon{
+    position: absolute;
+    left: 9px;
+    top: 8px;
+}
+.secFilter .xwInput{
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    min-height: 30px;
+    color: #999;
+    padding: 0px;
+    border: none;
+}
+.secFilter .xwInput:focus{
+    outline: none;
+    border-color: #fff!important;
+    box-shadow: 0px 0px 3px #fff;
+}
+.secFilter .xwSelect{
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    border: none;
+    color: #999;
+}
+.secFilter .xwSelect .selectLabel{
+    width: 93%;
+    height: 32px;
+    line-height: 32px;
+    /*padding: 0px 20% 0 0;*/
+    color: #999;
+    padding-left: 0px;
+}
+.secFilter .xwSelect .selectLst{
+    left: -11px;
+    padding-left: 10px;
+}
+.secFilter .xwSelect .selectLst li{
+    margin-left: -10px;
+}
+.secFilter .xwSelect .selectIcon .arrow{
+    border-top-color:#999999;
+    top: 9px;
+}
+.secFilter td.tdBtn{
+    text-align: right;
+}
+.secFilter .btnWhite{
+    height: 32px;
+    line-height: 32px;
+    border-color: #ccc;
+}
+.secFilter .btnRed{
+    height: 32px;
+    line-height: 32px;
+}
+.secFilter .btnGray{
+    height: 32px;
+    line-height: 32px;
+}
+.secFilter .daytoday .xwInput{
+    width: 80px;
+}
+.secFilter .daytoday{
+    background: #fff;
+    border: none;
+    padding: 0px;
+}
+.secFilter .daytoday input{
+    border:1px solid #e0e0e0;
+    background:#fafafa;
+    padding: 0 10px;
+}
+.secFilter .daytoday .text{
+    padding: 0 3px;
+    color: #666;
+    display: inline-block;
+    vertical-align: middle;
+}
+.secFilter .daytoday .xwSelect{
+    width: 50px;
+    min-width:50px;
+    border:1px solid #e0e0e0;
+}
+.secFilter .daytoday .selectLabel{
+    text-align: center;
+}
+.secFilter .daytoday .selectIcon{
+    right: 2px;
+    top: 6px;
+}
+.secFilter .daytoday .selectLst{
+   left: 0px;
+   padding-left:0px;
+   text-align: center;
+}
+/* secOperate */
+.secOperate{
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    text-align: right;
+}
+
+/* secTable */
+.secTable{
+    position: relative;
+    z-index: 1;
+    /*padding: 0 20px;*/
+    font-size: 12px;
+}
+.secTable th{
+    height: 53px;
+    line-height: 16px;
+    font-weight: normal;
+    color: #666;
+    text-align: left;
+    padding:0 10px;
+    border-bottom:1px solid #e2e2e2;
+}
+.secTable th .xwSelect .selectIcon .arrow{
+    border-top-color:#5d5d5d;
+    top: 9px;
+}
+.secTable th .xwSelect{
+    height: 30px;
+}
+.secTable th .selectLabel{
+    height: 30px;
+    line-height: 30px;
+}
+.secTable th .selectLst{
+    top: 30px;
+}
+.secTable td{
+    height: 46px;
+    line-height: 16px;
+    border-bottom: 1px solid #ededed;
+    text-align: left;
+    padding:0 10px;
+    color: #333;
+}
+.secTable .desc,
+.secTable .asc,
+.secTable .DESC,
+.secTable .ASC{
+    cursor: pointer;
+}
+.secTable .asc,
+.secTable .ASC{
+    display: none;
+}
+.secTable tr.listC td{
+    height: 0px;
+    overflow: hidden;
+    border: none;
+}
+.secTable tr.listC{
+    height: auto;
+/*    display: none;
+*/    background: #fcfcfc;
+}
+.secTable td.operate a{
+    color: #297ed8;
+    white-space: nowrap;
+}
+.secTable td.operate a.disabled{
+    color: #ccc;
+}
+.secTable .noData td{
+    text-align: center;
+}

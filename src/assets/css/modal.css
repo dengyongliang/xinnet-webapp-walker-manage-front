@@ -1,0 +1,41 @@
+.modalAlertInfo .ivu-modal-body{
+  padding: 30px 60px;
+}
+
+.modalHeaderBlueStyle .ivu-modal-header{
+  height: 120px;
+  padding-top: 0px!important;
+  padding-bottom: 0px;
+  padding-left:50px;
+  background: #2271f4;
+  line-height: 120px;
+}
+.modalHeaderBlueStyle .ivu-modal-header-inner{
+  text-align: left;
+  color: #fff;
+}
+.modalHeaderBlueStyle .ivu-modal-close .ivu-icon{
+  color:#b8ddf7;
+}
+.modalHeaderBlueStyle .ivu-modal-close .ivu-icon:hover{
+  color:#b8ddf7;
+}
+.modalAddAccount .ivu-modal{
+  top: 50px;
+}
+.modalAddAccount .ivu-modal-body{
+  padding-left:50px;
+  padding-right:50px;
+}
+.modalAddAccount .ivu-modal-body strong.t{
+  color: #256ff6;
+  display: block;
+  margin-bottom:35px;
+}
+.modalAddAccount .footer{
+  text-align: center;
+  padding: 20px 0;
+}
+.modalAddAccount .footer button{
+  margin:0 5px;
+}

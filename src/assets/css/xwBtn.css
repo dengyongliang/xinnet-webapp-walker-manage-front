@@ -1,0 +1,269 @@
+.xwBtn{
+    min-width: 55px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 24px;
+    border-style:solid;
+    border-width:1px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    color: #00a1f1;
+    font-size: 14px;
+}
+.xwBtn .icon{
+    margin:0 8px;
+    font-size: 14px;
+    line-height: 14px;
+}
+.xwBtn:hover{
+    background: #00a1f1;
+    color: #fff;
+    text-decoration:none;
+}
+.xwBtn:hover .text,
+.xwBtn:hover .icon{
+    color: #fff;
+}
+/* 红色 : #e50112 */
+.btnRed{
+    background: #e50112;
+    border-color:#e50112;
+    color: #fff;
+}
+.btnRed .text{
+    color: #fff;
+}
+.btnRed:hover{
+    background: #e50112;
+    border-color:#e50112;
+    color: #fff;
+}
+.btnRed:hover .text{
+    color: #fff;
+}
+.btnRed2{
+    background: #fff;
+    border-color:#db0618;
+    color: #db0618;
+}
+.btnRed2 .text{
+    color: #fff;
+}
+.btnRed2:hover{
+    background: #e50112;
+    border-color:#e50112;
+    color: #fff;
+}
+.btnRed2:hover .text{
+    color: #fff;
+}
+/* 蓝色 : #00a1f1 */
+.btnBlue{
+    background: #2271f4;
+    border-color:#2271f4;
+    color: #fff;
+}
+.btnBlue .text{
+    color: #fff;
+}
+.btnBlue:hover{
+    background: #18b4ff;
+    border-color:#18b4ff;
+    color: #fff;
+}
+.btnBlue:hover .text{
+    color: #fff;
+}
+/* 白色 : #fff */
+.btnWhite{
+    background: #fff;
+    border-color:#e3e3e3;
+    color:#2271f4;
+}
+.btnWhite .text{
+    color:#2271f4;
+}
+.btnWhite:hover{
+    color:#00a1f1;
+    background:#f7f7f7;
+}
+.btnWhite:hover .text,
+.btnWhite:hover .icon{
+    color:#00a1f1;
+}
+/* 灰色 : #fff */
+.btnGray{
+    background: #f4f4f4;
+    border-color:#f4f4f4;
+    color:#333;
+}
+.btnGray .text{
+    color:#333;
+}
+.btnGray:hover{
+    color:#333;
+    background:#f4f4f4;
+}
+.btnGray:hover .text,
+.btnGray:hover .icon{
+    color:#333;
+}
+/* 黄色 : #ffcd0a */
+.btnYellow{
+    background: #ffcd0a;
+    border-color:#ffcd0a;
+    color:#fff;
+}
+.btnYellow .text{
+    color:#fff;
+}
+.btnYellow:hover{
+    color:#fff;
+    background:#ffcd0a;
+}
+.btnYellow:hover .text{
+    color:#fff;
+}
+/* 橙色 : #f4901e */
+.btnOrange{
+    background: #f4901e;
+    border-color:#f4901e;
+    color:#fff;
+}
+.btnOrange .text{
+    color:#fff;
+}
+.btnOrange:hover{
+    color:#fff;
+    background:#f4901e;
+}
+.btnOrange:hover .text{
+    color:#fff;
+}
+.btnOrange2{
+    background: #fff;
+    border-color:#f4901e;
+    color:#f4901e;
+}
+.btnOrange2 .text{
+    color:#f4901e;
+}
+.btnOrange2:hover{
+    color:#fff;
+    background:#f4901e;
+}
+.btnOrange2:hover .text{
+    color:#fff;
+}
+/* 橙色 : #ee5a28 */
+.btnee5a28{
+    background: #ee5a28;
+    border-color:#ee5a28;
+    color:#fff;
+}
+.btnee5a28 .text{
+    color:#fff;
+}
+.btnee5a28:hover{
+    color:#fff;
+    background:#ee5a28;
+}
+.btnee5a28:hover .text{
+    color:#fff;
+}
+/* 绿色 : #89c33e */
+.btnGreen{
+    background: #89c33e;
+    border-color:#89c33e;
+    color:#fff;
+}
+.btnGreen .text{
+    color:#fff;
+}
+.btnGreen:hover{
+    color:#fff;
+    background:#89c33e;
+}
+.btnGreen:hover .text{
+    color:#fff;
+}
+/* 浅绿色 : #25bcc6 */
+.btnLightGreen{
+    background: #25bcc6;
+    border-color:#25bcc6;
+    color:#fff;
+}
+.btnLightGreen .text{
+    color:#fff;
+}
+.btnLightGreen:hover{
+    color:#fff;
+    background:#25bcc6;
+}
+.btnLightGreen:hover .text{
+    color:#fff;
+}
+/* disabled : 禁用 */
+.xwBtn.disabled,
+.xwBtn.disabled .text,
+.xwBtn.disabled .icon{
+    background: #ccc!important;
+    border-color: #ccc!important;
+    color:#fff!important;
+    cursor: not-allowed!important;
+}
+.xwBtn.disabled:hover,
+.xwBtn.disabled:hover .text,
+.xwBtn.disabled:hover .icon{
+    color: #fff!important;
+}
+/* xwLoading : 等待状态 */
+.xwBtn .ing{
+    width: 16px;
+    height: 16px;
+    display: none;
+}
+.xwBtn.xwLoading{
+    background: #ccc!important;
+    border-color: #ccc!important;
+    color:#fff!important;
+    cursor: not-allowed!important;
+}
+.xwBtn.xwLoading .icon,
+.xwBtn.xwLoading .text{
+    display: none!important;
+}
+.xwBtn.xwLoading .ing{
+    display: inline-block;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+.xwBtn.xwLoading:hover{
+    background: #ccc!important;
+    border-color: #ccc!important;
+    color:#fff!important;
+    cursor: not-allowed!important;
+}
+
+
+
+
+/* 大按钮 */
+.xwBtn.btnBg{
+    min-width: 65px;
+    height: 42px;
+    line-height: 42px;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0 63px;
+}
+.xwBtn.btnBg,
+.xwBtn.btnBg .text{
+    font-size: 16px;
+}
+.xwBtn.btnBg .icon{
+    line-height: 16px;
+    font-size: 16px;
+}
+
