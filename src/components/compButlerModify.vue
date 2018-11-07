@@ -8,7 +8,7 @@
     comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile")
     comp-input(name='tel',label="座机：",ref="tel",:defaultValue="tel")
     comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq")
-    comp-input(name='xeixin',label="微信号：",ref="weixin",:defaultValue="weixin")
+    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="weixin")
     FormItem(label="")
       Button(type="primary",@click="btnSaveDetail",:loading="loadingBtn") 确定
 </template>
@@ -50,6 +50,9 @@ export default {
       let emailV = this.$refs.userEmail.$refs.input.$refs.input._value
       let mobileV = this.$refs.userMobile.$refs.input.$refs.input._value
       let nameV = this.$refs.userName.$refs.input.$refs.input._value
+      let telV = this.$refs.tel.$refs.input.$refs.input._value
+      let qqV = this.$refs.qq.$refs.input.$refs.input._value
+      let wxV = this.$refs.wx.$refs.input.$refs.input._value
       let codeV = this.$refs.userCode.value
 
       //console.log(this.$refs.userMobile.$refs.input.$refs.input._value)
@@ -81,6 +84,24 @@ export default {
       if (!this.GLOBALS.IS_EMAIL_AVAILABLE(emailV)) {
         this.$refs.userEmail.$refs.input.focus()
         this.$refs.userEmail.$refs.input.blur()
+        this.loadingBtn = false
+        return false
+      }
+      if (telV === '') {
+        this.$refs.tel.$refs.input.focus()
+        this.$refs.tel.$refs.input.blur()
+        this.loadingBtn = false
+        return false
+      }
+      if (qqV === '') {
+        this.$refs.qq.$refs.input.focus()
+        this.$refs.qq.$refs.input.blur()
+        this.loadingBtn = false
+        return false
+      }
+      if (wxV === '') {
+        this.$refs.wx.$refs.input.focus()
+        this.$refs.wx.$refs.input.blur()
         this.loadingBtn = false
         return false
       }

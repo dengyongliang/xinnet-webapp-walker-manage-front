@@ -136,6 +136,18 @@ export default {
           this.errorText = '请输入固话！'
         }
       }
+      if (name === 'qq') {
+        if (val === '') {
+          this.showError = true
+          this.errorText = '请输QQ号码！'
+        }
+      }
+      if (name === 'wx') {
+        if (val === '') {
+          this.showError = true
+          this.errorText = '请输微信号码！'
+        }
+      }
       if (name === 'oldPassword') {
         if (val === '') {
           this.showError = true
