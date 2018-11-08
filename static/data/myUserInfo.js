@@ -23,15 +23,6 @@
       "createTime": 1540342800000,
       "description": "系统超级管理员"
     }],
-    "userMenus": [{
-      "id": 1,
-      "menuCode": "sys_user_list",
-      "menuName": "用户管理",
-      "menuUrl": "/user/list",
-      "parentMenuCode": "0",
-      "menuGroup": "1",
-      "menuSort": "1",
-      "createTime": 1540343160000
-    }]
+    "menus": ["super"]
   }
 }

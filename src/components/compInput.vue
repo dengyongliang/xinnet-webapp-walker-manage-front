@@ -12,7 +12,7 @@
         ref="input",
         :maxlength = "maxLength",
         :value = "defaultValue",
-        :v-focus = "focus",
+        :required = "required",
         :class="{ 'error': showError && show }"
       )
       Input(
@@ -26,6 +26,7 @@
         ref="input",
         :maxlength = "maxLength",
         :value = "defaultValue",
+        :required = "required",
         :class="{ 'error': showError && show }"
       )
       slot(name="right")

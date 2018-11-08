@@ -176,4 +176,23 @@ export default {
   display:inline-block;
   padding:7px 10px;
 }
+.ivu-drawer-header{
+  background:#2271f4;
+  height: 100px;
+  line-height: 100px;
+  vertical-align: middle;
+  padding: 0 0 0 50px;
+}
+.ivu-drawer-header-inner{
+  color:#fff;
+  font-size: 18px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+.ivu-drawer-body{
+  height: calc(100% - 100px);
+}
+.ivu-drawer-close i{
+  color:#fff!important;
+}
 </style>

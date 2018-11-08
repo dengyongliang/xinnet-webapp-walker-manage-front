@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 export default {
   state: {
   },
@@ -15,13 +15,22 @@ export default {
       rest.get(links.CONFIRM_BILL_CLEAN, params.param,params.callback)
     },
     [types.GET_CLIENT_BALANCE_LIST] ({ commit, rootState }, params) {
-      rest.get(links.CONFIRM_BILL_CLEAN, params.param,params.callback)
+      rest.get(links.GET_CLIENT_BALANCE_LIST, params.param,params.callback)
     },
     [types.GET_PAYMENT_LIST] ({ commit, rootState }, params) {
       rest.get(links.GET_PAYMENT_LIST, params.param,params.callback)
     },
     [types.QUERY_CLIENT] ({ commit, rootState }, params) {
       rest.get(links.QUERY_CLIENT, params.param,params.callback)
+    },
+    [types.QUERY_CREDIT_MONEY_LIST] ({ commit, rootState }, params) {
+      rest.get(links.QUERY_CREDIT_MONEY_LIST, params.param,params.callback)
+    },
+    [types.SUBMIT_ADD_CREDIT] ({ commit, rootState }, params) {
+      rest.get(links.SUBMIT_ADD_CREDIT, params.param,params.callback)
+    },
+    [types.SUBMIT_ADD_PAYMENT] ({ commit, rootState }, params) {
+      rest.get(links.SUBMIT_ADD_PAYMENT, params.param,params.callback)
     }
   }
 }

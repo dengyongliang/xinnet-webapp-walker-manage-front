@@ -101,7 +101,7 @@ export default {
             vm.$Message.success('用户信息修改成功')
             // 重置store用户信息
             if (vm.from === "accountMy") {
-              vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
+              // vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
             } else {
               vm.$emit('refreshData')
             }

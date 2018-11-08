@@ -1,15 +1,16 @@
 <template lang="pug">
   Form(:label-width="150")
     FormItem(label="客户：")
-      span.text {{client}}
+      span.text {{customerName}}
     FormItem(label="账单金额：")
-      span.text {{money}}
+      span.text {{totalMoney}}
     FormItem(label="结算周期：")
-      span.text {{cycle}}
+      span.text {{thisCycle}}
     FormItem(label="预付款余额：")
-      span.text {{balance}}
+      span.text {{payBalance}}
     FormItem(label="")
       Button(type="primary",@click="billSubmit",:loading="loadingBtn") 确定结算
+    input(type="hidden", :value="id",ref="id")
 </template>
 
 <script>
@@ -19,20 +20,21 @@ export default {
   components: {
   },
   props: {
-    client: {
+    customerName: {
       type: String,
       default: ''
     },
-    money: {
+    totalMoney: {
+      default: ''
+    },
+    thisCycle: {
       type: String,
       default: ''
     },
-    cycle: {
-      type: String,
+    payBalance: {
       default: ''
     },
-    balance: {
-      type: String,
+    id: {
       default: ''
     }
   },
@@ -48,7 +50,7 @@ export default {
       let vm = this
       let params = {
         param: {
-
+          id: this.$refs.id.value
         },
         callback: function (response) {
           if (response.data.code === '1000'){

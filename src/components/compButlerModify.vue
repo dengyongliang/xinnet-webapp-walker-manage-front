@@ -1,14 +1,14 @@
 <template lang="pug">
-  Form(:label-width="150",:status="getStatus")
+  Form(:label-width="150")
     FormItem(label="账号ID：")
       span.text {{userCode}}
       input(type="hidden",:value="userCode",ref="userCode")
-    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName")
-    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail")
-    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile")
-    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="tel")
-    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq")
-    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="weixin")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",:show="refresh")
+    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="refresh")
+    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile",:show="refresh")
+    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="userTel",:show="refresh")
+    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq",:show="refresh")
+    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="wx",:show="refresh")
     FormItem(label="")
       Button(type="primary",@click="btnSaveDetail",:loading="loadingBtn") 确定
 </template>
@@ -22,7 +22,10 @@ export default {
     compInput
   },
   props: {
-    refresh: Boolean,
+    refresh: {
+      type: Boolean,
+      default: true
+    },
     userName: {
       type: String,
       required: true
@@ -38,6 +41,18 @@ export default {
     userCode: {
       type: String,
       required: true
+    },
+    userTel: {
+      type: String,
+      required: false
+    },
+    qq: {
+      type: String,
+      required: false
+    },
+    wx: {
+      type: String,
+      required: false
     }
   },
   data () {
@@ -111,7 +126,10 @@ export default {
           userName: nameV,
           userMobile: mobileV,
           userEmail: emailV,
-          userCode: codeV
+          userCode: codeV,
+          userTel: telV,
+          qq: qqV,
+          wx: wxV
         },
         callback: function (response) {
           vm.loadingBtn = false
@@ -126,8 +144,6 @@ export default {
               vm.$Message.error('用户被锁定')
             } else if (response.data.code === '500') {
               vm.$Message.error('参数错误或参数为空')
-            } else if (response.data.code === '900') {
-              vm.$Message.error('操作失败')
             }
           }
         }
@@ -139,12 +155,7 @@ export default {
     })
   },
   computed: {
-    getStatus: function () {
-      if (this.refresh === true){
-        this.modify = false
-      } else {
-      }
-    }
+
   },
   beforeMount () {
   }

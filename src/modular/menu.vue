@@ -1,53 +1,55 @@
 <template lang="pug">
 .menuBody
-  .menuBox
+  .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_user")>=0')
     h3.menuT.lv1
-      i.font.fontL.font-lock2
+      i.font.fontL.font-lock
       span 账号权限
     ul.menuList
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_user_myUserInfo")>=0')
         router-link(to="/account/my") 我的账号
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_user_userList")>=0')
         router-link(to="/account/mgmt") 账号管理
 
-  .menuBox
+  .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer")>=0')
     h3.menuT.lv1
       i.font.fontL.font-admin
       span 客户管理
     ul.menuList
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_list")>=0')
         router-link(to="/client/client") 客户管理
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0')
         router-link(to="/client/clientAccount") 客户账号管理
 
-  .menuBox
+  .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order")>=0')
     h3.menuT.lv1
       i.font.fontL.font-file
       span 订单管理
     ul.menuList
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order_orderList")>=0')
         router-link(to="/order/mgmt") 订单管理
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order_entryOrder")>=0')
         router-link(to="/order/entry") 订单录入
 
-  .menuBox
+  .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance")>=0')
     h3.menuT.lv1
       i.font.fontL.font-bill
       span 财务管理
     ul.menuList
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_payMoneyList")>=0')
         router-link(to="/finance/add") 预付款增加管理
-      li.menuItem.lv2
-        router-link(to="/finance/query") 预付款查询
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_customerBalanceList")>=0')
+        router-link(to="/finance/balance") 客户账户余额查询
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_customerBillList")>=0')
         router-link(to="/finance/bill") 账单结算
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0')
+        router-link(to="/finance/credit") 客户额度调整
 
-  .menuBox
+  .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_user")>=0')
     h3.menuT.lv1
       i.font.fontL.font-people
       span 管家与客户服务
     ul.menuList
-      li.menuItem.lv2
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_houseKeepers")>=0')
         router-link(to="/service/butler") 管家管理
       li.menuItem.lv2
         router-link(to="/service/worklist") 工单管理

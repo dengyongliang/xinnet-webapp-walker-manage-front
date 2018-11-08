@@ -5,11 +5,12 @@
       Button(type="primary",@click="querySubmit",:loading="loadingBtn") 搜索
     Form(:label-width="150", v-show="showed")
       FormItem(label="企业名称：")
-        span.text {{client}}
+        span.text {{customerName}}
       FormItem(label="客户ID：")
-        span.text {{clientId}}
+        span.text {{customerId}}
+        input(type="hidden",:value="customerId", ref="customerId")
       FormItem(label="预付款余额：")
-        span.text {{balance}}
+        span.text {{payBalance}} 元
       FormItem(label="增加预付款金额：")
         Input(
           type="text",
@@ -19,10 +20,11 @@
           @on-blur="onBlur",
           @on-focus="onFocus",
           ref="money",
-          :class="{ 'error': showError && showed }"
+          :value = "value",
+          :class="{ 'error': showErrorMoney }"
         )
         span.unit 元
-        Alert(type="error",show-icon, style="display:inline-block",v-show="showError && show",ref="msgError") {{errorText}}
+        Alert(type="error",show-icon, style="display:inline-block",v-show="showErrorMoney",ref="msgErrorMoney") {{errorTextMoney}}
       FormItem(label="再次输入增加预付款：")
         Input(
           type="text",
@@ -32,12 +34,13 @@
           @on-blur="onBlur",
           @on-focus="onFocus",
           ref="remoney",
-          :class="{ 'error': showError && showed }"
+          :value = "value",
+          :class="{ 'error': showErrorReMoney }"
         )
         span.unit 元
-        Alert(type="error",show-icon, style="display:inline-block",v-show="showError && show",ref="msgError") {{errorText}}
+        Alert(type="error",show-icon, style="display:inline-block",v-show="showErrorReMoney",ref="msgErrorReMoney") {{errorTextReMoney}}
       FormItem(label="")
-        Button(@click="close()") 取消
+        <!-- Button(@click="close()") 取消 -->
         Button(type="primary",@click="submit",:loading="loadingBtn") 确定
 </template>
 
@@ -60,17 +63,63 @@ export default {
     return {
       loadingBtn: false,
       showed: false,
-      showError: false,
-      errorText: '',
-      client: '',
-      clientId: '',
-      balance: '',
+      showErrorMoney: false,
+      showErrorReMoney: false,
+      errorTextMoney: '',
+      errorTextReMoney: '',
+      customerName: '',
+      customerId: '',
+      payBalance: '',
       value: ''
     }
   },
   methods: {
     submit () {
-      this.$emit('refreshData')
+      this.loadingBtn = true
+      let money = this.$refs.money.$refs.input.value
+      let remoney = this.$refs.remoney.$refs.input.value
+      if (money === '') {
+        this.loadingBtn = false
+        this.showErrorMoney = true
+        this.errorTextMoney = '请输入金额！'
+        this.$refs.money.focus()
+        this.$refs.money.blur()
+        return false
+      }
+      if (remoney === '') {
+        this.loadingBtn = false
+        this.showErrorReMoney = true
+        this.errorTextReMoney = '请再次输入金额！'
+        this.$refs.remoney.focus()
+        this.$refs.remoney.blur()
+        return false
+      }
+      if (remoney !== money) {
+        this.loadingBtn = false
+        this.showErrorReMoney = true
+        this.errorTextReMoney = '输入金额不一致！'
+        this.$refs.remoney.focus()
+        this.$refs.remoney.blur()
+        return false
+      }
+
+      let vm = this
+      let params = {
+        param: {
+          customerId: this.$refs.customerId.value,
+          payMoney: this.$refs.money.$refs.input.value
+        },
+        callback: function (response) {
+          vm.loadingBtn = false
+          if( response.data.code === '1000' ){
+            vm.$Message.success('预付款修改成功！')
+            vm.$emit('refreshData')
+          } else {
+            vm.$Message.error('预付款修改失败！')
+          }
+        }
+      }
+      this.submitAddPayment(params)
     },
     close () {
       this.onClose();
@@ -80,46 +129,66 @@ export default {
       let vm = this
       let params = {
         param: {
-          name: this.$refs.queryInput.value
+          customerCode: this.$refs.queryInput.value
         },
         callback: function (response) {
           vm.loadingBtn = false
           if( response.data.code === '1000' ){
-            vm.client = response.data.data.list[0].name
-            vm.clientId = response.data.data.list[0].orgCode
-            vm.balance = response.data.data.list[0].contactor
+            vm.customerId = response.data.data.code
+            vm.customerName = response.data.data.name
+            vm.payBalance = response.data.data.payBalance
             vm.showed = true
+            vm.showErrorMoney = false
+            vm.showErrorReMoney = false
           } else {
             vm.showed = false
-            if (response.data.code === '200') {
-              vm.$Message.error('用户不存在')
-            } else if (response.data.code === '300') {
-              vm.$Message.error('用户被锁定')
-            } else if (response.data.code === '400') {
-              vm.$Message.error('原始密码错误')
-            } else if (response.data.code === '500') {
-              vm.$Message.error('参数错误或参数为空')
-            } else if (response.data.code === '900') {
-              vm.$Message.error('操作失败')
-            }
+            vm.$Message.error('查询失败')
           }
         }
       }
       this.queryClient(params)
     },
-    onBlur () {
-
+    onBlur (e) {
+      let val = e.target.value
+      let name = e.target.name
+      if (name === 'money') {
+        if (val === '') {
+          this.showErrorMoney = true
+          this.errorTextMoney = '请输入金额！'
+        }
+      }
+      if (name === 'remoney') {
+        if (val === '') {
+          this.showErrorReMoney = true
+          this.errorTextReMoney = '请再次输入金额！'
+        }
+        if (val !== '' && this.$refs.money.$refs.input.value !== val) {
+          this.showErrorReMoney = true
+          this.errorTextReMoney = '输入金额不一致！'
+        }
+      }
     },
-    onFocus () {
-
+    onFocus (e) {
+      let val = e.target.value
+      let name = e.target.name
+      if (name === 'money') {
+        this.errorTextMoney = '',
+        this.showErrorMoney = false
+      } else if (name === 'remoney'){
+        this.errorTextReMoney = '',
+        this.showErrorReMoney = false
+      }
     },
     ...mapActions({
-      queryClient: types.QUERY_CLIENT
+      queryClient: types.QUERY_CLIENT,
+      submitAddPayment: types.SUBMIT_ADD_PAYMENT
     })
   },
   computed: {
     leave () {
       if (this.refresh) {
+        this.showErrorMoney = false
+        this.showErrorReMoney = false
         this.showed = false
         return false
       } else {

@@ -118,13 +118,13 @@ const RouterMain = new Router({
           }
         },
         {
-          path: 'finance/query',
-          name: 'PAY_QUERY',
+          path: 'finance/balance',
+          name: 'BALANCEQUERY',
           component (resolve) {
-            return require(['@/modular/finance/paymentQuery'], resolve)
+            return require(['@/modular/finance/balanceQuery'], resolve)
           },
           meta: {
-            title: '预付款查询'
+            title: '客户账户余额查询'
           }
         },
         {
@@ -135,6 +135,16 @@ const RouterMain = new Router({
           },
           meta: {
             title: '账单结算'
+          }
+        },
+        {
+          path: 'finance/credit',
+          name: 'CREDIT_LIST',
+          component (resolve) {
+            return require(['@/modular/finance/addCredit'], resolve)
+          },
+          meta: {
+            title: '客户额度调整'
           }
         },
         {

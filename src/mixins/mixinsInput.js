@@ -21,6 +21,10 @@ export default {
       type: Boolean,
       default: false
     },
+    required: {
+      type: Boolean,
+      default: true
+    },
     defaultValue: String,
     maxLength: Number,
     placeholder: String,
@@ -49,6 +53,7 @@ export default {
     onFocus (e) {
       let val = e.target.value
       let name = e.target.name
+      let required = e.target.required
       if (name === 'password') {
         this.errorTextPassword = '',
         this.showPasswordError = false

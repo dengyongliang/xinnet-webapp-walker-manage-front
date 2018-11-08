@@ -21,7 +21,7 @@
 
   <!-- 详情 抽屉 -->
   Drawer(:closable="true",width="640",v-model="drawerDetail",title="管家账号",@on-close="closeDrawerDetail",@on-visible-change="drawerChange",:mask-closable="maskClosable")
-    comp-butler-modify(:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode",:refresh="refresh",ref="accountModify",@refreshData="searchUserIdData",)
+    comp-butler-modify(:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode",:userTel="userTel",:qq="qq",:wx="wx",:refresh="refresh",ref="accountModify",@refreshData="searchUserIdData",)
 </template>
 
 <script>
@@ -97,9 +97,12 @@ export default {
                         userName: this.adminList[params.index].userName,
                         userEmail: this.adminList[params.index].userEmail,
                         userMobile: this.adminList[params.index].userMobile,
-                        userCode: this.adminList[params.index].userCode
+                        userCode: this.adminList[params.index].userCode,
+                        userTel: this.adminList[params.index].userTel,
+                        qq: this.adminList[params.index].qq,
+                        xw: this.adminList[params.index].wx
                       }
-                      this.showAdminDetal(param)
+                      this.showAdminDetail(param)
                       this.drawerDetail = true
                     }
                   }
@@ -133,7 +136,10 @@ export default {
       userName: '',
       userMobile: '',
       userEmail: '',
-      userCode: ''
+      userCode: '',
+      userTel: '',
+      qq: '',
+      wx: ''
     }
   },
   methods: {
@@ -199,9 +205,9 @@ export default {
     },
     drawerChange () {
       if (this.drawerDetail) {
-        this.refresh = false
-      } else {
         this.refresh = true
+      } else {
+        this.refresh = false
       }
     },
     getAdminListParam (obj) {
@@ -237,11 +243,14 @@ export default {
       // 查询数据
       this.getAdminList(this.getAdminListParam({pageNum: 1,userId: this.searchUserId}))
     },
-    showAdminDetal (param) {
+    showAdminDetail (param) {
       this.userName = param.userName
       this.userMobile = param.userMobile
       this.userEmail = param.userEmail
       this.userCode = param.userCode
+      this.userTel = param.userTel
+      this.qq = param.qq
+      this.wx = param.wx
     },
     ...mapActions({
       getAdminList: types.GET_ADMIN_LIST_DATA,

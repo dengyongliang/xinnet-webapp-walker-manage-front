@@ -30,12 +30,18 @@ export const CREAT_ADMIN = api + '/admin-api/manage/customer/addKeeper'
 // 创建修改客户信息
 export const CREAT_AND_MODIFY_CLIENT = api + '/admin-api/manage/customer/customerCreate'
 // 获取账单结算列表
-export const GET_BILL_LIST = api + '/admin-api/manage/customer/customerCreate'
+export const GET_BILL_LIST = api + '/admin-api/manage/finance/customerBillList'
 // 账单结算确认
-export const CONFIRM_BILL_CLEAN = api + '/admin-api/manage/customer/customerCreate'
+export const CONFIRM_BILL_CLEAN = api + '/admin-api/manage/finance/customerBillPay'
 // 客户账户余额列表
-export const GET_CLIENT_BALANCE_LIST = api + '/admin-api/manage/customer/customerCreate'
+export const GET_CLIENT_BALANCE_LIST = api + '/admin-api/manage/finance/customerBalanceList'
 // 预付款管理列表
-export const GET_PAYMENT_LIST = api + '/admin-api/manage/customer/customerCreate'
+export const GET_PAYMENT_LIST = api + '/admin-api/manage/finance/payMoneyList'
+// 预付款增加
+export const SUBMIT_ADD_PAYMENT = api + '/admin-api/manage/finance/addPayMoney'
 // 查询企业名称/客户ID
 export const QUERY_CLIENT = api + '/admin-api/manage/customer/customerCreate'
+// 客户额度调整列表
+export const QUERY_CREDIT_MONEY_LIST = api + '/admin-api/manage/finance/creditMoneyList'
+// 额度调整提交
+export const SUBMIT_ADD_CREDIT = api + '/admin-api/manage/finance/addCreditMoney'

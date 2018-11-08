@@ -47,6 +47,7 @@
       span.text(v-if="!isShow && !modify",slot="left") {{email}}
     comp-input(name='tel',label="固话：",:show="isShow || modify",ref="tel",:defaultValue="tel")
       span.text(v-if="!isShow && !modify",slot="left") {{tel}}
+      span.unit(v-if="isShow && modify",slot="right") 非必填
 
     FormItem(label="")
       Button(type="primary",@click="btnSubmit('new')",v-if='status=="creat"',:loading="loadingBtn") 确定

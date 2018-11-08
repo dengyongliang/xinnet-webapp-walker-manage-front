@@ -38,11 +38,23 @@ export default {
         vm.$router.replace({ path: '/login' })
       },300)
     })
+    restEmitter.on('noPermission', () => {
+      vm.$Message.error('权限错误！')
+      setTimeout(() => {
+        vm.$router.replace({ path: '/' })
+      },300)
+    })
     restEmitter.on('paramError', () => {
       vm.$Message.error('参数错误！')
     })
     restEmitter.on('requestError', () => {
       vm.$Message.error('请求失败！')
+    })
+    restEmitter.on('errorOther', () => {
+      vm.$Message.error('连接错误！')
+    })
+    restEmitter.on('errorServer', () => {
+      vm.$Message.error('连接到服务器失败！')
     })
   },
   methods: {
