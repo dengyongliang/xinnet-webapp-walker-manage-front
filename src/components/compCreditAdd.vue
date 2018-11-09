@@ -1,7 +1,7 @@
 <template lang="pug">
   div(:status="leave")
     .search
-      Input(placeholder="企业名称/客户ID",ref="queryInput",:value="value",v-if="refresh")
+      Input(placeholder="企业名称/客户ID",ref="queryInput",v-model="customerCode")
       Button(type="primary",@click="querySubmit",:loading="loadingBtn") 搜索
     Form(:label-width="150", v-if="refresh && showed")
       FormItem(label="企业名称：")
@@ -49,7 +49,7 @@ export default {
       let params = {
         param: {
           customerId: this.$refs.customerId.value,
-          creditMoney: this.$refs.creditMoney.$refs.input.value
+          creditMoney: this.$refs.creditMoney.$refs.input.$refs.input.value
         },
         callback: function (response) {
           vm.loadingBtn = false
@@ -71,14 +71,18 @@ export default {
       let vm = this
       let params = {
         param: {
-          customerCode: this.$refs.queryInput.value
+          customerCode: this.customerCode
         },
         callback: function (response) {
           vm.loadingBtn = false
           if( response.data.code === '1000' ){
-            vm.customerId = response.data.data.code
-            vm.customerName = response.data.data.name
-            vm.showed = true
+            if (response.data.data !== null ) {
+              vm.customerId = response.data.data.id
+              vm.customerName = response.data.data.name
+              vm.showed = true
+            } else {
+              vm.$Message.error('查询不到指定信息')
+            }
           } else {
             vm.showed = false
             vm.$Message.error('查询失败')

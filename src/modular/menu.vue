@@ -41,7 +41,7 @@
         router-link(to="/finance/balance") 客户账户余额查询
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_customerBillList")>=0')
         router-link(to="/finance/bill") 账单结算
-      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0')
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_creditMoneyList")>=0')
         router-link(to="/finance/credit") 客户额度调整
 
   .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_user")>=0')

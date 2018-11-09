@@ -195,4 +195,8 @@ export default {
 .ivu-drawer-close i{
   color:#fff!important;
 }
+.ivu-select-selection,
+.ivu-select-dropdown{
+  border-radius:0px;
+}
 </style>

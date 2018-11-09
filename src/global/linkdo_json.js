@@ -38,9 +38,19 @@ export const GET_CLIENT_BALANCE_LIST = 'http://localhost:4400/static/data/custom
 export const GET_PAYMENT_LIST = 'http://localhost:4400/static/data/payMoneyList.js'
 // 预付款增加
 export const SUBMIT_ADD_PAYMENT = 'http://localhost:4400/static/data/clientList.js'
-// 查询企业名称/客户ID
+// 查询客户 一个
 export const QUERY_CLIENT = 'http://localhost:4400/static/data/findCustomer.js'
+// 查询客户 多个
+export const QUERY_CLIENT_LIST = 'http://localhost:4400/static/data/findCustomer.js'
 // 客户额度调整列表
 export const QUERY_CREDIT_MONEY_LIST = 'http://localhost:4400/static/data/creditMoneyList.js'
 // 额度调整提交
 export const SUBMIT_ADD_CREDIT = 'http://localhost:4400/static/data/clientList.js'
+// 查询订单列表
+export const QUERY_ORDER_LIST = 'http://localhost:4400/static/data/orderList.js'
+// 导出订单列表
+export const EXPORT_ORDER_LIST = 'http://localhost:4400/static/data/clientList.js'
+// 添加录入订单
+export const SUBMIT_ADD_ORDER_ENTRY = 'http://localhost:4400/static/data/clientList.js'
+
+

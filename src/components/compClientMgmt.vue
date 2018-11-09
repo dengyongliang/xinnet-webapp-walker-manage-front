@@ -1,26 +1,33 @@
 <template lang="pug">
   Form(:label-width="150")
     strong.t 基本信息
-    comp-input(name='enterprise',label="企业名称：",:show="isShow || modify",ref="enterprise",:defaultValue="enterprise")
-      span.text(v-if="!isShow && !modify",slot="left") {{enterprise}}
-    comp-input(name='orgCode',label="机构代码证号：",:show="isShow || modify",ref="orgCode",:defaultValue="orgCode")
-      span.text(v-if="!isShow && !modify",slot="left") {{orgCode}}
+    comp-input(name='enterprise',label="企业名称：",:show="status==='creat' || modify",ref="enterprise",:defaultValue="enterprise")
+      span.text(v-if="status==='view' && !modify",slot="left") {{enterprise}}
+    comp-input(name='orgCode',label="机构代码证号：",:show="status==='creat' || modify",ref="orgCode",:defaultValue="orgCode")
+      span.text(v-if="status==='view' && !modify",slot="left") {{orgCode}}
     FormItem(label="客户ID：",v-if="status=='view'")
       input(type="hidden",:value="customerUserId", ref="customerUserId")
       span.text() {{customerUserId}}
-    comp-input(name='accountPeriod',label="账期：",:show="isShow || modify",ref="accountPeriod",:defaultValue="accountPeriod")
-      span.text(v-if="!isShow && !modify",slot="left") {{accountPeriod}}
+    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod")
+      span.text(v-if="status==='view' && !modify",slot="left") {{accountPeriod}}
       span.unit(slot="right") 个月
-    comp-input(name='creditBalance',label="额度：",:show="isShow || modify",ref="creditBalance",:defaultValue="creditBalance")
-      span.text(v-if="!isShow && !modify",slot="left") {{creditBalance}}
+    comp-input(name='creditBalance',label="额度：",:show="status==='creat' || modify",ref="creditBalance",:defaultValue="creditBalance")
+      span.text(v-if="status==='view' && !modify",slot="left") {{creditBalance}}
       span.unit(slot="right") 元
     FormItem(label="状态：",v-if="status=='view'")
       span.text(v-if="open") 已开启
       span.text(v-if="!open") 已关闭
-    comp-input(name='admin',label="管家：",:show="isShow || modify",ref="admin",:defaultValue="admin")
-      span.text(v-if="!isShow && !modify",slot="left") {{admin}}
+    comp-input(name='admin',label="管家：",:show="status==='creat' || modify",ref="admin",:defaultValue="admin")
+      span.text(v-if="status==='view' && !modify",slot="left") {{admin}}
 
     FormItem(label="机构代码证：")
+      .demo-upload-list(v-if="status==='view'")
+        img(:src="orgFile")
+        .demo-upload-list-cover
+          Icon(type="ios-eye-outline",@click.native="handleView(orgFile)")
+      Upload(v-show="status==='view' && modify",ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, action="//jsonplaceholder.typicode.com/posts/",)
+        Button(icon="ios-cloud-upload-outline") 重新上传
+
       .demo-upload-list(v-for="item in uploadList")
         template(v-if="item.status === 'finished'")
           img(:src="item.url")
@@ -30,29 +37,29 @@
         template(v-else)
           Progress(v-if="item.showProgress",:percent="item.percentage",hide-info)
       Upload(ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, action="//jsonplaceholder.typicode.com/posts/", style="display: inline-block;width:58px;vertical-align: top;")
-        div(style="width: 58px;height:58px;line-height: 58px;")
+        div(style="width: 58px;height:58px;line-height: 58px;text-align:center;")
           Icon(type="ios-camera",size="20")
-      span.unit 支持jpg、gif、png格式，2M以内。
+      span.unit(v-show="status==='creat' || modify") 支持jpg、gif、png格式，2M以内。
       Modal(title="图片预览" v-model="visible",:footer-hide="true")
         img(:src="'https://o5wwk8baw.qnssl.com/' + imgName + '/avatar'",v-if="visible",style="width: 100%")
       Alert(type="error",show-icon, style="display:inline-block",v-show="file === ''",ref="msgErrorFile") 请上传机构代码证！
     Divider(:dashed='true')
 
     strong.t 联系人信息
-    comp-input(name='contactor',label="联系人：",:show="isShow || modify",ref="contactor",:defaultValue="contactor")
-      span.text(v-if="!isShow && !modify",slot="left") {{contactor}}
-    comp-input(name='userMobile',label="手机：",:show="isShow || modify",ref="mobile",:defaultValue="mobile")
-      span.text(v-if="!isShow && !modify",slot="left") {{mobile}}
-    comp-input(name='userEmail',label="邮箱：",:show="isShow || modify",ref="email",:defaultValue="email")
-      span.text(v-if="!isShow && !modify",slot="left") {{email}}
-    comp-input(name='tel',label="固话：",:show="isShow || modify",ref="tel",:defaultValue="tel")
-      span.text(v-if="!isShow && !modify",slot="left") {{tel}}
-      span.unit(v-if="isShow && modify",slot="right") 非必填
+    comp-input(name='contactor',label="联系人：",:show="status==='creat' || modify",ref="contactor",:defaultValue="contactor")
+      span.text(v-if="status==='view' && !modify",slot="left") {{contactor}}
+    comp-input(name='userMobile',label="手机：",:show="status==='creat' || modify",ref="mobile",:defaultValue="mobile")
+      span.text(v-if="status==='view' && !modify",slot="left") {{mobile}}
+    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email")
+      span.text(v-if="status==='view' && !modify",slot="left") {{email}}
+    comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="tel")
+      span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
+      span.unit(v-if="status==='creat' || modify",slot="right") 非必填
 
     FormItem(label="")
-      Button(type="primary",@click="btnSubmit('new')",v-if='status=="creat"',:loading="loadingBtn") 确定
-      Button(type="primary",@click="btnModify",v-if='status=="view" && !modify') 修改
-      Button(type="primary",@click="btnSubmit('reset')",v-if='modify',:loading="loadingBtn") 保存
+      Button(type="primary",@click="btnSubmit('new')",v-show='status==="creat"',:loading="loadingBtn") 确定
+      Button(type="primary",@click="btnModify",v-show='status==="view" && !modify') 修改
+      Button(type="primary",@click="btnSubmit('reset')",v-show='status==="view" && modify',:loading="loadingBtn") 保存
 </template>
 
 <script>
@@ -324,18 +331,6 @@ export default {
     })
   },
   computed: {
-    isShow () {
-      if (this.status === 'creat') {
-        this.modify = false
-        return true
-      } else if (this.status === 'view') {
-        this.modify = false
-        return false
-      } else {
-        this.modify = false
-        return false
-      }
-    }
   },
   beforeMount () {
   },

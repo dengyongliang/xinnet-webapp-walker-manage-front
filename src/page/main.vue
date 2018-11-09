@@ -89,6 +89,7 @@ export default {
   position:fixed;
   top:0px;
   left:0px;
+  border-right:1px solid #ecedef;
 }
 
 .frameBottom .frameBody{

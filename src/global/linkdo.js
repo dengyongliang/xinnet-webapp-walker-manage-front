@@ -24,7 +24,7 @@ export const GET_USER_LIST_DATA = api + '/admin-api/manage/user/userList'
 // 获取管家列表
 export const GET_ADMIN_LIST_DATA = api + '/admin-api/manage/customer/houseKeepers'
 // 获取客户列表
-export const GET_CLIENT_LIST_DATA = api + '/admin-api/manage/customer/userCustomers'
+export const GET_CLIENT_LIST_DATA = api + '/admin-api/manage/customer/customerList'
 // 创建管家
 export const CREAT_ADMIN = api + '/admin-api/manage/customer/addKeeper'
 // 创建修改客户信息
@@ -39,9 +39,17 @@ export const GET_CLIENT_BALANCE_LIST = api + '/admin-api/manage/finance/customer
 export const GET_PAYMENT_LIST = api + '/admin-api/manage/finance/payMoneyList'
 // 预付款增加
 export const SUBMIT_ADD_PAYMENT = api + '/admin-api/manage/finance/addPayMoney'
-// 查询企业名称/客户ID
-export const QUERY_CLIENT = api + '/admin-api/manage/customer/customerCreate'
+// 查询客户 一个
+export const QUERY_CLIENT = api + '/admin-api/manage/customer/findCustomer'
+// 查询客户 多个
+export const QUERY_CLIENT_LIST = api + '/admin-api/manage/customer/findCustomerList'
 // 客户额度调整列表
 export const QUERY_CREDIT_MONEY_LIST = api + '/admin-api/manage/finance/creditMoneyList'
 // 额度调整提交
 export const SUBMIT_ADD_CREDIT = api + '/admin-api/manage/finance/addCreditMoney'
+// 查询订单列表
+export const QUERY_ORDER_LIST = api + '/admin-api/manage/order/orderList'
+// 导出订单列表
+export const EXPORT_ORDER_LIST = api + '/admin-api/manage/order/exportOrder'
+// 添加录入订单
+export const SUBMIT_ADD_ORDER_ENTRY = api + '/admin-api/manage/order/entryOrder'

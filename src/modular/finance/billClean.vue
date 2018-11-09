@@ -55,7 +55,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.billList[params.index].payBalance + ' 元')
+              }, this.billList[params.index].totalMoney + ' 元')
             ])
           }
         },

@@ -92,5 +92,11 @@ export default {
     [types.GET_USER_LIST_DATA] ({ commit, rootState }, params) {
       rest.post(links.GET_USER_LIST_DATA, JSON.stringify(params.param),params.callback)
     },
+    [types.QUERY_CLIENT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_CLIENT, params.param,params.callback)
+    },
+    [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_CLIENT_LIST, params.param,params.callback)
+    }
   }
 }

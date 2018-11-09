@@ -21,6 +21,7 @@
     comp-client-mgmt(
       :status="status",
       @refreshData="searchClientData",
+      v-if="refresh",
       :enterprise = "enterprise",
       :orgCode = "orgCode",
       :customerUserId = "customerUserId",
@@ -46,6 +47,7 @@ export default {
   },
   data () {
     return {
+      refresh: false,
       drawerTitle:'',
       searchUserId: '',
       status: '',
@@ -149,10 +151,7 @@ export default {
       this.getClientList(this.getClientListParam({pageNum: curPage,userId: this.searchUserId}))
     },
     drawerChange () {
-      if (this.drawerClientMgmt) {
-      } else {
-        this.status = ''
-      }
+      this.refresh = this.drawerClientMgmt ? true : false
     },
     showDrawerClient (status, param) {
       if (status === 'creat') {

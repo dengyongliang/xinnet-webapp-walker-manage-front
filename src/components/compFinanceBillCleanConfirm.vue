@@ -53,14 +53,22 @@ export default {
           id: this.$refs.id.value
         },
         callback: function (response) {
+          vm.loadingBtn = false
           if (response.data.code === '1000'){
-            vm.loadingBtn = false
             vm.$Message.success('结算确认成功')
             // 添加成功，重新加载列表数据
             vm.$emit('refreshData')
           } else {
-            if (response.data.code === '900') {
-              vm.$Message.error('结算确认失败')
+            if (response.data.code === '100') {
+              vm.$Message.error('客户不存在')
+            } else if (response.data.code === '200') {
+              vm.$Message.error('账号余额不足')
+            } else if (response.data.code === '300') {
+              vm.$Message.error('账号异常')
+            } else if (response.data.code === '400') {
+              vm.$Message.error('结算失败')
+            } else if (response.data.code === '600') {
+              vm.$Message.error('账单已结算')
             }
           }
         }

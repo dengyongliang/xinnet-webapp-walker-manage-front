@@ -3,13 +3,13 @@
   <!-- 标题区 -->
   h1.pageTitle.clear 订单录入
     .tR
-      Input(style="width:200px",placeholder="企业名称/客户ID",v-model.trim="searchUserId")
+      Input(style="width:200px",placeholder="企业名称/客户ID",v-model.trim="orderGoodsInfo")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 搜索
       Button(@click="drawerOrderEntry=true") + 录入订单
   .secMain
     <!-- 列表主体 -->
     .secTable
-      <Table :columns="columns" :data="billList" :loading="loadingTable"></Table>
+      <Table :columns="columns" :data="orderList" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
@@ -18,7 +18,8 @@
   Drawer(:closable="true" width="640" v-model="drawerOrderEntry",title="录入订单",:mask-closable="maskClosable",@on-visible-change="drawerChange")
     comp-order-entry(
       @refreshData="searchListData",
-      :refresh="refresh"
+      :refresh="refresh",
+      v-if="refresh"
     )
 </template>
 
@@ -33,107 +34,106 @@ export default {
   data () {
     return {
       refresh: false,
-      searchUserId: '',
+      orderGoodsInfo: '',
       columns: [
         {
-          title: '企业名称',
-          key: 'customerName',
+          title: '录入时间',
+          key: 'createTime',
           className: 'col1'
         },
         {
-          title: '客户ID',
-          key: 'customerCode',
+          title: '企业名称',
+          key: 'customerName',
           className: 'col2'
         },
         {
-          title: '金额',
-          key: 'totalMoney',
-          className: 'col3',
+          title: '客户ID',
+          key: 'userCode',
+          className: 'col3'
+        },
+        {
+          title: '产品类型',
+          key: 'orderGoodsType',
+          className: 'col4',
           render: (h, params) => {
-            return h('div', [
-              h('span', {
-              }, this.billList[params.index].payBalance + ' 元')
-            ])
+            if (this.orderList[params.index].orderGoodsType === 1) {
+              return h('div', [
+                h('span', {}, '域名注册')
+              ])
+            }
+            if (this.orderList[params.index].orderGoodsType === 2) {
+              return h('div', [
+                h('span', {}, '域名续费')
+              ])
+            }
+            if (this.orderList[params.index].orderGoodsType === 3) {
+              return h('div', [
+                h('span', {}, '域名回购')
+              ])
+            }
+            if (this.orderList[params.index].orderGoodsType === 4) {
+              return h('div', [
+                h('span', {}, '域名安全服务')
+              ])
+            }
           }
         },
         {
-          title: '结算周期',
-          key: 'thisCycle',
-          className: 'col4'
+          title: '订单类型',
+          key: 'orderType',
+          className: 'col5',
+          render: (h, params) => {
+            if (this.orderList[params.index].orderType === 1) {
+              return h('div', [
+                h('span', {}, '新开')
+              ])
+            }
+            if (this.orderList[params.index].orderType === 2) {
+              return h('div', [
+                h('span', {}, '续费')
+              ])
+            }
+            if (this.orderList[params.index].orderType === 3) {
+              return h('div', [
+                h('span', {}, '退费')
+              ])
+            }
+          }
         },
         {
-          title: '最晚付款时间',
-          key: 'checkBillDate',
-          className: 'col5'
+          title: '付款类型',
+          key: 'orderPayType',
+          className: 'col6',
+          render: (h, params) => {
+            if (this.orderList[params.index].orderPayType === 1) {
+              return h('div', [
+                h('span', {}, '信用消费')
+              ])
+            }
+            if (this.orderList[params.index].orderPayType === 2) {
+              return h('div', [
+                h('span', {}, '预付款消费')
+              ])
+            }
+          }
         },
         {
-          title: '结算时间',
-          key: 'payBillDate',
-          className: 'col6'
-        },
-        {
-          title: '预付款余额',
-          key: 'payBalance',
+          title: '金额',
+          key: 'orderMoney',
           className: 'col7',
           render: (h, params) => {
             return h('div', [
-              h('span', {
-              }, this.billList[params.index].payBalance + ' 元')
+              h('span', {}, this.orderList[params.index].orderMoney + ' 元')
             ])
           }
         },
         {
-          title: '状态',
-          key: 'status',
-          className: 'col8',
-          render: (h, params) => {
-            if (this.billList[params.index].status === 1) {
-              return h('div', [
-                h('span', {}, '待结款')
-              ])
-            }
-            if (this.billList[params.index].status === 2) {
-              return h('div', [
-                h('span', {}, '已结款')
-              ])
-            }
-            if (this.billList[params.index].status === 3) {
-              return h('div', [
-                h('span', {}, '已逾期')
-              ])
-            }
-          }
-        },
-        {
-          title: '操作',
-          key: 'operate',
-          className: 'operate',
-          render: (h, params) => {
-            if (this.billList[params.index].status === 1) {
-              return h('div', [
-                h('a', {
-                  props: {
-                    href: 'javascript:;'
-                  },
-                  on: {
-                    click: () => {
-                      let param = {
-                        customerName: this.billList[params.index].customerName,
-                        totalMoney: this.billList[params.index].totalMoney,
-                        thisCycle: this.billList[params.index].thisCycle,
-                        payBalance: this.billList[params.index].payBalance,
-                        id: this.billList[params.index].id
-                      }
-                      this.showDrawerBillConfirm(param)
-                    }
-                  }
-                }, '结算')
-              ])
-            }
-          }
+          title: '操作人',
+          key: 'userName',
+          className: 'col8'
         }
       ],
-      billList: [],
+      orderList: [],
       loadingTable: true,
       loadingBtn: false,
       drawerOrderEntry: false,
@@ -146,14 +146,13 @@ export default {
   },
   methods: {
     searchListData () {
-      // 关闭 drawer弹出层
-      this.drawerBillConfirm = false
+      this.drawerOrderEntry = false
       // 查询数据
-      this.getBillList(this.getBillListParam({pageNum: 1,userId: this.searchUserId}))
+      this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getBillList(this.getBillListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
     },
     drawerChange () {
       if (this.drawerOrderEntry) {
@@ -162,33 +161,25 @@ export default {
         this.refresh = false
       }
     },
-    showDrawerBillConfirm (param) {
-      // 重置数据
-      this.customerName = param.customerName
-      this.totalMoney = param.totalMoney
-      this.thisCycle = param.thisCycle
-      this.payBalance = param.payBalance
-      this.id = param.id
-      // 显示结算界面
-      this.drawerBillConfirm = true
-    },
-    getBillListParam (obj) {
+    queryOrderListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
+
       let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          orderGoodsInfo: this.orderGoodsInfo,
+          orderMode: 3
         },
         callback: function(response){
           vm.loadingBtn = false
           vm.loadingTable = false
           // console.log(response)
           if (response.data.code === '1000'){
-            vm.billList = response.data.data.list
+            vm.orderList = response.data.data.list
             vm.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
@@ -200,7 +191,7 @@ export default {
       return params
     },
     ...mapActions({
-      getBillList: types.GET_BILL_LIST
+      queryOrderList: types.QUERY_ORDER_LIST
     })
   },
   computed: {
@@ -209,7 +200,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getBillList(this.getBillListParam({pageNum: 1,userId: this.searchUserId}))
+    this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
   }
 }
 </script>

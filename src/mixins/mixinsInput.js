@@ -183,6 +183,18 @@ export default {
           this.errorTextRePassword = '重复输入密码与新密码不一致！'
         }
       }
+      if (name === 'domain') {
+        if (val === '') {
+          this.showError = true
+          this.errorText = '请输入域名！'
+        }
+      }
+      if (name === 'money') {
+        if (val === '') {
+          this.showError = true
+          this.errorText = '请输入金额！'
+        }
+      }
     }
   }
 }

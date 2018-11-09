@@ -17,10 +17,19 @@ const IS_EMAIL_AVAILABLE = (val) => {　　
     return true
   }
 }
+const CRT_TIME_FORMAT = (val) => {
+  if (val != null) {
+    var date = new Date(val);
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  } else {
+    return ''
+  }
+}
 export default
 {
   TITLE,
   regPw,
   IS_PHONE_AVAILABLE,
-  IS_EMAIL_AVAILABLE
+  IS_EMAIL_AVAILABLE,
+  CRT_TIME_FORMAT
 }

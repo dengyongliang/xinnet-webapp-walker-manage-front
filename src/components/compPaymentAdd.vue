@@ -1,7 +1,7 @@
 <template lang="pug">
   div(:status="leave")
     .search
-      Input(placeholder="企业名称/客户ID",ref="queryInput",:value="value",v-if="refresh")
+      Input(placeholder="企业名称/客户ID",ref="queryInput",v-model="customerCode")
       Button(type="primary",@click="querySubmit",:loading="loadingBtn") 搜索
     Form(:label-width="150", v-show="showed")
       FormItem(label="企业名称：")
@@ -61,6 +61,7 @@ export default {
   },
   data () {
     return {
+      customerCode: '',
       loadingBtn: false,
       showed: false,
       showErrorMoney: false,
@@ -115,7 +116,13 @@ export default {
             vm.$Message.success('预付款修改成功！')
             vm.$emit('refreshData')
           } else {
-            vm.$Message.error('预付款修改失败！')
+            if (response.data.code === '100') {
+              vm.$Message.error('客户账号异常！')
+            } else if (response.data.code === '400') {
+              vm.$Message.error('结算失败！')
+            } else {
+              vm.$Message.success('预付款修改失败！')
+            }
           }
         }
       }
@@ -129,17 +136,21 @@ export default {
       let vm = this
       let params = {
         param: {
-          customerCode: this.$refs.queryInput.value
+          customerCode: this.customerCode
         },
         callback: function (response) {
           vm.loadingBtn = false
           if( response.data.code === '1000' ){
-            vm.customerId = response.data.data.code
-            vm.customerName = response.data.data.name
-            vm.payBalance = response.data.data.payBalance
-            vm.showed = true
-            vm.showErrorMoney = false
-            vm.showErrorReMoney = false
+            if (response.data.data !== null ) {
+              vm.customerId = response.data.data.id
+              vm.customerName = response.data.data.name
+              vm.payBalance = response.data.data.payBalance
+              vm.showed = true
+              vm.showErrorMoney = false
+              vm.showErrorReMoney = false
+            } else {
+              vm.$Message.error('查询不到指定信息')
+            }
           } else {
             vm.showed = false
             vm.$Message.error('查询失败')
