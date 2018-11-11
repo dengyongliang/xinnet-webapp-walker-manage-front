@@ -69,13 +69,9 @@ export default {
             vm.$emit('refreshData')
           } else {
             if (response.data.code === '200') {
-              vm.$Message.error('用户不存在')
-            } else if (response.data.code === '300') {
-              vm.$Message.error('用户被锁定')
-            } else if (response.data.code === '500') {
-              vm.$Message.error('参数错误或参数为空')
-            } else if (response.data.code === '900') {
-              vm.$Message.error('操作失败')
+              vm.$Message.error('用户已存在')
+            } else {
+              vm.$Message.error('账号创建失败')
             }
           }
         }

@@ -24,10 +24,10 @@ export default function makeStore () {
     },
     actions: {
       [types.LOGIN_VERIFICATIONCODE] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_VERIFICATIONCODE, JSON.stringify(params.param),params.callback)
+        rest.get(links.LOGIN_VERIFICATIONCODE, JSON.stringify(params.param),params.callback)
       },
       [types.LOGIN_SUBMIT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_SUBMIT, JSON.stringify(params.param),params.callback)
+        rest.get(links.LOGIN_SUBMIT, JSON.stringify(params.param),params.callback)
       },
       [types.LOGIN_OUT] ({ commit, rootState }, params) {
         rest.get(links.LOGIN_OUT, '',params.callback)

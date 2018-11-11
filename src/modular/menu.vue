@@ -36,7 +36,7 @@
       span 财务管理
     ul.menuList
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_payMoneyList")>=0')
-        router-link(to="/finance/add") 预付款增加管理
+        router-link(to="/finance/payment") 预付款增加管理
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_customerBalanceList")>=0')
         router-link(to="/finance/balance") 客户账户余额查询
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_finance_customerBillList")>=0')

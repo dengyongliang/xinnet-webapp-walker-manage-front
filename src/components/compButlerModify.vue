@@ -3,12 +3,12 @@
     FormItem(label="账号ID：")
       span.text {{userCode}}
       input(type="hidden",:value="userCode",ref="userCode")
-    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",:show="refresh")
-    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="refresh")
-    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile",:show="refresh")
-    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="userTel",:show="refresh")
-    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq",:show="refresh")
-    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="wx",:show="refresh")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",)
+    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",)
+    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile",)
+    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="userTel",)
+    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq",)
+    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="wx",)
     FormItem(label="")
       Button(type="primary",@click="btnSaveDetail",:loading="loadingBtn") 确定
 </template>
@@ -22,10 +22,6 @@ export default {
     compInput
   },
   props: {
-    refresh: {
-      type: Boolean,
-      default: true
-    },
     userName: {
       type: String,
       required: true
@@ -142,8 +138,8 @@ export default {
               vm.$Message.error('用户不存在')
             } else if (response.data.code === '300') {
               vm.$Message.error('用户被锁定')
-            } else if (response.data.code === '500') {
-              vm.$Message.error('参数错误或参数为空')
+            } else {
+              vm.$Message.error('管家信息修改失败')
             }
           }
         }

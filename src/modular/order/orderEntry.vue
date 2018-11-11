@@ -18,7 +18,6 @@
   Drawer(:closable="true" width="640" v-model="drawerOrderEntry",title="录入订单",:mask-closable="maskClosable",@on-visible-change="drawerChange")
     comp-order-entry(
       @refreshData="searchListData",
-      :refresh="refresh",
       v-if="refresh"
     )
 </template>

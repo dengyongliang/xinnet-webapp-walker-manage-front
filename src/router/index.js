@@ -108,7 +108,7 @@ const RouterMain = new Router({
           }
         },
         {
-          path: 'finance/add',
+          path: 'finance/payment',
           name: 'PAY_ADD',
           component (resolve) {
             return require(['@/modular/finance/paymentAdd'], resolve)

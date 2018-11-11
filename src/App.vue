@@ -199,4 +199,17 @@ export default {
 .ivu-select-dropdown{
   border-radius:0px;
 }
+.ivu-upload-select{
+  background: #fff;
+  border: 1px dashed #dcdee2;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s ease;
+}
+.ivu-page-total{
+  vertical-align:middle;
+}
 </style>

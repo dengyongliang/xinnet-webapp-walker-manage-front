@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:status="leave")
+  div
     .search
       Input(placeholder="企业名称/客户ID",ref="queryInput",v-model="customerCode")
       Button(type="primary",@click="querySubmit",:loading="loadingBtn") 搜索
@@ -14,7 +14,6 @@
       FormItem(label="增加预付款金额：")
         Input(
           type="text",
-          v-if="showed",
           name="money",
           style="width:240px",
           @on-blur="onBlur",
@@ -28,7 +27,6 @@
       FormItem(label="再次输入增加预付款：")
         Input(
           type="text",
-          v-if="showed",
           name="remoney",
           style="width:240px",
           @on-blur="onBlur",
@@ -196,16 +194,6 @@ export default {
     })
   },
   computed: {
-    leave () {
-      if (this.refresh) {
-        this.showErrorMoney = false
-        this.showErrorReMoney = false
-        this.showed = false
-        return false
-      } else {
-        return false
-      }
-    }
   },
   beforeMount () {
   },

@@ -9,13 +9,13 @@ export default {
   },
   actions: {
     [types.QUERY_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_ORDER_LIST, JSON.stringify(params.param),params.callback)
+      rest.get(links.QUERY_ORDER_LIST, JSON.stringify(params.param),params.callback)
     },
     [types.EXPORT_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.EXPORT_ORDER_LIST, JSON.stringify(params.param),params.callback)
+      rest.get(links.EXPORT_ORDER_LIST, JSON.stringify(params.param),params.callback)
     },
     [types.SUBMIT_ADD_ORDER_ENTRY] ({ commit, rootState }, params) {
-      rest.post(links.SUBMIT_ADD_ORDER_ENTRY, JSON.stringify(params.param),params.callback)
+      rest.get(links.SUBMIT_ADD_ORDER_ENTRY, JSON.stringify(params.param),params.callback)
     }
   }
 }

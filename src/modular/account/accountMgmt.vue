@@ -5,7 +5,7 @@
     .tR
       span 搜索
       Input(style="width:200px",placeholder="姓名/邮箱/手机",name="searchUserCode",ref="searchUserCode",v-model.trim="searchUserCode")
-      Button(type="primary", @click="searchUserData",:loading="loadingBtn") 搜索
+      Button(type="primary", @click="searchListData",:loading="loadingBtn") 搜索
       Button(@click="drawerCreatAccount=true") + 新建账号
   .secMain
     <!-- 列表主体 -->
@@ -17,15 +17,15 @@
 
   <!-- 新建账号 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerCreatAccount",@on-close="closeDrawerCreatAccount",title="新建账号",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-creat(:refresh="refresh", @refreshData="searchUserData")
+    comp-account-creat(v-if="refresh", @refreshData="searchListData")
 
   <!-- 修改密码 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyPw",@on-close="closeDrawerModifyPw",title="修改密码",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-password-modify(:refresh="refresh",:userCode="userCode", @refreshData="searchUserData")
+    comp-account-password-modify(v-if="refresh",:userCode="userCode", @refreshData="searchListData")
 
   <!-- 修改信息 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyInfo",@on-close="closeDrawerModifyInfo",title="修改信息",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-info-modify(:refresh="refresh",:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode", @refreshData="searchUserData", from="accountMgmt")
+    comp-account-info-modify(v-if="refresh",:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode", @refreshData="searchListData", from="accountMgmt")
 
 </template>
 
@@ -149,7 +149,7 @@ export default {
     }
   },
   methods: {
-    searchUserData () {
+    searchListData () {
       this.drawerModifyPw = false
       this.drawerModifyInfo = false
       this.drawerCreatAccount = false
@@ -201,10 +201,8 @@ export default {
                   vm.$Message.error('用户不存在')
                 } else if (response.data.code === '300') {
                   vm.$Message.error('用户被锁定')
-                } else if (response.data.code === '500') {
-                  vm.$Message.error('参数错误或参数为空')
-                } else if (response.data.code === '900') {
-                  vm.$Message.error('操作失败')
+                } else {
+                  vm.$Message.error('删除失败')
                 }
               }
             }

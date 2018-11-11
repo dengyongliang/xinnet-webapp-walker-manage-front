@@ -5,7 +5,7 @@
     .tR
       span 搜索
       Input(style="width:200px",placeholder="姓名/用户名/邮箱/手机",v-model.trim="searchUserId")
-      Button(type="primary", @click="searchClientData",:loading="loadingBtn") 搜索
+      Button(type="primary", @click="searchListData",:loading="loadingBtn") 搜索
       Button(@click="showDrawerClient('creat')") + 新建账号
 
   .secMain
@@ -20,7 +20,7 @@
   Drawer(:closable="true" width="640" v-model="drawerClientMgmt",:title="drawerTitle",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-client-mgmt(
       :status="status",
-      @refreshData="searchClientData",
+      @refreshData="searchListData",
       v-if="refresh",
       :enterprise = "enterprise",
       :orgCode = "orgCode",
@@ -140,7 +140,7 @@ export default {
     }
   },
   methods: {
-    searchClientData () {
+    searchListData () {
       // 关闭 drawer弹出层
       this.drawerClientMgmt = false
       // 查询数据

@@ -1,15 +1,15 @@
 <template lang="pug">
-  div(:status="leave")
+  div
     .search
       Input(placeholder="企业名称/客户ID",ref="queryInput",v-model="customerCode")
       Button(type="primary",@click="querySubmit",:loading="loadingBtn") 搜索
-    Form(:label-width="150", v-if="refresh && showed")
+    Form(:label-width="150", v-if="showed")
       FormItem(label="企业名称：")
         span.text {{customerName}}
       FormItem(label="客户ID：")
         span.text {{customerId}}
         input(type="hidden",:value="customerId", ref="customerId")
-      comp-input(name='creditMoney',label="信用额度：",:show="refresh",ref="creditMoney",:defaultValue="creditMoney")
+      comp-input(name='creditMoney',label="信用额度：",ref="creditMoney",:defaultValue="creditMoney")
 
       FormItem(label="")
         Button(type="primary",@click="submit",:loading="loadingBtn") 确定
@@ -57,7 +57,13 @@ export default {
             vm.$Message.success('额度修改成功！')
             vm.$emit('refreshData')
           } else {
-            vm.$Message.error('额度修改失败！')
+            if (response.data.code === '100') {
+              vm.$Message.error('客户账号异常')
+            } else if (response.data.code === '400') {
+              vm.$Message.error('结算失败')
+            } else {
+              vm.$Message.error('额度修改失败！')
+            }            
           }
         }
       }
@@ -97,14 +103,6 @@ export default {
     })
   },
   computed: {
-    leave () {
-      if (this.refresh) {
-        this.showed = false
-        return false
-      } else {
-        return false
-      }
-    }
   },
   beforeMount () {
   },

@@ -21,28 +21,22 @@
       span.text(v-if="status==='view' && !modify",slot="left") {{admin}}
 
     FormItem(label="机构代码证：")
-      .demo-upload-list(v-if="status==='view'")
-        img(:src="orgFile")
-        .demo-upload-list-cover
-          Icon(type="ios-eye-outline",@click.native="handleView(orgFile)")
-      Upload(v-show="status==='view' && modify",ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, action="//jsonplaceholder.typicode.com/posts/",)
-        Button(icon="ios-cloud-upload-outline") 重新上传
-
       .demo-upload-list(v-for="item in uploadList")
         template(v-if="item.status === 'finished'")
           img(:src="item.url")
           .demo-upload-list-cover
             Icon(type="ios-eye-outline",@click.native="handleView(item.name)")
-            Icon(type="ios-trash-outline",@click.native="handleRemove(item)")
         template(v-else)
           Progress(v-if="item.showProgress",:percent="item.percentage",hide-info)
-      Upload(ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, action="//jsonplaceholder.typicode.com/posts/", style="display: inline-block;width:58px;vertical-align: top;")
+      Upload(v-show="(status==='view' && modify) || status==='creat'",ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, action="http://localhost:4400/static/data/myUserInfo.js", style="display: inline-block;width:58px;vertical-align: top;")
         div(style="width: 58px;height:58px;line-height: 58px;text-align:center;")
           Icon(type="ios-camera",size="20")
-      span.unit(v-show="status==='creat' || modify") 支持jpg、gif、png格式，2M以内。
+
+      .unit(v-show="status==='creat' || modify") 支持jpg、gif、png格式，2M以内。
       Modal(title="图片预览" v-model="visible",:footer-hide="true")
         img(:src="'https://o5wwk8baw.qnssl.com/' + imgName + '/avatar'",v-if="visible",style="width: 100%")
-      Alert(type="error",show-icon, style="display:inline-block",v-show="file === ''",ref="msgErrorFile") 请上传机构代码证！
+      Alert(type="error",show-icon, v-show="showErrorFile",ref="msgErrorFile") 请上传机构代码证！
+    
     Divider(:dashed='true')
 
     strong.t 联系人信息
@@ -52,7 +46,7 @@
       span.text(v-if="status==='view' && !modify",slot="left") {{mobile}}
     comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email")
       span.text(v-if="status==='view' && !modify",slot="left") {{email}}
-    comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="tel")
+    comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="tel",:required="false")
       span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
       span.unit(v-if="status==='creat' || modify",slot="right") 非必填
 
@@ -134,34 +128,12 @@ export default {
       modify: false,
       loadingBtn: false,
       modify:false,
-      file: '',
+      showErrorFile: false,
       defaultList: [
-        {
-          'name': 'a42bdcc1178e62b4694c830f028db5c0',
-          'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-        },
-        {
-          'name': 'bc7521e033abdd1e92222d733590f104',
-          'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
-        }
       ],
       imgName: '',
       visible: false,
       uploadList: [
-        {
-          'name': 'a42bdcc1178e62b4694c830f028db5c0',
-          'status': 'finished',
-          'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
-          'showProgress': false,
-          'percentage': 50
-        },
-        {
-          'name': 'bc7521e033abdd1e92222d733590f104',
-          'status': 'none',
-          'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
-          'showProgress': true,
-          'percentage': 50
-        }
       ]
     }
   },
@@ -180,18 +152,18 @@ export default {
     },
     handleFormatError (file) {
       this.$Notice.warning({
-        title: 'The file format is incorrect',
-        desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+        title: '文件格式错误',
+        desc: '文件 ' + file.name + ' 格式错误, 请上传jpg、gif、png格式，2M 以内。'
       })
     },
     handleMaxSize (file) {
       this.$Notice.warning({
-        title: 'Exceeding file size limit',
-        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+        title: '文件过大',
+        desc: '文件  ' + file.name + ' 体积大于 2M。'
       })
     },
     handleBeforeUpload () {
-      const check = this.uploadList.length < 5
+      const check = this.uploadList.length < 2
       if (!check) {
         this.$Notice.warning({
           title: 'Up to five pictures can be uploaded.'
@@ -309,10 +281,12 @@ export default {
               vm.$Message.error('用户不存在')
             } else if (response.data.code === '300') {
               vm.$Message.error('用户被锁定')
-            } else if (response.data.code === '500') {
-              vm.$Message.error('参数错误或参数为空')
-            } else if (response.data.code === '900') {
-              vm.$Message.error('操作失败')
+            } else {
+              if (type === 'new') {
+                vm.$Message.error('新建客户失败！')
+              } else {
+                vm.$Message.error('修改客户失败！')
+              }
             }
           }
         }
@@ -333,6 +307,13 @@ export default {
   computed: {
   },
   beforeMount () {
+    if (this.status === 'view') {
+      this.defaultList[0] = {}
+      this.defaultList[0].url = this.orgFile
+    }
+  },
+  mounted () {
+    this.uploadList = this.$refs.upload.fileList
   },
   watch: {
   }
@@ -340,6 +321,7 @@ export default {
 </script>
 
 <style scoped>
+
 .demo-upload-list{
   display: inline-block;
   width: 60px;

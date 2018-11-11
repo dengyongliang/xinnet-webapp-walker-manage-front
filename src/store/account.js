@@ -9,16 +9,16 @@ export default {
   },
   actions: {
     [types.GET_ADMIN_LIST_DATA] ({ commit, rootState }, params) {
-      rest.post(links.GET_ADMIN_LIST_DATA, JSON.stringify(params.param),params.callback)
+      rest.get(links.GET_ADMIN_LIST_DATA, JSON.stringify(params.param),params.callback)
     },
     [types.GET_CLIENT_LIST_DATA] ({ commit, rootState }, params) {
       rest.get(links.GET_CLIENT_LIST_DATA, JSON.stringify(params.param),params.callback)
     },
     [types.CREAT_ADMIN] ({ commit, rootState }, params) {
-      rest.post(links.CREAT_ADMIN, JSON.stringify(params.param),params.callback)
+      rest.get(links.CREAT_ADMIN, JSON.stringify(params.param),params.callback)
     },
     [types.CREAT_AND_MODIFY_CLIENT] ({ commit, rootState }, params) {
-      rest.post(links.CREAT_AND_MODIFY_CLIENT, JSON.stringify(params.param),params.callback)
+      rest.get(links.CREAT_AND_MODIFY_CLIENT, JSON.stringify(params.param),params.callback)
     }
   }
 }

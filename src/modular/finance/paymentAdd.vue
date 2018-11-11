@@ -20,7 +20,7 @@
     comp-payment-add(
       @refreshData="searchListData",
       :on-close="closeDrawer",
-      :refresh = "refresh"
+      v-if = "refresh"
     )
 </template>
 

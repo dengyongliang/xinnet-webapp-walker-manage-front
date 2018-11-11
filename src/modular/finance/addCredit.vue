@@ -19,7 +19,7 @@
     comp-credit-add(
       @refreshData="searchListData",
       :on-close="closeDrawer",
-      :refresh = "refresh",
+      v-if = "refresh",
       :customerName="customerName",
       :customerId="customerId"
     )

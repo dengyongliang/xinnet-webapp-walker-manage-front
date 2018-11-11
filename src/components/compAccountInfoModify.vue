@@ -1,8 +1,8 @@
 <template lang="pug">
   Form(:label-width="150")
-    comp-input(name='userEmail',label="邮箱：",:show="refresh",ref="userEmail",:defaultValue="userEmail")
-    comp-input(name='userName',label="姓名：",:show="refresh",ref="userName",:defaultValue="userName")
-    comp-input(name='userMobile',label="手机：",:show="refresh",ref="userMobile",:defaultValue="userMobile")
+    comp-input(name='userEmail',label="邮箱：",ref="userEmail",:defaultValue="userEmail")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName")
+    comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="userMobile")
     input(type="hidden",:value="userCode",ref="userCode")
     FormItem(label="")
       Button(type="primary",@click="btnModifyInfo",:loading="loadingBtn") 修改
@@ -17,10 +17,6 @@ export default {
     compInput
   },
   props: {
-    refresh: {
-      type: Boolean,
-      default: false
-    },
     userEmail: {
       type: String,
       default: ''
@@ -110,10 +106,8 @@ export default {
               vm.$Message.error('用户不存在')
             } else if (response.data.code === '300') {
               vm.$Message.error('用户被锁定')
-            } else if (response.data.code === '500') {
-              vm.$Message.error('参数错误或参数为空')
-            } else if (response.data.code === '900') {
-              vm.$Message.error('操作失败')
+            } else {
+              vm.$Message.error('用户信息修改失败')
             }
           }
         }

@@ -31,10 +31,6 @@ export default {
     compInput
   },
   props: {
-    refresh: {
-      type: Boolean,
-      default: 'false'
-    }
   },
   data () {
     return {
@@ -110,13 +106,13 @@ export default {
           orderPayType: this.param.orderPayType
         },
         callback: function (response) {
+          vm.loadingBtn = false
           if (response.data.code === '1000'){
-            vm.loadingBtn = false
+            
             vm.$Message.success('录入成功')
             // 添加成功，重新加载列表数据
             vm.$emit('refreshData')
           } else {
-            vm.loadingBtn = false
             if (response.data.code === '100') {
               vm.$Message.error('客户不存在')
             } else if (response.data.code === '200') {
@@ -125,6 +121,8 @@ export default {
               vm.$Message.error('账号异常')
             } else if (response.data.code === '300') {
               vm.$Message.error('结算失败')
+            } else {
+              vm.$Message.error('录入失败')
             }
           }
         }

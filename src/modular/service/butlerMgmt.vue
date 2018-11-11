@@ -5,7 +5,7 @@
     .tR
       span 搜索
       Input(style="width:200px",placeholder="姓名/用户名/邮箱/手机",name="searchUserId",ref="searchUserId",v-model.trim="searchUserId")
-      Button(type="primary", @click="searchUserIdData",:loading="loadingBtn") 查询
+      Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
       Button(@click="showModalAddAccount") + 添加账号
 
   .secMain
@@ -17,11 +17,11 @@
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 
   <!-- 添加账户 弹窗 -->
-  comp-butler-add(ref="accountAdd",:showModal="modalAddAccount",@refreshData="searchUserIdData")
+  comp-butler-add(ref="accountAdd",:showModal="modalAddAccount",@refreshData="searchListData")
 
   <!-- 详情 抽屉 -->
   Drawer(:closable="true",width="640",v-model="drawerDetail",title="管家账号",@on-close="closeDrawerDetail",@on-visible-change="drawerChange",:mask-closable="maskClosable")
-    comp-butler-modify(:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode",:userTel="userTel",:qq="qq",:wx="wx",:refresh="refresh",ref="accountModify",@refreshData="searchUserIdData",)
+    comp-butler-modify(:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode",:userTel="userTel",:qq="qq",:wx="wx",v-if="refresh",ref="accountModify",@refreshData="searchListData",)
 </template>
 
 <script>
@@ -132,7 +132,7 @@ export default {
         pagePages: 1,
         pageItems: 1
       },
-      refresh: true,
+      refresh: false,
       userName: '',
       userMobile: '',
       userEmail: '',
@@ -176,16 +176,14 @@ export default {
                 if( response.data.code === '1000' ){
                   vm.$Message.success('删除成功')
                   // 删除成功，重新加载列表数据
-                  vm.searchUserIdData()
+                  vm.searchListData()
                 } else {
                   if (response.data.code === '200') {
                     vm.$Message.error('用户不存在')
                   } else if (response.data.code === '300') {
                     vm.$Message.error('用户被锁定')
-                  } else if (response.data.code === '500') {
-                    vm.$Message.error('参数错误或参数为空')
-                  } else if (response.data.code === '900') {
-                    vm.$Message.error('操作失败')
+                  } else {
+                    vm.$Message.error('删除失败')
                   }
                 }
               }
@@ -237,7 +235,7 @@ export default {
       }
       return params
     },
-    searchUserIdData () {
+    searchListData () {
       // 关闭 账号详情层
       this.drawerDetail = false
       // 查询数据

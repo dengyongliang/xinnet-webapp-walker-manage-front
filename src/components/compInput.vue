@@ -1,5 +1,5 @@
 <template lang="pug">
-    FormItem(:label="label" :status="leaveInput")
+    FormItem(:label="label")
       slot(name="left")
       Input(
         type="text",
@@ -11,9 +11,10 @@
         @on-focus="onFocus",
         ref="input",
         :maxlength = "maxLength",
-        :value = "defaultValue",
+        v-model = "value",
         :required = "required",
-        :class="{ 'error': showError && show }"
+        :disabled = "disabled",
+        :class="{ 'error': showError }"
       )
       Input(
         type="text",
@@ -25,12 +26,13 @@
         @on-focus="onFocus",
         ref="input",
         :maxlength = "maxLength",
-        :value = "defaultValue",
+        v-model = "value",
         :required = "required",
-        :class="{ 'error': showError && show }"
+        :disabled = "disabled",
+        :class="{ 'error': showError }"
       )
       slot(name="right")
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showError && show",ref="msgError") {{errorText}}
+      Alert(type="error",show-icon, style="display:inline-block",v-show="showError",ref="msgError") {{errorText}}
 </template>
 
 <script>
@@ -39,22 +41,19 @@ export default {
   mixins: [mixinsInput],
   name: 'compInput',
   props: {
-
+    show: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
+      value: ''
     }
   },
   methods: {
   },
   computed: {
-    // 如果输入框不在显示范围，清除错误的相关标注
-    leaveInput () {
-      if (!this.show) {
-        this.showError = false
-        return false
-      }
-    }
   }
 }
 </script>

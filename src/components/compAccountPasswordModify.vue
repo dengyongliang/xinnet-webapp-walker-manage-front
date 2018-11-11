@@ -1,7 +1,7 @@
 <template lang="pug">
   Form(:label-width="150")
-    comp-input(name='oldPassword',label="请输入原密码：",:show="refresh",ref="oldPassword",defaultValue="")
-    comp-re-password(defaultValue="",ref="compRePassword",:show="refresh",label1="请输入新密码：",label2="请重复输入新密码：")
+    comp-input(name='oldPassword',label="原密码：",ref="oldPassword",defaultValue="")
+    comp-re-password(defaultValue="",ref="compRePassword",label1="新密码：",label2="重复新密码：")
     input(type="hidden",:value="userCode",ref="userCode")
     FormItem(label="")
       Button(type="primary",@click="btnModifyPw",:loading="loadingBtn") 修改
@@ -18,10 +18,6 @@ export default {
     compRePassword
   },
   props: {
-    refresh: {
-      type: Boolean,
-      default: false
-    },
     userCode: {
       type: String,
       default: ''
@@ -98,10 +94,8 @@ export default {
               vm.$Message.error('用户被锁定')
             } else if (response.data.code === '400') {
               vm.$Message.error('原始密码错误')
-            } else if (response.data.code === '500') {
-              vm.$Message.error('参数错误或参数为空')
-            } else if (response.data.code === '900') {
-              vm.$Message.error('操作失败')
+            } else {
+              vm.$Message.error('密码修改失败')
             }
           }
         }
