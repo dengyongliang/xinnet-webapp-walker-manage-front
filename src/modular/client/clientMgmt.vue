@@ -19,17 +19,17 @@
   <!-- 添加/修改 账户 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerClientMgmt",:title="drawerTitle",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-client-mgmt(
-      :status="status",
       @refreshData="searchListData",
       v-if="refresh",
+      :status="status",
       :enterprise = "enterprise",
       :orgCode = "orgCode",
+      :id = "id",
       :customerUserId = "customerUserId",
       :accountPeriod = "accountPeriod",
       :creditBalance = "creditBalance",
       :orgFile = "orgFile",
       :open = "open",
-      :admin = "admin",
       :contactor = "contactor",
       :mobile = "mobile",
       :email = "email",
@@ -80,7 +80,19 @@ export default {
         {
           title: '状态',
           key: 'status',
-          className: 'col6'
+          className: 'col6',
+          render: (h, params) => {
+            if (this.clientList[params.index].status === 1) {
+              return h('div', [
+                h('span', {}, '启用')
+              ])
+            }
+            if (this.clientList[params.index].status === 2) {
+              return h('div', [
+                h('span', {}, '停用')
+              ])
+            }
+          }
         },
         {
           title: '操作',
@@ -97,12 +109,12 @@ export default {
                     let param = {
                       enterprise: this.clientList[params.index].name,
                       orgCode: this.clientList[params.index].orgCode,
-                      customerUserId: this.clientList[params.index].customerUserId,
+                      id: this.clientList[params.index].id,
                       accountPeriod: this.clientList[params.index].accountPeriod,
                       creditBalance: this.clientList[params.index].creditBalance,
                       orgFile: this.clientList[params.index].orgFile,
-                      open: this.clientList[params.index].open,
-                      admin: this.clientList[params.index].admin,
+                      open: this.clientList[params.index].status,
+                      customerUserId: this.clientList[params.index].customerUserId,
                       contactor: this.clientList[params.index].contactor,
                       mobile: this.clientList[params.index].mobile,
                       email: this.clientList[params.index].email,
@@ -131,7 +143,7 @@ export default {
       accountPeriod: '',
       creditBalance: '',
       orgFile: '',
-      open: false,
+      open: 2,
       admin: '',
       contactor: '',
       mobile: '',
@@ -159,12 +171,12 @@ export default {
         this.drawerTitle = '新增客户'
         this.enterprise = ''
         this.orgCode = ''
-        this.customerUserId = 0
+        this.id = 0,
+        this.customerUserId = 0,
         this.accountPeriod = ''
         this.creditBalance = ''
         this.orgFile = ''
-        this.open = ''
-        this.admin = ''
+        this.open = 2
         this.contactor = ''
         this.mobile = ''
         this.email = ''
@@ -174,12 +186,12 @@ export default {
         this.drawerTitle = '客户详情'
         this.enterprise = param.enterprise
         this.orgCode = param.orgCode
+        this.id = param.id
         this.customerUserId = param.customerUserId
         this.accountPeriod = param.accountPeriod
         this.creditBalance = param.creditBalance
         this.orgFile = param.orgFile
         this.open = param.open
-        this.admin = param.admin
         this.contactor = param.contactor
         this.mobile = param.mobile
         this.email = param.email

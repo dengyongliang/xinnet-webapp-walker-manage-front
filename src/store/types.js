@@ -19,6 +19,7 @@ export const CREAT_ADMIN = 'creatAdmin'
 export const CREAT_AND_MODIFY_CLIENT = 'creatAndModifyClient'
 export const QUERY_CLIENT = 'queryClient'
 export const QUERY_CLIENT_LIST = 'queryClientList'
+export const QUERY_BUTLER = 'queryButler'
 // 财务管理
 export const GET_BILL_LIST = 'getBillList'
 export const CONFIRM_BILL_CLEAN = 'confirmBillClean'

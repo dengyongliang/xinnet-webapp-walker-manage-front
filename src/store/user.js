@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 export default {
   state: {
@@ -77,26 +77,26 @@ export default {
       })
     },
     [types.SET_USER_PASSWORD] ({ commit, rootState },params) {
-      rest.get(links.SET_USER_PASSWORD, JSON.stringify(params.param),params.callback)
+      rest.post(links.SET_USER_PASSWORD, JSON.stringify(params.param),params.callback)
     },
     [types.SET_USER_INFO] ({ commit, rootState },params) {
       // /manage/user/updateUserInfo
-      rest.get(links.SET_USER_INFO, JSON.stringify(params.param),params.callback)
+      rest.post(links.SET_USER_INFO, JSON.stringify(params.param),params.callback)
     },
     [types.DEL_USER] ({ dispatch, commit, rootState },params) {
-      rest.get(links.DEL_USER, JSON.stringify(params.param),params.callback)
+      rest.post(links.DEL_USER, JSON.stringify(params.param),params.callback)
     },
     [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState },params) {
-      rest.get(links.CREAT_NEW_ACCOUNT, JSON.stringify(params.param),params.callback)
+      rest.post(links.CREAT_NEW_ACCOUNT, JSON.stringify(params.param),params.callback)
     },
     [types.GET_USER_LIST_DATA] ({ commit, rootState }, params) {
-      rest.get(links.GET_USER_LIST_DATA, JSON.stringify(params.param),params.callback)
+      rest.post(links.GET_USER_LIST_DATA, JSON.stringify(params.param),params.callback)
     },
     [types.QUERY_CLIENT] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT, params.param,params.callback)
+      rest.post(links.QUERY_CLIENT, params.param,params.callback)
     },
     [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT_LIST, params.param,params.callback)
+      rest.post(links.QUERY_CLIENT_LIST, params.param,params.callback)
     }
   }
 }

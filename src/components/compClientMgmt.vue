@@ -1,42 +1,31 @@
 <template lang="pug">
   Form(:label-width="150")
     strong.t 基本信息
-    comp-input(name='enterprise',label="企业名称：",:show="status==='creat' || modify",ref="enterprise",:defaultValue="enterprise")
+    comp-input(name='enterprise',label="企业名称：",:show="status==='creat' || modify",ref="enterprise",:defaultValue="enterprise",:maxLength="64")
       span.text(v-if="status==='view' && !modify",slot="left") {{enterprise}}
-    comp-input(name='orgCode',label="机构代码证号：",:show="status==='creat' || modify",ref="orgCode",:defaultValue="orgCode")
+    comp-input(name='orgCode',label="机构代码证号：",:show="status==='creat' || modify",ref="orgCode",:defaultValue="orgCode",:maxLength="30")
       span.text(v-if="status==='view' && !modify",slot="left") {{orgCode}}
     FormItem(label="客户ID：",v-if="status=='view'")
-      input(type="hidden",:value="customerUserId", ref="customerUserId")
-      span.text() {{customerUserId}}
-    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod")
+      input(type="hidden",:value="id", ref="id")
+      span.text() {{id}}
+    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod",:number="true")
       span.text(v-if="status==='view' && !modify",slot="left") {{accountPeriod}}
       span.unit(slot="right") 个月
-    comp-input(name='creditBalance',label="额度：",:show="status==='creat' || modify",ref="creditBalance",:defaultValue="creditBalance")
+    comp-input(name='creditBalance',label="额度：",:show="status==='creat' || modify",ref="creditBalance",:defaultValue="creditBalance",:number="true")
       span.text(v-if="status==='view' && !modify",slot="left") {{creditBalance}}
       span.unit(slot="right") 元
     FormItem(label="状态：",v-if="status=='view'")
-      span.text(v-if="open") 已开启
-      span.text(v-if="!open") 已关闭
-    comp-input(name='admin',label="管家：",:show="status==='creat' || modify",ref="admin",:defaultValue="admin")
-      span.text(v-if="status==='view' && !modify",slot="left") {{admin}}
+      span.text(v-if="open===1") 已开启
+      span.text(v-if="open===2") 已关闭
+    FormItem(label="管家：")
+      span.text(v-show="status==='view' && !modify") {{customerUserId}}
+      comp-select(name="customerUserId",:list="butlerList",ref="customerUserId",v-show="status==='creat' || modify")
+
+      a(href="javascript:;", @click="closeButler",v-show="status==='view'") 停用管家账号
 
     FormItem(label="机构代码证：")
-      .demo-upload-list(v-for="item in uploadList")
-        template(v-if="item.status === 'finished'")
-          img(:src="item.url")
-          .demo-upload-list-cover
-            Icon(type="ios-eye-outline",@click.native="handleView(item.name)")
-        template(v-else)
-          Progress(v-if="item.showProgress",:percent="item.percentage",hide-info)
-      Upload(v-show="(status==='view' && modify) || status==='creat'",ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, action="http://localhost:4400/static/data/myUserInfo.js", style="display: inline-block;width:58px;vertical-align: top;")
-        div(style="width: 58px;height:58px;line-height: 58px;text-align:center;")
-          Icon(type="ios-camera",size="20")
+      comp-img-upload(:modify="modify",name="upfile",:file="orgFile",:status="status",ref="orgFile",errorText="请上传机构代码证！")
 
-      .unit(v-show="status==='creat' || modify") 支持jpg、gif、png格式，2M以内。
-      Modal(title="图片预览" v-model="visible",:footer-hide="true")
-        img(:src="'https://o5wwk8baw.qnssl.com/' + imgName + '/avatar'",v-if="visible",style="width: 100%")
-      Alert(type="error",show-icon, v-show="showErrorFile",ref="msgErrorFile") 请上传机构代码证！
-    
     Divider(:dashed='true')
 
     strong.t 联系人信息
@@ -44,7 +33,7 @@
       span.text(v-if="status==='view' && !modify",slot="left") {{contactor}}
     comp-input(name='userMobile',label="手机：",:show="status==='creat' || modify",ref="mobile",:defaultValue="mobile")
       span.text(v-if="status==='view' && !modify",slot="left") {{mobile}}
-    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email")
+    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email",:maxLength="64")
       span.text(v-if="status==='view' && !modify",slot="left") {{email}}
     comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="tel",:required="false")
       span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
@@ -60,10 +49,14 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
-
+import compImgUpload from './compImgUpload'
+import compSelect from './compSelect'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
-    compInput
+    compInput,
+    compImgUpload,
+    compSelect
   },
   props: {
     refresh: {
@@ -82,6 +75,10 @@ export default {
       type: String,
       default: ''
     },
+    id: {
+      type: Number,
+      default: 0
+    },
     customerUserId: {
       type: Number,
       default: 0
@@ -99,8 +96,8 @@ export default {
       default: ''
     },
     open: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 2
     },
     admin: {
       type: String,
@@ -125,195 +122,115 @@ export default {
   },
   data () {
     return {
+      butlerList: [],
+      customerId: '',
       modify: false,
       loadingBtn: false,
-      modify:false,
-      showErrorFile: false,
-      defaultList: [
-      ],
-      imgName: '',
-      visible: false,
-      uploadList: [
-      ]
+      imgName: ''
     }
   },
   methods: {
-    handleView (name) {
-      this.imgName = name
-      this.visible = true
+    selectChange () {
+
     },
-    handleRemove (file) {
-      const fileList = this.$refs.upload.fileList
-      this.$refs.upload.fileList.splice(fileList.indexOf(file), 1)
-    },
-    handleSuccess (res, file) {
-      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar'
-      file.name = '7eb99afb9d5f317c912f08b5212fd69a'
-    },
-    handleFormatError (file) {
-      this.$Notice.warning({
-        title: '文件格式错误',
-        desc: '文件 ' + file.name + ' 格式错误, 请上传jpg、gif、png格式，2M 以内。'
-      })
-    },
-    handleMaxSize (file) {
-      this.$Notice.warning({
-        title: '文件过大',
-        desc: '文件  ' + file.name + ' 体积大于 2M。'
-      })
-    },
-    handleBeforeUpload () {
-      const check = this.uploadList.length < 2
-      if (!check) {
-        this.$Notice.warning({
-          title: 'Up to five pictures can be uploaded.'
-        })
-      }
-      return check
+    closeButler () {
+
     },
     btnSubmit (type) {
-      let enterprise = this.$refs.enterprise.$refs.input.$refs.input.value
-      let orgCode = this.$refs.orgCode.$refs.input.$refs.input.value
-      
-      let accountPeriod = this.$refs.accountPeriod.$refs.input.$refs.input.value
-      let creditBalance = this.$refs.creditBalance.$refs.input.$refs.input.value
-      let admin = this.$refs.admin.$refs.input.$refs.input.value
-      let orgFile = ''
-      let contactor = this.$refs.contactor.$refs.input.$refs.input.value
-      let mobile = this.$refs.mobile.$refs.input.$refs.input.value
-      let email = this.$refs.email.$refs.input.$refs.input.value
-      let tel = this.$refs.tel.$refs.input.$refs.input.value
-
       this.loadingBtn = true
-      if (enterprise === '') {
-        this.$refs.enterprise.$refs.input.focus()
-        this.$refs.enterprise.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (orgCode === '') {
-        this.$refs.orgCode.$refs.input.focus()
-        this.$refs.orgCode.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
+      let result = validateFormResult([
+        this.$refs.enterprise,
+        this.$refs.orgCode,
+        this.$refs.accountPeriod,
+        this.$refs.creditBalance,
+        this.$refs.customerUserId,
+        this.$refs.orgFile,
+        this.$refs.contactor,
+        this.$refs.mobile,
+        this.$refs.email,
+        this.$refs.tel
+      ])
 
-      if (accountPeriod === '') {
-        this.$refs.accountPeriod.$refs.input.focus()
-        this.$refs.accountPeriod.$refs.input.blur()
+      if (!result) {
         this.loadingBtn = false
-        return false
-      }
-      if (creditBalance === '') {
-        this.$refs.creditBalance.$refs.input.focus()
-        this.$refs.creditBalance.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (admin === '') {
-        this.$refs.admin.$refs.input.focus()
-        this.$refs.admin.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (contactor === '') {
-        this.$refs.contactor.$refs.input.focus()
-        this.$refs.contactor.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (mobile === '') {
-        this.$refs.mobile.$refs.input.focus()
-        this.$refs.mobile.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.IS_PHONE_AVAILABLE(mobile)) {
-        this.$refs.mobile.$refs.input.focus()
-        this.$refs.mobile.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (email === '') {
-        this.$refs.email.$refs.input.focus()
-        this.$refs.email.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.IS_EMAIL_AVAILABLE(email)) {
-        this.$refs.email.$refs.input.focus()
-        this.$refs.email.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (tel === '') {
-        this.$refs.tel.$refs.input.focus()
-        this.$refs.tel.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      let vm = this
-      let params = {
-        param: {
-          name: enterprise,
-          orgCode: orgCode,
-          accountPeriod: accountPeriod,
-          creditBalance: creditBalance,
-          admin: admin,
-          orgFile: '',
-          contactor: contactor,
-          mobile: mobile,
-          email: email,
-          tel: tel
-        },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if( response.data.code === '1000' ){
-            if (type === 'new') {
-              vm.$Message.success('新建客户成功！')
-            } else {
-              vm.$Message.success('修改客户成功！')
-            }
-            // 重置账号列表
-            vm.$emit('refreshData')
-          } else {
-            if (response.data.code === '200') {
-              vm.$Message.error('用户不存在')
-            } else if (response.data.code === '300') {
-              vm.$Message.error('用户被锁定')
-            } else {
+      } else {
+        let vm = this
+        let params = {
+          param: {
+            name: this.$refs.enterprise.value,
+            orgCode: this.$refs.orgCode.value,
+            accountPeriod: this.$refs.accountPeriod.value,
+            creditBalance: this.$refs.creditBalance.value,
+            customerUserId: this.$refs.customerUserId.value,
+            orgFile: this.$refs.orgFile.$refs.upload.fileList[0].url,
+            contactor: this.$refs.contactor.value,
+            mobile: this.$refs.mobile.value,
+            email: this.$refs.email.value,
+            tel: this.$refs.tel.value
+          },
+          callback: function (response) {
+            vm.loadingBtn = false
+            if( response.data.code === '1000' ){
               if (type === 'new') {
-                vm.$Message.error('新建客户失败！')
+                vm.$Message.success('新建客户成功！')
               } else {
-                vm.$Message.error('修改客户失败！')
+                vm.$Message.success('修改客户成功！')
+              }
+              // 重置账号列表
+              vm.$emit('refreshData')
+            } else {
+              if (response.data.code === '200') {
+                vm.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                vm.$Message.error('用户被锁定')
+              } else {
+                if (type === 'new') {
+                  vm.$Message.error('新建客户失败！')
+                } else {
+                  vm.$Message.error('修改客户失败！')
+                }
               }
             }
           }
         }
+        if (type !== 'new') {
+          let customerUserId = this.$refs.customerUserId.value
+          params.param.customerUserId = customerUserId
+        }
+        console.log(params.param)
+        this.creatAndModifyClient(params)
       }
-      if (type !== 'new') {
-        let customerUserId = this.$refs.customerUserId.value
-        params.param.customerUserId = customerUserId
-      }
-      this.creatAndModifyClient(params)
     },
     btnModify () {
       this.modify = true
     },
     ...mapActions({
-      creatAndModifyClient: types.CREAT_AND_MODIFY_CLIENT
+      creatAndModifyClient: types.CREAT_AND_MODIFY_CLIENT,
+      queryButler: types.QUERY_BUTLER
     })
   },
   computed: {
   },
   beforeMount () {
-    if (this.status === 'view') {
-      this.defaultList[0] = {}
-      this.defaultList[0].url = this.orgFile
+    let vm = this
+    let params = {
+      param: {},
+      callback: function (response) {
+        if (response.data.code === '1000'){
+          let data = response.data.data
+          if (data.length > 0) {
+            vm.butlerList = data.map(function (value, index, array) {
+              return {value: value.userCode, label: value.userName}
+            })
+          }
+        } else {
+          vm.$Message.error('客户查询失败')
+        }
+      }
     }
+    this.queryButler(params)
   },
   mounted () {
-    this.uploadList = this.$refs.upload.fileList
   },
   watch: {
   }
@@ -322,40 +239,4 @@ export default {
 
 <style scoped>
 
-.demo-upload-list{
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  line-height: 60px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #fff;
-  position: relative;
-  box-shadow: 0 1px 1px rgba(0,0,0,.2);
-  margin-right: 4px;
-}
-.demo-upload-list img{
-  width: 100%;
-  height: 100%;
-}
-.demo-upload-list-cover{
-  display: none;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,.6);
-}
-.demo-upload-list:hover .demo-upload-list-cover{
-  display: block;
-}
-.demo-upload-list-cover i{
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-  margin: 0 2px;
-}
 </style>

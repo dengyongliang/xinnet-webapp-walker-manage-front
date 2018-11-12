@@ -53,3 +53,9 @@ export const QUERY_ORDER_LIST = api + '/admin-api/manage/order/orderList'
 export const EXPORT_ORDER_LIST = api + '/admin-api/manage/order/exportOrder'
 // 添加录入订单
 export const SUBMIT_ADD_ORDER_ENTRY = api + '/admin-api/manage/order/entryOrder'
+// 查询管家
+export const QUERY_BUTLER = api + "/admin-api/manage/customer/customerUsers"
+// 上传图片
+export const UPLOAD_IMG = api + "/admin-api/manage/customer/uploadfile"
+
+

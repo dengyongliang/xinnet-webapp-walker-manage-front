@@ -52,5 +52,8 @@ export const QUERY_ORDER_LIST = 'http://localhost:4400/static/data/orderList.js'
 export const EXPORT_ORDER_LIST = 'http://localhost:4400/static/data/clientList.js'
 // 添加录入订单
 export const SUBMIT_ADD_ORDER_ENTRY = 'http://localhost:4400/static/data/clientList.js'
-
+// 查询管家
+export const QUERY_BUTLER = "http://localhost:4400/static/data/adminList.js"
+// 上传图片
+export const UPLOAD_IMG = "http://localhost:4400/static/data/adminList.js"
 
