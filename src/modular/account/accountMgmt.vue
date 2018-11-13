@@ -61,13 +61,13 @@ export default {
           key: 'userRoles',
           className: 'col2',
           render: (h, params) => {
-            if (this.userList[params.index].userRoles === null) {
+            if (this.userList[params.index].roles === null) {
               return h('div', [
                 h('span', {}, '-')
               ])
             } else {
               return h('div', [
-                h('span', {}, this.userList[params.index].userRoles)
+                h('span', {}, this.userList[params.index].roles[0].roleName)
               ])
             }
           }
@@ -267,23 +267,6 @@ export default {
 </script>
 
 <style scoped>
-.pageTitle .tR{
-  float:right;
-  font-size:12px;
-}
-.pageTitle .tR input{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  margin-left:10px;
-}
-.pageTitle .tR .xwBtn{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  font-size:12px;
-  margin-left:10px;
-}
 .secMain{
   padding-top:0px;
 }

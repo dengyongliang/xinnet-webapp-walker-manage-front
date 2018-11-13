@@ -47,7 +47,7 @@ export default {
         {
           title: '录款时间',
           key: 'flowTime',
-          className: 'col1'
+          className: 'tdDate'
         },
         {
           title: '企业名称',
@@ -149,23 +149,6 @@ export default {
 </script>
 
 <style scoped>
-.pageTitle .tR{
-  float:right;
-  font-size:12px;
-}
-.pageTitle .tR input{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  margin-left:10px;
-}
-.pageTitle .tR .xwBtn{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  font-size:12px;
-  margin-left:10px;
-}
 .secMain{
   padding-top:0px;
 }

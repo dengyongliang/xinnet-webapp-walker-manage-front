@@ -21,7 +21,7 @@
 
   <!-- 详情 抽屉 -->
   Drawer(:closable="true",width="640",v-model="drawerDetail",title="管家账号",@on-close="closeDrawerDetail",@on-visible-change="drawerChange",:mask-closable="maskClosable")
-    comp-butler-modify(:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode",:userTel="userTel",:qq="qq",:wx="wx",v-if="refresh",ref="accountModify",@refreshData="searchListData",)
+    comp-butler-modify(:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode",:userTel="userTel",:qq="qq",:wx="wx",:status="status",v-if="refresh",ref="accountModify",@refreshData="searchListData",)
 </template>
 
 <script>
@@ -45,7 +45,7 @@ export default {
         },
         {
           title: '管家ID',
-          key: 'id',
+          key: 'userCode',
           className: 'col2'
         },
         {
@@ -63,17 +63,17 @@ export default {
           key: 'status',
           className: 'col5',
           render: (h, params) => {
-            if (this.adminList[params.index].status === 1) {
-              return h('div', [
-                h('span', {}, '已激活')
-              ])
-            }
-            if (this.adminList[params.index].status === 2) {
+            if (this.adminList[params.index].status === 0) {
               return h('div', [
                 h('span', {}, '未激活')
               ])
             }
-            if (this.adminList[params.index].status === 3) {
+            if (this.adminList[params.index].status === 1) {
+              return h('div', [
+                h('span', {}, '已启用')
+              ])
+            }
+            if (this.adminList[params.index].status === 2) {
               return h('div', [
                 h('span', {}, '已停用')
               ])
@@ -85,40 +85,39 @@ export default {
           key: 'operate',
           className: 'operate',
           render: (h, params) => {
-            if (this.adminList[params.index].status === 1) {
-              return h('div', [
-                h('a', {
-                  props: {
-                    href: 'javascript:;'
-                  },
-                  on: {
-                    click: () => {
-                      let param = {
-                        userName: this.adminList[params.index].userName,
-                        userEmail: this.adminList[params.index].userEmail,
-                        userMobile: this.adminList[params.index].userMobile,
-                        userCode: this.adminList[params.index].userCode,
-                        userTel: this.adminList[params.index].userTel,
-                        qq: this.adminList[params.index].qq,
-                        xw: this.adminList[params.index].wx
-                      }
-                      this.showAdminDetail(param)
-                      this.drawerDetail = true
+            return h('div', [
+              h('a', {
+                props: {
+                  href: 'javascript:;'
+                },
+                on: {
+                  click: () => {
+                    let param = {
+                      userName: this.adminList[params.index].userName,
+                      userEmail: this.adminList[params.index].userEmail,
+                      userMobile: this.adminList[params.index].userMobile,
+                      userCode: this.adminList[params.index].userCode,
+                      userTel: this.adminList[params.index].userTel,
+                      qq: this.adminList[params.index].qq,
+                      xw: this.adminList[params.index].wx,
+                      status: this.adminList[params.index].status,
                     }
+                    this.showAdminDetail(param)
+                    this.drawerDetail = true
                   }
-                }, '详情'),
-                h('a', {
-                  props: {
-                    href: 'javascript:;'
-                  },
-                  on: {
-                    click: () => {
-                      this.delAdmin(this.adminList[params.index].customerCount, this.adminList[params.index].userCode)
-                    }
+                }
+              }, '详情'),
+              h('a', {
+                props: {
+                  href: 'javascript:;'
+                },
+                on: {
+                  click: () => {
+                    this.delAdmin(this.adminList[params.index].customerCount, this.adminList[params.index].userCode)
                   }
-                }, '删除账号')
-              ])
-            }
+                }
+              }, '删除账号')
+            ])
           }
         }
       ],
@@ -139,7 +138,8 @@ export default {
       userCode: '',
       userTel: '',
       qq: '',
-      wx: ''
+      wx: '',
+      status: 0
     }
   },
   methods: {
@@ -249,6 +249,7 @@ export default {
       this.userTel = param.userTel
       this.qq = param.qq
       this.wx = param.wx
+      this.status = param.status
     },
     ...mapActions({
       getAdminList: types.GET_ADMIN_LIST_DATA,
@@ -267,21 +268,5 @@ export default {
 </script>
 
 <style scoped>
-.pageTitle .tR{
-  float:right;
-  font-size:12px;
-}
-.pageTitle .tR input{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  margin-left:10px;
-}
-.pageTitle .tR .xwBtn{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  font-size:12px;
-  margin-left:10px;
-}
+
 </style>

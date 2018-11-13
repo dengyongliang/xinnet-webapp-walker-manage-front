@@ -27,8 +27,10 @@ export const GET_ADMIN_LIST_DATA = api + '/admin-api/manage/customer/houseKeeper
 export const GET_CLIENT_LIST_DATA = api + '/admin-api/manage/customer/customerList'
 // 创建管家
 export const CREAT_ADMIN = api + '/admin-api/manage/customer/addKeeper'
-// 创建修改客户信息
-export const CREAT_AND_MODIFY_CLIENT = api + '/admin-api/manage/customer/customerCreate'
+// 创建客户信息
+export const CREAT_CLIENT = api + '/admin-api/manage/customer/customerCreate'
+// 修改客户信息
+export const MODIFY_CLIENT = api + '/admin-api/manage/customer/customerUpdate'
 // 获取账单结算列表
 export const GET_BILL_LIST = api + '/admin-api/manage/finance/customerBillList'
 // 账单结算确认
@@ -57,5 +59,7 @@ export const SUBMIT_ADD_ORDER_ENTRY = api + '/admin-api/manage/order/entryOrder'
 export const QUERY_BUTLER = api + "/admin-api/manage/customer/customerUsers"
 // 上传图片
 export const UPLOAD_IMG = api + "/admin-api/manage/customer/uploadfile"
+// 停/启用客户
+export const SET_CUSTOMER_STATUS = api + "/admin-api/manage/customer/setCustomerStatus"
 
 

@@ -91,19 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.pageTitle .tR{
-  float:right;
-  font-size:12px;
-}
-.pageTitle .tR input{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  margin-left:10px;
-}
-.pageTitle .tR .ivu-btn{
-  margin-left:10px;
-}
 .accountInfo{
   padding:30px 60px;
 }

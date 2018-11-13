@@ -15,13 +15,14 @@
       span.text(v-if="status==='view' && !modify",slot="left") {{creditBalance}}
       span.unit(slot="right") 元
     FormItem(label="状态：",v-if="status=='view'")
-      span.text(v-if="open===1") 已开启
-      span.text(v-if="open===2") 已关闭
+      span.text(v-if="customerStatus===1") 已开启
+      span.text(v-if="customerStatus===2") 已关闭
     FormItem(label="管家：")
-      span.text(v-show="status==='view' && !modify") {{customerUserId}}
-      comp-select(name="customerUserId",:list="butlerList",ref="customerUserId",v-show="status==='creat' || modify")
+      span.text(v-show="status==='view' && !modify") {{userName}}
+      comp-select(name="customerUserId",:list="butlerList",ref="customerUserId",v-show="status==='creat' || modify",:defaultValue="userId")
 
-      a(href="javascript:;", @click="closeButler",v-show="status==='view'") 停用管家账号
+      a(class="stopStartClient",href="javascript:;", @click="closeButler(0)",v-show="status==='view' && customerStatus===1") 停用客户
+      a(class="stopStartClient",href="javascript:;", @click="closeButler(1)",v-show="status==='view' && customerStatus===0") 启用客户
 
     FormItem(label="机构代码证：")
       comp-img-upload(:modify="modify",name="upfile",:file="orgFile",:status="status",ref="orgFile",errorText="请上传机构代码证！")
@@ -79,9 +80,13 @@ export default {
       type: Number,
       default: 0
     },
-    customerUserId: {
-      type: Number,
-      default: 0
+    userId: {
+      type: String,
+      default: ''
+    },
+    userName: {
+      type: String,
+      default: ''
     },
     accountPeriod: {
       type: String,
@@ -98,10 +103,6 @@ export default {
     open: {
       type: Number,
       default: 2
-    },
-    admin: {
-      type: String,
-      default: ''
     },
     contactor: {
       type: String,
@@ -126,15 +127,51 @@ export default {
       customerId: '',
       modify: false,
       loadingBtn: false,
-      imgName: ''
+      imgName: '',
+      customerStatus: 1
     }
   },
   methods: {
     selectChange () {
 
     },
-    closeButler () {
+    closeButler (status) {
+      let vm = this
+      let params = {
+        param: {
+          code: this.id,
+          status: status
+        },
+        callback: function (response) {
+          vm.$Modal.remove()
+          if( response.data.code === '1000' ){
+            if (status === 0) {
+              vm.customerStatus = 0
+              vm.$Message.success('停用成功')
+            } else {
+              vm.customerStatus = 1
+              vm.$Message.success('启用成功')
+            }
+          } else {
+            if (status === 0) {
+              vm.$Message.error('停用失败')
+            } else {
+              vm.$Message.error('启用失败')
+            }
+          }
+        }
+      }
 
+      this.$Modal.confirm({
+        title: '确认',
+        content: (status === 0 ? '确认是否要停用该客户？' : '确认是否要启用该客户？'),
+        loading: true,
+        onOk: () => {
+          this.setCustomerStatus(params)
+        },
+        onCancel: () => {
+        }
+      })
     },
     btnSubmit (type) {
       this.loadingBtn = true
@@ -162,7 +199,7 @@ export default {
             accountPeriod: this.$refs.accountPeriod.value,
             creditBalance: this.$refs.creditBalance.value,
             customerUserId: this.$refs.customerUserId.value,
-            orgFile: this.$refs.orgFile.$refs.upload.fileList[0].url,
+            orgFile: this.$refs.orgFile.$refs.upload.fileList[0].file,
             contactor: this.$refs.contactor.value,
             mobile: this.$refs.mobile.value,
             email: this.$refs.email.value,
@@ -194,24 +231,28 @@ export default {
           }
         }
         if (type !== 'new') {
-          let customerUserId = this.$refs.customerUserId.value
-          params.param.customerUserId = customerUserId
+          let id = this.$refs.id.value
+          params.param.code = id
+          this.modifyClient(params)
+        } else {
+          this.creatClient(params)
         }
-        console.log(params.param)
-        this.creatAndModifyClient(params)
       }
     },
     btnModify () {
       this.modify = true
     },
     ...mapActions({
-      creatAndModifyClient: types.CREAT_AND_MODIFY_CLIENT,
-      queryButler: types.QUERY_BUTLER
+      creatClient: types.CREAT_CLIENT,
+      modifyClient: types.MODIFY_CLIENT,
+      queryButler: types.QUERY_BUTLER,
+      setCustomerStatus: types.SET_CUSTOMER_STATUS
     })
   },
   computed: {
   },
   beforeMount () {
+    this.customerStatus = this.open
     let vm = this
     let params = {
       param: {},
@@ -220,7 +261,7 @@ export default {
           let data = response.data.data
           if (data.length > 0) {
             vm.butlerList = data.map(function (value, index, array) {
-              return {value: value.userCode, label: value.userName}
+              return {value: value.id, label: value.userName}
             })
           }
         } else {
@@ -238,5 +279,9 @@ export default {
 </script>
 
 <style scoped>
-
+.stopStartClient{
+  color:#2d8cf0;
+  display:inline-block;
+  margin-left:10px;
+}
 </style>

@@ -26,8 +26,10 @@ export const GET_ADMIN_LIST_DATA = 'http://localhost:4400/static/data/adminList.
 export const GET_CLIENT_LIST_DATA = 'http://localhost:4400/static/data/clientList.js'
 // 创建管家
 export const CREAT_ADMIN = 'http://localhost:4400/static/data/clientList.js'
-// 创建修改客户信息
-export const CREAT_AND_MODIFY_CLIENT = 'http://localhost:4400/static/data/clientList.js'
+// 创建客户信息
+export const CREAT_CLIENT = 'http://localhost:4400/static/data/clientList.js'
+// 修改客户信息
+export const MODIFY_CLIENT = 'http://localhost:4400/static/data/clientList.js'
 // 获取账单结算列表
 export const GET_BILL_LIST = 'http://localhost:4400/static/data/customerBillList.js'
 // 账单结算确认
@@ -56,4 +58,5 @@ export const SUBMIT_ADD_ORDER_ENTRY = 'http://localhost:4400/static/data/clientL
 export const QUERY_BUTLER = "http://localhost:4400/static/data/adminList.js"
 // 上传图片
 export const UPLOAD_IMG = "http://localhost:4400/static/data/adminList.js"
-
+// 停/启用客户
+export const SET_CUSTOMER_STATUS = "http://localhost:4400/static/data/adminList.js"

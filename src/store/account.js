@@ -17,11 +17,17 @@ export default {
     [types.CREAT_ADMIN] ({ commit, rootState }, params) {
       rest.post(links.CREAT_ADMIN, JSON.stringify(params.param),params.callback)
     },
-    [types.CREAT_AND_MODIFY_CLIENT] ({ commit, rootState }, params) {
-      rest.post(links.CREAT_AND_MODIFY_CLIENT, JSON.stringify(params.param),params.callback)
+    [types.CREAT_CLIENT] ({ commit, rootState }, params) {
+      rest.post(links.CREAT_CLIENT, JSON.stringify(params.param),params.callback)
+    },
+    [types.MODIFY_CLIENT] ({ commit, rootState }, params) {
+      rest.post(links.MODIFY_CLIENT, JSON.stringify(params.param),params.callback)
     },
     [types.QUERY_BUTLER] ({ commit, rootState }, params) {
       rest.post(links.QUERY_BUTLER, JSON.stringify(params.param),params.callback)
+    },
+    [types.SET_CUSTOMER_STATUS] ({ commit, rootState }, params) {
+      rest.post(links.SET_CUSTOMER_STATUS, JSON.stringify(params.param),params.callback)
     }
   }
 }

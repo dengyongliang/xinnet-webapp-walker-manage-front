@@ -7,6 +7,7 @@
     "list": [
       {
         "id": 3,
+        "userCode": "user_housetest1",
         "code": "customer_9b90abc5166741ff8720e1c9e52ff064",
         "name": "新网",
         "orgCode": "xinnet",
@@ -21,6 +22,7 @@
         "customerUserName": null
        }, {
         "id": 4,
+        "userCode": "user_housetest2",
         "code": "customer_5a0fa34353ea4715b24d8f843f477651",
         "name": "新网",
         "orgCode": "xinnet",
@@ -35,6 +37,7 @@
         "customerUserName": null
        }, {
         "id": 5,
+        "userCode": "user_housetest3",
         "code": "customer_c8f28105d0f34acb96334c8e18be0b07",
         "name": "新网1",
         "orgCode": "15848555556",

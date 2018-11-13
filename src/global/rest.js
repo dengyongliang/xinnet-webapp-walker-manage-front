@@ -25,16 +25,24 @@ axios.interceptors.response.use(response => {
   // 参数错误
   if (response.data.code === '500') {
     emitter.emit('paramError')
+    return false
   } else if (response.data.code === '900') {
     emitter.emit('requestError')
+    return false
+  } else {
+    return response
   }
-  return response
 }, err => {
   if (err && err.response) {
     switch (err.response.status) {
       case 403:
         // err.message = '权限错误'
         emitter.emit('noPermission')
+        break
+      case 404:
+        // 火狐浏览器不返回511，返回404
+        // err.message = '登录失效'
+        emitter.emit('noLogin')
         break
       case 511:
         // err.message = '登录失效'

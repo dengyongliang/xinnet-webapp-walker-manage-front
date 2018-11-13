@@ -4,7 +4,7 @@
       template(v-if="item.status === 'finished'")
         img(:src="item.url")
         .demo-upload-list-cover
-          Icon(type="ios-eye-outline",@click.native="handleView(item.name)")
+          Icon(type="ios-eye-outline",@click.native="handleView(item.url)")
       template(v-else)
         Progress(v-if="item.showProgress",:percent="item.percentage",hide-info)
     Upload(v-show="(status==='view' && modify) || status==='creat'",ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="2048", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, :action="uploadAction",:name="name", style="display: inline-block;width:58px;vertical-align: top;")
@@ -14,7 +14,7 @@
 
     .unit(v-show="status==='creat' || modify") 支持jpg、gif、png格式，2M以内。
     Modal(title="图片预览" v-model="visible",:footer-hide="true")
-      img(:src="'https://o5wwk8baw.qnssl.com/' + imgName + '/avatar'",v-if="visible",style="width: 100%")
+      img(:src="imgName",v-if="visible",style="width: 100%")
     Alert(type="error",show-icon, v-show="showError",ref="msgErrorFile") {{errorText}}
 </template>
 
@@ -74,8 +74,9 @@ export default {
       console.log(res)
       console.log(file)
       console.log(fileList)
-      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar'
-      file.name = '7eb99afb9d5f317c912f08b5212fd69a'
+      file.url = res.url
+      file.name = res.name
+      file.file = res.file
     },
     handleFormatError (file) {
       this.$Notice.warning({

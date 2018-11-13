@@ -1,9 +1,7 @@
 <template lang="pug">
   div(style="display:inline-block")
-    slot(name="left")
-    Select(v-model="value",style="width:240px",:name="name",@on-change="selectChange")
-      Option(v-for="item in list",:value="item.value") {{ item.label }}
-    slot(name="right")
+    RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
+      Radio(v-for="item in list",:label="item.label") {{item.value}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
@@ -19,17 +17,13 @@ export default {
       type: String,
       default: ''
     },
-    show: {
-      type: Boolean,
-      default: true
-    },
     list: {
       type: Array,
       default: []
     },
     type: {
       type: String,
-      default: 'select'
+      default: 'radio'
     },
     defaultValue: {
       type: String,
@@ -40,23 +34,24 @@ export default {
     return {
       value: '',
       showError: false,
-      errorText: '请选择'+ this.label +'！'
+      errorText: '请选择' + this.label + "！"
     }
   },
   methods: {
     showValidateResult (v) {
       this.showError = true
     },
-    selectChange () {
+    onChange () {
       this.showError = false
     }
   },
   beforeMount () {
-  },
-  mounted () {
     if (this.defaultValue !== '') {
       this.value = this.defaultValue
     }
+  },
+  mounted () {
+
   },
   computed: {
   }

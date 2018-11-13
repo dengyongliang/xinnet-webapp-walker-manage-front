@@ -3,7 +3,7 @@
   <!-- 标题区 -->
   h1.pageTitle.clear 订单管理
   .secFilter
-    form.filterWrap
+    form.filterWrap(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
       table
         tr.row1
           td.td1
@@ -53,11 +53,14 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
+import * as links from '@/global/linkdo.js'
+// import * as links from '@/global/linkdo_json.js'
 export default {
   components: {
   },
   data () {
     return {
+      exportLink: links.EXPORT_ORDER_LIST,
       searchUserId: '',
       time: '',
       param: {
@@ -273,22 +276,23 @@ export default {
       this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
     },
     exportOrder () {
-      let params = {
-        param: {
-          createTimeBegin: this.param.createTime[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[0]) : '',
-          createTimeEnd: this.param.createTime[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[1]) : '',
-          orderGoodsInfo: this.param.orderGoodsInfo,
-          orderGoodsType: this.param.orderGoodsType,
-          orderMode: this.param.orderMode,
-          orderPayType: this.param.orderPayType,
-          orderType: this.param.orderType
-        },
-        callback: function (response) {
+      // let params = {
+      //  param: {
+      //    createTimeBegin: this.param.createTime[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[0]) : '',
+      //    createTimeEnd: this.param.createTime[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[1]) : '',
+      //    orderGoodsInfo: this.param.orderGoodsInfo,
+      //    orderGoodsType: this.param.orderGoodsType,
+      //    orderMode: this.param.orderMode,
+      //    orderPayType: this.param.orderPayType,
+      //    orderType: this.param.orderType
+      //   },
+      //  callback: function (response) {
 
-        }
-      }
+      //  }
+      // }
       // 导出
-      this.exportOrderList(params)
+      // this.exportOrderList(params)
+      this.$refs.exportForm.submit()
     },
     queryOrderListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -338,23 +342,6 @@ export default {
 </script>
 
 <style scoped>
-.pageTitle .tR{
-  float:right;
-  font-size:12px;
-}
-.pageTitle .tR input{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  margin-left:10px;
-}
-.pageTitle .tR .xwBtn{
-  height:32px;
-  line-height:32px;
-  min-height:32px;
-  font-size:12px;
-  margin-left:10px;
-}
 .secMain{
   padding-top:0px;
 }

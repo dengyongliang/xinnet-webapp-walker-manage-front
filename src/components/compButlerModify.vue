@@ -3,14 +3,21 @@
     FormItem(label="账号ID：")
       span.text {{userCode}}
       input(type="hidden",:value="userCode",ref="userCode")
-    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",)
-    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",)
-    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile",)
-    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="userTel",)
-    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq",)
-    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="wx",)
-    FormItem(label="")
-      Button(type="primary",@click="btnSaveDetail",:loading="loadingBtn") 确定
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",:show="modify")
+      span.text(v-if="!modify",slot="left") {{userName}}
+    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="modify")
+      span.text(v-if="!modify",slot="left") {{userEmail}}
+    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile",:show="modify")
+      span.text(v-if="!modify",slot="left") {{userMobile}}
+    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="userTel",:show="modify")
+      span.text(v-if="!modify",slot="left") {{tel}}
+    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq",:show="modify")
+      span.text(v-if="!modify",slot="left") {{qq}}
+    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="wx",:show="modify")
+      span.text(v-if="!modify",slot="left") {{wx}}
+    FormItem(label="",v-if="status!==0")
+      Button(type="primary",@click="btnModify",v-if="!modify") 修改
+      Button(type="primary",@click="btnSaveDetail",:loading="loadingBtn",v-if="modify") 确定
 </template>
 
 <script>
@@ -49,14 +56,22 @@ export default {
     wx: {
       type: String,
       required: false
+    },
+    status: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
-      loadingBtn: false
+      loadingBtn: false,
+      modify: false
     }
   },
   methods: {
+    btnModify () {
+      this.modify = true
+    },
     btnSaveDetail () {
       let emailV = this.$refs.userEmail.$refs.input.$refs.input._value
       let mobileV = this.$refs.userMobile.$refs.input.$refs.input._value

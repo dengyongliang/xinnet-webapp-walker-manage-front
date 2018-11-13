@@ -43,6 +43,13 @@ export default function validateFormResult (validateArray) {
         flag = false
         break
       }
+    } else if (v.type === 'radio') {
+      let value = v.value
+      if (!value.length) {
+        v.showValidateResult()
+        flag = false
+        break
+      }
     }
   }
   return flag
