@@ -1,5 +1,5 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+/* es6-shim,es6-promise ie兼容需要 */
+import 'es6-shim'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -10,7 +10,7 @@ import directives from './directives'
 import iView from 'iview'
 // 自定义方法及变量
 import GLOBAL from './global/global'
-// axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8'
+require('es6-promise').polyfill()
 
 Vue.prototype.GLOBALS = GLOBAL
 // Vue.prototype.$ajax = axios
