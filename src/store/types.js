@@ -22,6 +22,7 @@ export const QUERY_CLIENT = 'queryClient'
 export const QUERY_CLIENT_LIST = 'queryClientList'
 export const QUERY_BUTLER = 'queryButler'
 export const SET_CUSTOMER_STATUS = 'setCustomerStatus'
+export const QUERY_COMPANYS = 'queryCompanys'
 // 财务管理
 export const GET_BILL_LIST = 'getBillList'
 export const CONFIRM_BILL_CLEAN = 'confirmBillClean'
@@ -35,3 +36,6 @@ export const SUBMIT_ADD_CREDIT = 'submitAddCredit'
 export const QUERY_ORDER_LIST = 'queryOrderList'
 export const EXPORT_ORDER_LIST = 'exportOrderList'
 export const SUBMIT_ADD_ORDER_ENTRY = 'submitAddOrderEntry'
+
+// 域名预算报告-管理
+export const QUERY_BUDGET_REPORT_MANAGE = 'queryBudgetReportManage'

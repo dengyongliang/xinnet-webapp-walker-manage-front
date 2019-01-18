@@ -1,9 +1,12 @@
 <template lang="pug">
   Form(:label-width="150")
-    comp-input(name='userEmail',label="邮箱：",ref="userEmail",:defaultValue="userEmail")
-    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName")
-    comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="userMobile")
-    input(type="hidden",:value="userCode",ref="userCode")
+    comp-input(name='userEmail',label="邮箱：",ref="userEmail",:defaultValue="detailData.userEmail")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="detailData.userName")
+    comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="detailData.userMobile")
+    FormItem(label="角色：")
+      RadioGroup(v-model="roleId",@on-change="onChange",ref="roleId")
+        Radio(v-for="item in rolesList",:label="item.id") {{item.roleName}}
+    input(type="hidden",:value="detailData.userCode",ref="userCode")
     FormItem(label="")
       Button(type="primary",@click="btnModifyInfo",:loading="loadingBtn") 修改
 </template>
@@ -17,21 +20,13 @@ export default {
     compInput
   },
   props: {
-    userEmail: {
-      type: String,
-      default: ''
-    },
-    userName: {
-      type: String,
-      default: ''
-    },
-    userMobile: {
-      type: String,
-      default: ''
-    },
-    userCode: {
-      type: String,
-      default: ''
+    detailData: {
+      type: Object,
+      default: function () {
+        return {
+          data: []
+        }
+      }
     },
     from: {
       type: String,
@@ -40,16 +35,17 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false
+      loadingBtn: false,
+      roleId: ''
     }
   },
   methods: {
     btnModifyInfo () {
       this.loadingBtn = true
       console.log(this.$refs)
-      let userName = this.$refs.userName.$refs.input.$refs.input.value
-      let userEmail = this.$refs.userEmail.$refs.input.$refs.input.value
-      let userMobile = this.$refs.userMobile.$refs.input.$refs.input.value
+      let userName = this.$refs.userName.value
+      let userEmail = this.$refs.userEmail.value
+      let userMobile = this.$refs.userMobile.value
       let userCode = this.$refs.userCode.value
 
       if (userEmail === '') {
@@ -89,25 +85,28 @@ export default {
           userName: userName,
           userMobile: userMobile,
           userEmail: userEmail,
-          userCode: userCode
+          userCode: userCode,
+          roleId: this.roleId
         },
-        callback: function (response) {
-          vm.loadingBtn = false
+        callback: (response) => {
+          this.loadingBtn = false
           if (response.data.code === '1000') {
-            vm.$Message.success('用户信息修改成功')
+            this.$Message.success('用户信息修改成功')
             // 重置store用户信息
-            if (vm.from === "accountMy") {
+            if (this.from === "accountMy") {
               // vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
             } else {
-              vm.$emit('refreshData')
+              this.$emit('refreshData')
             }
           } else {
             if (response.data.code === '200') {
-              vm.$Message.error('用户不存在')
+              this.$Message.error('用户不存在')
             } else if (response.data.code === '300') {
-              vm.$Message.error('用户被锁定')
-            } else {
-              vm.$Message.error('用户信息修改失败')
+              this.$Message.error('用户被锁定')
+            } else if (response.data.code === '400') {
+              this.$Message.error('手机号码已存在')
+            } else if (response.data.code === '600') {
+              this.$Message.error('角色不存在')
             }
           }
         }
@@ -122,10 +121,16 @@ export default {
     ...mapState({
       myUserInfo (state) {
         return state.user.myUserInfo
+      },
+      rolesList (state) {
+        return state.user.rolesList
       }
     })
   },
   beforeMount () {
+  },
+  mounted () {
+    this.roleId = this.detailData.roleId
   }
 }
 </script>

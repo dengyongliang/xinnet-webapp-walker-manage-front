@@ -119,7 +119,7 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          customerCode:obj.userId
         },
         callback: function(response){
           vm.loadingBtn = false

@@ -52,6 +52,8 @@
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_houseKeepers")>=0')
         router-link(to="/service/butler") 管家管理
       li.menuItem.lv2
+        router-link(to="/service/budget") 提交预算报告
+      li.menuItem.lv2
         router-link(to="/service/worklist") 工单管理
 </template>
 <script>

@@ -54,8 +54,8 @@ export default {
   },
   methods: {
     showValidateResult (v) {
-      this.showError = true
       this.errorText = v.text
+      this.showError = true
     },
     onFocus (e) {
       this.errorText = '',

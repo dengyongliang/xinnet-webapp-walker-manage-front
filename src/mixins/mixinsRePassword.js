@@ -77,7 +77,7 @@ export default {
       let val = e.target.value
       let name = e.target.name
       console.log(val)
-      if (val === '' && this.required) {
+      if (val === '') {
         if (name === 'password') {
           this.showPasswordError = true
           this.errorTextPassword = '请输入密码！'

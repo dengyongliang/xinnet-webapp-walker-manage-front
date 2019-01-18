@@ -5,6 +5,7 @@ import user from './user.js'
 import account from './account.js'
 import finance from './finance.js'
 import order from './order.js'
+import service from './service.js'
 import rest from '../global/rest.js'
 import * as links from '../global/linkdo.js'
 // import * as links from '../global/linkdo_json.js'
@@ -39,7 +40,8 @@ export default function makeStore () {
       user,
       account,
       finance,
-      order
+      order,
+      service
     }
   })
 }

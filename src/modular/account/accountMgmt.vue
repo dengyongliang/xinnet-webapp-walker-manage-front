@@ -25,7 +25,12 @@
 
   <!-- 修改信息 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyInfo",@on-close="closeDrawerModifyInfo",title="修改信息",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-info-modify(v-if="refresh",:userName="userName",:userMobile="userMobile",:userEmail="userEmail",:userCode="userCode", @refreshData="searchListData", from="accountMgmt")
+    comp-account-info-modify(
+      v-if="refresh",
+      :detailData="detailData",
+      @refreshData="searchListData",
+      from="accountMgmt"
+    )
 
 </template>
 
@@ -95,13 +100,13 @@ export default {
                   },
                   on: {
                     click: () => {
-                      let param = {
+                      this.detailData = {
                         userName: this.userList[params.index].userName,
                         userEmail: this.userList[params.index].userEmail,
                         userMobile: this.userList[params.index].userMobile,
-                        userCode: this.userList[params.index].userCode
+                        userCode: this.userList[params.index].userCode,
+                        roleId: this.userList[params.index].roles[0].id
                       }
-                      this.showModifyAccount(param)
                       this.drawerModifyInfo = true
                     }
                   }
@@ -167,13 +172,6 @@ export default {
       }
     },
     showModifyPw (param) {
-      this.userCode = param.userCode
-    },
-    showModifyAccount (param) {
-      // 重置表单数据
-      this.userName = param.userName
-      this.userMobile = param.userMobile
-      this.userEmail = param.userEmail
       this.userCode = param.userCode
     },
     showDelAccount (userCode) {

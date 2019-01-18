@@ -1,96 +1,64 @@
 <template lang="pug">
 .contButlerMgmt
   <!-- 标题区 -->
-  h1.pageTitle.clear 管家账户
+  h1.pageTitle.clear 提交预算报告
     .tR
       span 搜索
-      Input(style="width:200px",placeholder="姓名/用户名/邮箱/手机",name="searchUserId",ref="searchUserId",v-model.trim="searchUserId")
+      Input(style="width:200px",placeholder="企业名称/客户ID",name="searchValue",ref="searchValue",v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-      Button(@click="showModalAddAccount") + 添加账号
+      Button(@click="") + 创建报告
 
   .secMain
     <!-- 列表主体 -->
     .secTable
-      <Table :columns="columns" :data="adminList" :loading="loadingTable"></Table>
+      <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 
-  <!-- 添加账户 弹窗 -->
-  comp-butler-add(ref="accountAdd",:showModal="modalAddAccount",@refreshData="searchListData")
-
-  <!-- 详情 抽屉 -->
-  Drawer(:closable="true",width="640",v-model="drawerDetail",title="管家账号",@on-close="closeDrawerDetail",@on-visible-change="drawerChange",:mask-closable="maskClosable")
-    comp-butler-modify(
-      :detailData="detailData",
-      :userName="userName",
-      :userMobile="userMobile",
-      :userEmail="userEmail",
-      :userCode="userCode",
-      :userTel="userTel",
-      :qq="qq",
-      :wx="wx",
-      :status="status",
-      v-if="refresh",
-      ref="accountModify",
-      @refreshData="searchListData",
+  <!-- 预算报告 抽屉 -->
+  Drawer(:closable="true",width="640",v-model="drawerCreatBudgetReport",title="预算报告",@on-close="closeDrawer",@on-visible-change="drawerChange",:mask-closable="maskClosable")
+    comp-creat-budget-report(
+      v-if="drawerCreatBudgetReport",
+      @refreshData="searchListData"
     )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
-import compButlerModify from '@/components/compButlerModify'
-import compButlerAdd from '@/components/compButlerAdd'
+import compCreatBudgetReport from '@/components/compCreatBudgetReport'
 export default {
   components: {
-    compButlerModify,
-    compButlerAdd
+    compCreatBudgetReport
   },
   data () {
     return {
-      searchUserId: '',
+      value: '',
+      refresh: false,
       columns: [
         {
-          title: '姓名',
-          key: 'userName',
+          title: '创建时间',
+          key: 'createTime',
           className: 'col1'
         },
         {
-          title: '管家ID',
-          key: 'userCode',
+          title: '企业名称',
+          key: 'companyName',
           className: 'col2'
         },
         {
-          title: '邮箱',
-          key: 'userEmail',
+          title: '客户ID',
+          key: 'customerId',
           className: 'col3'
         },
         {
-          title: '手机号码',
-          key: 'userMobile',
-          className: 'col4'
-        },
-        {
-          title: '状态',
-          key: 'status',
+          title: '预算周期',
           className: 'col5',
           render: (h, params) => {
-            if (this.adminList[params.index].status === 0) {
-              return h('div', [
-                h('span', {}, '未激活')
-              ])
-            }
-            if (this.adminList[params.index].status === 1) {
-              return h('div', [
-                h('span', {}, '已启用')
-              ])
-            }
-            if (this.adminList[params.index].status === 2) {
-              return h('div', [
-                h('span', {}, '已停用')
-              ])
-            }
+            return h('div', [
+              h('span', {}, `${this.list[params.index].budgetCycleStart}至${this.list[params.index].budgetCycleStart}`)
+            ])
           }
         },
         {
@@ -105,21 +73,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.detailData = {
-                      userName: this.adminList[params.index].userName,
-                      userEmail: this.adminList[params.index].userEmail,
-                      userMobile: this.adminList[params.index].userMobile,
-                      userCode: this.adminList[params.index].userCode,
-                      userTel: this.adminList[params.index].userTel,
-                      qq: this.adminList[params.index].qq,
-                      wx: this.adminList[params.index].wx,
-                      status: this.adminList[params.index].status
-                    }
-                    // this.showAdminDetail(param)
-                    this.drawerDetail = true
+
                   }
                 }
-              }, '详情'),
+              }, '修改'),
               h('a', {
                 props: {
                   href: 'javascript:;'
@@ -129,32 +86,25 @@ export default {
                     this.delAdmin(this.adminList[params.index].customerCount, this.adminList[params.index].userCode)
                   }
                 }
-              }, '删除账号')
+              }, '删除')
             ])
           }
         }
       ],
-      adminList: [],
-      modalAddAccount: false,
+      list: [],
+      drawerCreatBudgetReport: true,
       loadingBtn: false,
       loadingTable: true,
-      drawerDetail: false,
       page: {
         pageNo: 1,
         pagePages: 1,
         pageItems: 1
-      },
-      refresh: false,
-      detailData: {}
+      }
     }
   },
   methods: {
-    showModalAddAccount () {
-      // 触发数据变动，驱使弹层显示
-      this.modalAddAccount = false
-      setTimeout(() => {
-        this.modalAddAccount = true
-      },100)
+    closeDrawer () {
+
     },
     delAdmin (customerNum, userCode) {
       if (customerNum) {
@@ -203,7 +153,7 @@ export default {
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getAdminList(this.getAdminListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.getList(this.getListParam({pageNum: curPage,userId: this.searchUserId}))
     },
     closeDrawerDetail () {
     },
@@ -214,7 +164,7 @@ export default {
         this.refresh = false
       }
     },
-    getAdminListParam (obj) {
+    getListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
@@ -230,7 +180,7 @@ export default {
           vm.loadingTable = false
           // console.log(response)
           if (response.data.code === '1000'){
-            vm.adminList = response.data.data.list
+            vm.list = response.data.data.list
             vm.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
@@ -245,10 +195,10 @@ export default {
       // 关闭 账号详情层
       this.drawerDetail = false
       // 查询数据
-      this.getAdminList(this.getAdminListParam({pageNum: 1,userId: this.searchUserId}))
+      this.getList(this.getListParam({pageNum: 1,userId: this.searchUserId}))
     },
     ...mapActions({
-      getAdminList: types.GET_ADMIN_LIST_DATA,
+      getList: types.QUERY_BUDGET_REPORT_MANAGE,
       delUser: types.DEL_USER
     })
   },
@@ -258,7 +208,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getAdminList(this.getAdminListParam({pageNum: 1,userId: this.searchUserId}))
+    this.getList(this.getListParam({pageNum: 1,userId: this.searchUserId}))
   }
 }
 </script>

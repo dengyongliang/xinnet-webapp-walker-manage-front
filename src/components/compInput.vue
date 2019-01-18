@@ -6,7 +6,7 @@
         v-if="type === 'text' && show",
         :name="name",
         :placeholder="placeholder",
-        style="width:240px",
+        :style="styles",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="input",
@@ -22,7 +22,7 @@
         v-if="type === 'password' && show",
         :name="name",
         :placeholder="placeholder",
-        style="width:240px",
+        :style="styles",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="input",
@@ -46,6 +46,10 @@ export default {
     show: {
       type: Boolean,
       default: true
+    },
+    styles: {
+      type: String,
+      default: 'width: 240px'
     }
   },
   data () {

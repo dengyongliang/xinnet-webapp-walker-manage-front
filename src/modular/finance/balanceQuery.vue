@@ -35,7 +35,7 @@ export default {
         },
         {
           title: '客户ID',
-          key: 'id',
+          key: 'code',
           className: 'col2'
         },
         {
@@ -100,7 +100,7 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          customerCode:obj.userId
         },
         callback: function(response){
           vm.loadingBtn = false

@@ -158,6 +158,16 @@ const RouterMain = new Router({
           }
         },
         {
+          path: 'service/budget',
+          name: 'BUTLER_MGMT',
+          component (resolve) {
+            return require(['@/modular/service/budget'], resolve)
+          },
+          meta: {
+            title: '提交预算报告'
+          }
+        },
+        {
           path: 'service/worklist',
           name: 'WORK_LIST',
           component (resolve) {

@@ -11,8 +11,8 @@
     comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod",:number="true")
       span.text(v-if="status==='view' && !modify",slot="left") {{accountPeriod}}
       span.unit(slot="right") 个月
-    comp-input(name='creditBalance',label="额度：",:show="status==='creat' || modify",ref="creditBalance",:defaultValue="creditBalance",:number="true")
-      span.text(v-if="status==='view' && !modify",slot="left") {{creditBalance}}
+    comp-input(name='creditBalance',label="额度：",:show="status==='creat'",ref="creditBalance",:defaultValue="creditBalance",:number="true")
+      span.text(v-if="status==='view'",slot="left") {{creditBalance}}
       span.unit(slot="right") 元
     FormItem(label="状态：",v-if="status=='view'")
       span.text(v-if="customerStatus===1") 已开启
@@ -205,26 +205,29 @@ export default {
             email: this.$refs.email.value,
             tel: this.$refs.tel.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
+          callback: (response) => {
+            this.loadingBtn = false
             if( response.data.code === '1000' ){
               if (type === 'new') {
-                vm.$Message.success('新建客户成功！')
+                this.$Message.success('新建客户成功！')
               } else {
-                vm.$Message.success('修改客户成功！')
+                this.$Message.success('修改客户成功！')
               }
               // 重置账号列表
-              vm.$emit('refreshData')
+              this.$emit('refreshData')
             } else {
-              if (response.data.code === '200') {
-                vm.$Message.error('用户不存在')
+              if (response.data.code === '100') {
+                this.$refs.enterprise.showValidateResult({text:"企业名称重复，请重新输入！"})
+                // vm.$Message.error('企业名称重复，请重新输入！')
+              } else if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                vm.$Message.error('用户被锁定')
+                this.$Message.error('用户被锁定')
               } else {
                 if (type === 'new') {
-                  vm.$Message.error('新建客户失败！')
+                  this.$Message.error('新建客户失败！')
                 } else {
-                  vm.$Message.error('修改客户失败！')
+                  this.$Message.error('修改客户失败！')
                 }
               }
             }

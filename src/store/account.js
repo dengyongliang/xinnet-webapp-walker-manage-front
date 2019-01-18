@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 export default {
   state: {
   },
@@ -9,7 +9,7 @@ export default {
   },
   actions: {
     [types.GET_ADMIN_LIST_DATA] ({ commit, rootState }, params) {
-      rest.post(links.GET_ADMIN_LIST_DATA, JSON.stringify(params.param),params.callback)
+      rest.get(links.GET_ADMIN_LIST_DATA, JSON.stringify(params.param),params.callback)
     },
     [types.GET_CLIENT_LIST_DATA] ({ commit, rootState }, params) {
       rest.post(links.GET_CLIENT_LIST_DATA, JSON.stringify(params.param),params.callback)

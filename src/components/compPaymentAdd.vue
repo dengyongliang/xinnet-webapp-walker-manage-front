@@ -7,36 +7,18 @@
       FormItem(label="企业名称：")
         span.text {{customerName}}
       FormItem(label="客户ID：")
-        span.text {{customerId}}
+        span.text {{customerCode}}
         input(type="hidden",:value="customerId", ref="customerId")
       FormItem(label="预付款余额：")
         span.text {{payBalance}} 元
-      FormItem(label="增加预付款金额：")
-        Input(
-          type="text",
-          name="money",
-          style="width:240px",
-          @on-blur="onBlur",
-          @on-focus="onFocus",
-          ref="money",
-          :value = "value",
-          :class="{ 'error': showErrorMoney }"
-        )
-        span.unit 元
-        Alert(type="error",show-icon, style="display:inline-block",v-show="showErrorMoney",ref="msgErrorMoney") {{errorTextMoney}}
-      FormItem(label="再次输入增加预付款：")
-        Input(
-          type="text",
-          name="remoney",
-          style="width:240px",
-          @on-blur="onBlur",
-          @on-focus="onFocus",
-          ref="remoney",
-          :value = "value",
-          :class="{ 'error': showErrorReMoney }"
-        )
-        span.unit 元
-        Alert(type="error",show-icon, style="display:inline-block",v-show="showErrorReMoney",ref="msgErrorReMoney") {{errorTextReMoney}}
+      comp-re-money(
+        label1="增加预付款金额：",
+        label2="再次输入增加预付款：",
+        ref="reMoney"
+      )
+        span.unit(slot="right1") 元
+        span.unit(slot="right2") 元
+
       FormItem(label="")
         <!-- Button(@click="close()") 取消 -->
         Button(type="primary",@click="submit",:loading="loadingBtn") 确定
@@ -45,8 +27,11 @@
 <script>
 import { mapActions } from 'vuex'
 import * as types from '@/store/types'
+import compReMoney from './compReMoney'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
+    compReMoney
   },
   props: {
     refresh: {
@@ -68,125 +53,71 @@ export default {
       errorTextReMoney: '',
       customerName: '',
       customerId: '',
-      payBalance: '',
-      value: ''
+      customerCode: '',
+      payBalance: ''
     }
   },
   methods: {
     submit () {
       this.loadingBtn = true
-      let money = this.$refs.money.$refs.input.value
-      let remoney = this.$refs.remoney.$refs.input.value
-      if (money === '') {
-        this.loadingBtn = false
-        this.showErrorMoney = true
-        this.errorTextMoney = '请输入金额！'
-        this.$refs.money.focus()
-        this.$refs.money.blur()
-        return false
-      }
-      if (remoney === '') {
-        this.loadingBtn = false
-        this.showErrorReMoney = true
-        this.errorTextReMoney = '请再次输入金额！'
-        this.$refs.remoney.focus()
-        this.$refs.remoney.blur()
-        return false
-      }
-      if (remoney !== money) {
-        this.loadingBtn = false
-        this.showErrorReMoney = true
-        this.errorTextReMoney = '输入金额不一致！'
-        this.$refs.remoney.focus()
-        this.$refs.remoney.blur()
-        return false
-      }
-
-      let vm = this
-      let params = {
-        param: {
-          customerId: this.$refs.customerId.value,
-          payMoney: this.$refs.money.$refs.input.value
-        },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if( response.data.code === '1000' ){
-            vm.$Message.success('预付款修改成功！')
-            vm.$emit('refreshData')
-          } else {
-            if (response.data.code === '100') {
-              vm.$Message.error('客户账号异常！')
-            } else if (response.data.code === '400') {
-              vm.$Message.error('结算失败！')
+      let result = validateFormResult([
+        this.$refs.reMoney
+      ])
+      if (result) {
+        let params = {
+          param: {
+            customerId: this.$refs.customerId.value,
+            payMoney: this.$refs.reMoney.value1
+          },
+          callback: (response) => {
+            this.loadingBtn = false
+            if( response.data.code === '1000' ){
+              this.$Message.success('预付款修改成功！')
+              this.$emit('refreshData')
             } else {
-              vm.$Message.success('预付款修改失败！')
+              if (response.data.code === '100') {
+                this.$Message.error('客户账号异常！')
+              } else if (response.data.code === '400') {
+                this.$Message.error('结算失败！')
+              }
             }
           }
         }
+        this.submitAddPayment(params)
+      } else {
+        this.loadingBtn = false
       }
-      this.submitAddPayment(params)
     },
     close () {
       this.onClose();
     },
     querySubmit () {
       this.loadingBtn = true
-      let vm = this
       let params = {
         param: {
           customerCode: this.customerCode
         },
-        callback: function (response) {
-          vm.loadingBtn = false
+        callback: (response) => {
+          this.loadingBtn = false
           if( response.data.code === '1000' ){
             if (response.data.data !== null ) {
-              vm.customerId = response.data.data.id
-              vm.customerName = response.data.data.name
-              vm.payBalance = response.data.data.payBalance
-              vm.showed = true
-              vm.showErrorMoney = false
-              vm.showErrorReMoney = false
+              this.customerId = response.data.data.id
+              this.customerCode = response.data.data.code
+              this.customerName = response.data.data.name
+              this.payBalance = response.data.data.payBalance
+              this.showed = true
+              this.showErrorMoney = false
+              this.showErrorReMoney = false
             } else {
-              vm.$Message.error('查询不到指定信息')
+              this.$Message.error('查询不到指定信息')
             }
           } else {
-            vm.showed = false
-            vm.$Message.error('查询失败')
+            this.showed = false
+            this.$Message.error('查询失败')
           }
         }
       }
       this.queryClient(params)
-    },
-    onBlur (e) {
-      let val = e.target.value
-      let name = e.target.name
-      if (name === 'money') {
-        if (val === '') {
-          this.showErrorMoney = true
-          this.errorTextMoney = '请输入金额！'
-        }
-      }
-      if (name === 'remoney') {
-        if (val === '') {
-          this.showErrorReMoney = true
-          this.errorTextReMoney = '请再次输入金额！'
-        }
-        if (val !== '' && this.$refs.money.$refs.input.value !== val) {
-          this.showErrorReMoney = true
-          this.errorTextReMoney = '输入金额不一致！'
-        }
-      }
-    },
-    onFocus (e) {
-      let val = e.target.value
-      let name = e.target.name
-      if (name === 'money') {
-        this.errorTextMoney = '',
-        this.showErrorMoney = false
-      } else if (name === 'remoney'){
-        this.errorTextReMoney = '',
-        this.showErrorReMoney = false
-      }
     },
     ...mapActions({
       queryClient: types.QUERY_CLIENT,

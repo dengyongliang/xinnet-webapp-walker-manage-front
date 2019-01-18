@@ -60,3 +60,7 @@ export const QUERY_BUTLER = "http://localhost:4400/static/data/adminList.js"
 export const UPLOAD_IMG = "http://localhost:4400/static/data/adminList.js"
 // 停/启用客户
 export const SET_CUSTOMER_STATUS = "http://localhost:4400/static/data/adminList.js"
+// 客户可用企业列表
+export const QUERY_COMPANYS = "http://localhost:4400/static/data/adminList.js"
+// 域名预算报告-管理
+export const QUERY_BUDGET_REPORT_MANAGE = "http://localhost:4400/static/data/budgetReportManage.js"

@@ -54,7 +54,6 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
-// import * as links from '@/global/linkdo_json.js'
 export default {
   components: {
   },

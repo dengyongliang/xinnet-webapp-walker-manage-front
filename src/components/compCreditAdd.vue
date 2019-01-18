@@ -7,10 +7,16 @@
       FormItem(label="企业名称：")
         span.text {{customerName}}
       FormItem(label="客户ID：")
-        span.text {{customerId}}
+        span.text {{customerCode}}
         input(type="hidden",:value="customerId", ref="customerId")
-      comp-input(name='creditMoney',label="信用额度：",ref="creditMoney",:defaultValue="creditMoney")
 
+      comp-re-money(
+        label1="信用额度：",
+        label2="再次输入信用额度：",
+        ref="reMoney"
+      )
+        span.unit(slot="right1") 元
+        span.unit(slot="right2") 元
       FormItem(label="")
         Button(type="primary",@click="submit",:loading="loadingBtn") 确定
 </template>
@@ -18,10 +24,11 @@
 <script>
 import { mapActions } from 'vuex'
 import * as types from '@/store/types'
-import compInput from './compInput'
+import compReMoney from './compReMoney'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
-    compInput
+    compReMoney
   },
   props: {
     refresh: {
@@ -39,59 +46,64 @@ export default {
       creditMoney: '',
       showed: false,
       customerId: '',
+      customerCode: '',
       customerName: ''
     }
   },
   methods: {
     submit () {
       this.loadingBtn = true
-      let vm = this
-      let params = {
-        param: {
-          customerId: this.$refs.customerId.value,
-          creditMoney: this.$refs.creditMoney.$refs.input.$refs.input.value
-        },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if( response.data.code === '1000' ){
-            vm.$Message.success('额度修改成功！')
-            vm.$emit('refreshData')
-          } else {
-            if (response.data.code === '100') {
-              vm.$Message.error('客户账号异常')
-            } else if (response.data.code === '400') {
-              vm.$Message.error('结算失败')
+      let result = validateFormResult([
+        this.$refs.reMoney
+      ])
+      if (result) {
+        let params = {
+          param: {
+            customerId: this.$refs.customerId.value,
+            creditMoney: this.$refs.reMoney.value1
+          },
+          callback: (response) => {
+            this.loadingBtn = false
+            if( response.data.code === '1000' ){
+              this.$Message.success('额度修改成功！')
+              this.$emit('refreshData')
             } else {
-              vm.$Message.error('额度修改失败！')
-            }            
+              if (response.data.code === '100') {
+                this.$Message.error('客户账号异常')
+              } else if (response.data.code === '400') {
+                this.$Message.error('结算失败')
+              }
+            }
           }
         }
+        this.submitAddCredit(params)
+      } else {
+        this.loadingBtn = false
       }
-      this.submitAddCredit(params)
     },
     close () {
       this.onClose();
     },
     querySubmit () {
       this.loadingBtn = true
-      let vm = this
       let params = {
         param: {
           customerCode: this.customerCode
         },
-        callback: function (response) {
-          vm.loadingBtn = false
+        callback: (response) => {
+          this.loadingBtn = false
           if( response.data.code === '1000' ){
             if (response.data.data !== null ) {
-              vm.customerId = response.data.data.id
-              vm.customerName = response.data.data.name
-              vm.showed = true
+              this.customerId = response.data.data.id
+              this.customerCode = response.data.data.code
+              this.customerName = response.data.data.name
+              this.showed = true
             } else {
-              vm.$Message.error('查询不到指定信息')
+              this.$Message.error('查询不到指定信息')
             }
           } else {
-            vm.showed = false
-            vm.$Message.error('查询失败')
+            this.showed = false
+            this.$Message.error('查询失败')
           }
         }
       }

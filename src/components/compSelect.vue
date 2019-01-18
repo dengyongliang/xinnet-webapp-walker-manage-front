@@ -11,6 +11,9 @@
 export default {
   name: 'compSelect',
   props: {
+    onParentmethod: {
+      type: Function
+    },
     name: {
       type: String,
       default: ''
@@ -47,9 +50,12 @@ export default {
     showValidateResult (v) {
       this.showError = true
     },
-    selectChange () {
+    selectChange (val) {
       this.showError = false
-    }
+      if (this.onParentmethod && typeof this.onParentmethod === 'function') {
+        this.onParentmethod(this.value)
+      }
+    },
   },
   beforeMount () {
   },

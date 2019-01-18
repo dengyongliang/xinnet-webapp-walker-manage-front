@@ -61,5 +61,7 @@ export const QUERY_BUTLER = api + "/admin-api/manage/customer/customerUsers"
 export const UPLOAD_IMG = api + "/admin-api/manage/customer/uploadfile"
 // 停/启用客户
 export const SET_CUSTOMER_STATUS = api + "/admin-api/manage/customer/setCustomerStatus"
-
-
+// 客户可用企业列表
+export const QUERY_COMPANYS = api + "/admin-api/manage/customer/companys"
+// 域名预算报告-管理
+export const QUERY_BUDGET_REPORT_MANAGE = api + "/admin-api/manage/report/budgetReportManage"

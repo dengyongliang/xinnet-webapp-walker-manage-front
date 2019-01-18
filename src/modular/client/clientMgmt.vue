@@ -4,7 +4,7 @@
   h1.pageTitle.clear 客户管理
     .tR
       span 搜索
-      Input(style="width:200px",placeholder="姓名/用户名/邮箱/手机",v-model.trim="searchUserId")
+      Input(style="width:200px",placeholder="企业名称/客户ID",v-model.trim="searchUserId")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 搜索
       Button(@click="showDrawerClient('creat')") + 新增客户
 
@@ -61,11 +61,17 @@ export default {
         {
           title: '企业名称',
           key: 'name',
-          className: 'col2'
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.clientList[params.index].name)
+            ])
+          }
         },
         {
           title: '客户ID',
-          key: 'userCode',
+          key: 'code',
           className: 'col3'
         },
         {
@@ -220,7 +226,7 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          customerCode:obj.userId
         },
         callback: function(response){
           vm.loadingBtn = false

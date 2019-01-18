@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 export default {
   state: {
@@ -97,6 +97,9 @@ export default {
     },
     [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
       rest.post(links.QUERY_CLIENT_LIST, params.param,params.callback)
+    },
+    [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_COMPANYS, params.param,params.callback)
     }
   }
 }

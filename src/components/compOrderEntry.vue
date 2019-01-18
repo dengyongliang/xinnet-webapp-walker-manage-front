@@ -3,10 +3,12 @@
     FormItem(label="产品：")
       comp-select(name="orderGoodsType",:list="orderGoodsTypeList",ref="orderGoodsType",defaultValue="3")
     FormItem(label="客户：")
-      comp-select(name="customerId",:list="clientList",ref="customerId",label="客户")
+      comp-select(name="customerId",:list="clientList",ref="customerId",label="客户", :on-parentmethod="queryCompanysFun")
     comp-input(name='domain',label="域名：",ref="domain")
     comp-input(name='money',label="金额：",ref="money")
       span.unit(slot="right") 元
+    FormItem(label="承担费用企业：")
+      comp-select(name="companyId",:list="companysList",ref="companyId",label="承担费用企业", v-if="showCompany")
     FormItem(label="订单类型：")
       comp-select(name="orderType",:list="orderTypeList",ref="orderType")
     FormItem(label="付款方式：")
@@ -55,7 +57,9 @@ export default {
             label: '新开'
         }
       ],
-      clientList: []
+      clientList: [],
+      companysList: [],
+      showCompany: true
     }
   },
   methods: {
@@ -63,6 +67,7 @@ export default {
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.customerId,
+        this.$refs.companyId,
         this.$refs.domain,
         this.$refs.money,
         this.$refs.orderType,
@@ -71,32 +76,30 @@ export default {
       if (!result) {
         this.loadingBtn = false
       } else {
-        let vm = this
         let params = {
           param: {
             customerId: this.$refs.customerId.value,
+            companyId: this.$refs.companyId.value,
             orderGoodsInfo: this.$refs.domain.value,
             orderMoney: this.$refs.money.value,
             orderType: this.$refs.orderType.value,
             orderPayType: this.$refs.orderPayType.value,
           },
-          callback: function (response) {
-            vm.loadingBtn = false
+          callback: (response) => {
+            this.loadingBtn = false
             if (response.data.code === '1000'){
-              vm.$Message.success('录入成功')
+              this.$Message.success('录入成功')
               // 添加成功，重新加载列表数据
-              vm.$emit('refreshData')
+              this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {
-                vm.$Message.error('客户不存在')
+                this.$Message.error('客户不存在')
               } else if (response.data.code === '200') {
-                vm.$Message.error('账号余额不足')
+                this.$Message.error('账号余额不足')
               } else if (response.data.code === '300') {
-                vm.$Message.error('账号异常')
+                this.$Message.error('账号异常')
               } else if (response.data.code === '300') {
-                vm.$Message.error('结算失败')
-              } else {
-                vm.$Message.error('录入失败')
+                this.$Message.error('结算失败')
               }
             }
           }
@@ -105,33 +108,49 @@ export default {
         this.submitAddOrderEntry(params)
       }
     },
-    radioChange () {
-      this.error.orderPayType.show = false
-    },
-    selectChange () {
-      this.error.customerId.show = false
+    queryCompanysFun (id) {
+      this.showCompany = false
+      let params = {
+        param: {
+          customerId: id
+        },
+        callback: (response) => {
+          if (response.data.code === '1000'){
+            let data = response.data.data
+            this.showCompany = true
+            if (data.length > 0) {
+              this.companysList = data.map(function (value, index, array) {
+                return {value: value.id, label: value.name}
+              })
+            }
+          } else {
+            this.$Message.error('客户可用企业列表查询失败')
+          }
+        }
+      }
+      this.queryCompanys(params)
     },
     ...mapActions({
       submitAddOrderEntry: types.SUBMIT_ADD_ORDER_ENTRY,
-      queryClientList: types.QUERY_CLIENT_LIST
+      queryClientList: types.QUERY_CLIENT_LIST,
+      queryCompanys: types.QUERY_COMPANYS
     })
   },
   computed: {
   },
   beforeMount () {
-    let vm = this
     let params = {
       param: {},
-      callback: function (response) {
+      callback: (response) => {
         if (response.data.code === '1000'){
           let data = response.data.data.list
           if (data.length > 0) {
-            vm.clientList = data.map(function (value, index, array) {
+            this.clientList = data.map(function (value, index, array) {
               return {value: value.id, label: value.name}
             })
           }
         } else {
-          vm.$Message.error('客户查询失败')
+          this.$Message.error('客户查询失败')
         }
       }
     }

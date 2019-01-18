@@ -1,21 +1,21 @@
 <template lang="pug">
   Form(:label-width="150")
     FormItem(label="账号ID：")
-      span.text {{userCode}}
+      span.text {{detailData.userCode}}
       input(type="hidden",:value="userCode",ref="userCode")
-    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",:show="modify")
-      span.text(v-if="!modify",slot="left") {{userName}}
-    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="modify")
-      span.text(v-if="!modify",slot="left") {{userEmail}}
-    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="userMobile",:show="modify")
-      span.text(v-if="!modify",slot="left") {{userMobile}}
-    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="userTel",:show="modify")
-      span.text(v-if="!modify",slot="left") {{tel}}
-    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="qq",:show="modify")
-      span.text(v-if="!modify",slot="left") {{qq}}
-    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="wx",:show="modify")
-      span.text(v-if="!modify",slot="left") {{wx}}
-    FormItem(label="",v-if="status!==0")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="detailData.userName",:show="modify")
+      span.text(v-if="!modify",slot="left") {{detailData.userName}}
+    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="detailData.userEmail",:show="modify")
+      span.text(v-if="!modify",slot="left") {{detailData.userEmail}}
+    comp-input(name='userMobile',label="手机：",:maxLength="11",ref="userMobile",:defaultValue="detailData.userMobile",:show="modify")
+      span.text(v-if="!modify",slot="left") {{detailData.userMobile}}
+    comp-input(name='tel',label="座机：",ref="tel",:defaultValue="detailData.userTel",:show="modify")
+      span.text(v-if="!modify",slot="left") {{detailData.userTel}}
+    comp-input(name='qq',label="QQ：",ref="qq",:defaultValue="detailData.qq",:show="modify")
+      span.text(v-if="!modify",slot="left") {{detailData.qq}}
+    comp-input(name='wx',label="微信号：",ref="wx",:defaultValue="detailData.wx",:show="modify")
+      span.text(v-if="!modify",slot="left") {{detailData.wx}}
+    FormItem(label="",v-if="detailData.status!==0")
       Button(type="primary",@click="btnModify",v-if="!modify") 修改
       Button(type="primary",@click="btnSaveDetail",:loading="loadingBtn",v-if="modify") 确定
 </template>
@@ -29,37 +29,13 @@ export default {
     compInput
   },
   props: {
-    userName: {
-      type: String,
-      required: true
-    },
-    userEmail: {
-      type: String,
-      required: true
-    },
-    userMobile: {
-      type: String,
-      required: true
-    },
-    userCode: {
-      type: String,
-      required: true
-    },
-    userTel: {
-      type: String,
-      required: false
-    },
-    qq: {
-      type: String,
-      required: false
-    },
-    wx: {
-      type: String,
-      required: false
-    },
-    status: {
-      type: Number,
-      default: 0
+    detailData: {
+      type: Object,
+      default: function () {
+        return {
+          data: []
+        }
+      }
     }
   },
   data () {
