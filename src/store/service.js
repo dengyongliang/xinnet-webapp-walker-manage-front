@@ -9,7 +9,10 @@ export default {
   },
   actions: {
     [types.QUERY_BUDGET_REPORT_MANAGE] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_BUDGET_REPORT_MANAGE, JSON.stringify(params.param),params.callback)
+      rest.get(links.QUERY_BUDGET_REPORT_MANAGE, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_BUDGET_REPORT_DETAIL] ({ commit, rootState }, params) {
+      rest.get(links.QUERY_BUDGET_REPORT_DETAIL, JSON.stringify(params.param), params.callback)
     }
   }
 }

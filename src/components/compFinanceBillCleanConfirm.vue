@@ -46,29 +46,27 @@ export default {
   methods: {
     billSubmit () {
       this.loadingBtn = true
-
-      let vm = this
       let params = {
         param: {
           id: this.$refs.id.value
         },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if (response.data.code === '1000'){
-            vm.$Message.success('结算确认成功')
+        callback: (response) => {
+          this.loadingBtn = false
+          if (response.data.code === '1000') {
+            this.$Message.success('结算确认成功')
             // 添加成功，重新加载列表数据
-            vm.$emit('refreshData')
+            this.$emit('refreshData')
           } else {
             if (response.data.code === '100') {
-              vm.$Message.error('客户不存在')
+              this.$Message.error('客户不存在')
             } else if (response.data.code === '200') {
-              vm.$Message.error('账号余额不足')
+              this.$Message.error('账号余额不足')
             } else if (response.data.code === '300') {
-              vm.$Message.error('账号异常')
+              this.$Message.error('账号异常')
             } else if (response.data.code === '400') {
-              vm.$Message.error('结算失败')
+              this.$Message.error('结算失败')
             } else if (response.data.code === '600') {
-              vm.$Message.error('账单已结算')
+              this.$Message.error('账单已结算')
             }
           }
         }

@@ -176,7 +176,7 @@ const RouterMain = new Router({
           meta: {
             title: '工单管理'
           }
-        },
+        }
       ]
     }
   ],

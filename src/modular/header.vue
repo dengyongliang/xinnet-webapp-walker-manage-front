@@ -25,12 +25,11 @@ export default {
   },
   methods: {
     logout () {
-      let vm = this
       let params = {
-        callback: function (response) {
-          if( response.data.code === '1000' ){
-            vm.$Message.success('登出成功')
-            vm.$router.replace({ path: '/login' })
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            this.$Message.success('登出成功')
+            this.$router.replace({ path: '/login' })
           } else {
           }
         }

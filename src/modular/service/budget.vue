@@ -6,7 +6,7 @@
       span 搜索
       Input(style="width:200px",placeholder="企业名称/客户ID",name="searchValue",ref="searchValue",v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-      Button(@click="") + 创建报告
+      Button(@click="drawerCreatBudgetReport=true") + 创建报告
 
   .secMain
     <!-- 列表主体 -->
@@ -16,10 +16,18 @@
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 
-  <!-- 预算报告 抽屉 -->
-  Drawer(:closable="true",width="640",v-model="drawerCreatBudgetReport",title="预算报告",@on-close="closeDrawer",@on-visible-change="drawerChange",:mask-closable="maskClosable")
+  <!-- 预算报告-创建 抽屉 -->
+  Drawer(:closable="true",width="700",v-model="drawerCreatBudgetReport",title="预算报告",@on-close="closeDrawer",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-creat-budget-report(
       v-if="drawerCreatBudgetReport",
+      @refreshData="searchListData"
+    )
+
+  <!-- 预算报告-修改 抽屉 -->
+  Drawer(:closable="true",width="700",v-model="drawerModifyBudgetReport",title="预算报告",@on-close="closeDrawer",@on-visible-change="drawerChange",:mask-closable="maskClosable")
+    comp-modify-budget-report(
+      v-if="drawerModifyBudgetReport",
+      :reportId="reportId",
       @refreshData="searchListData"
     )
 </template>
@@ -28,9 +36,11 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compCreatBudgetReport from '@/components/compCreatBudgetReport'
+import compModifyBudgetReport from '@/components/compModifyBudgetReport'
 export default {
   components: {
-    compCreatBudgetReport
+    compCreatBudgetReport,
+    compModifyBudgetReport
   },
   data () {
     return {
@@ -73,7 +83,7 @@ export default {
                 },
                 on: {
                   click: () => {
-
+                    this.showModifyReport(this.list[params.index].id)
                   }
                 }
               }, '修改'),
@@ -92,7 +102,9 @@ export default {
         }
       ],
       list: [],
-      drawerCreatBudgetReport: true,
+      drawerCreatBudgetReport: false,
+      drawerModifyBudgetReport: false,
+      reportId: 0,
       loadingBtn: false,
       loadingTable: true,
       page: {
@@ -105,6 +117,9 @@ export default {
   methods: {
     closeDrawer () {
 
+    },
+    showModifyReport (id) {
+      this.drawerModifyBudgetReport = true
     },
     delAdmin (customerNum, userCode) {
       if (customerNum) {
@@ -122,24 +137,23 @@ export default {
           content: '<p>请确认是否删除此管家账户</p>',
           loading: true,
           onOk: () => {
-            let vm = this
             let params = {
               param: {
-                userCode:userCode,
+                userCode: userCode
               },
-              callback: function (response) {
-                vm.$Modal.remove()
-                if( response.data.code === '1000' ){
-                  vm.$Message.success('删除成功')
+              callback: (response) => {
+                this.$Modal.remove()
+                if (response.data.code === '1000') {
+                  this.$Message.success('删除成功')
                   // 删除成功，重新加载列表数据
-                  vm.searchListData()
+                  this.searchListData()
                 } else {
                   if (response.data.code === '200') {
-                    vm.$Message.error('用户不存在')
+                    this.$Message.error('用户不存在')
                   } else if (response.data.code === '300') {
-                    vm.$Message.error('用户被锁定')
+                    this.$Message.error('用户被锁定')
                   } else {
-                    vm.$Message.error('删除失败')
+                    this.$Message.error('删除失败')
                   }
                 }
               }
@@ -153,38 +167,31 @@ export default {
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getList(this.getListParam({pageNum: curPage,userId: this.searchUserId}))
-    },
-    closeDrawerDetail () {
+      this.getList(this.getListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     drawerChange () {
-      if (this.drawerDetail) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
+
     },
     getListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          userId: obj.userId
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -195,7 +202,7 @@ export default {
       // 关闭 账号详情层
       this.drawerDetail = false
       // 查询数据
-      this.getList(this.getListParam({pageNum: 1,userId: this.searchUserId}))
+      this.getList(this.getListParam({pageNum: 1, userId: this.searchUserId}))
     },
     ...mapActions({
       getList: types.QUERY_BUDGET_REPORT_MANAGE,
@@ -208,7 +215,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getList(this.getListParam({pageNum: 1,userId: this.searchUserId}))
+    this.getList(this.getListParam({pageNum: 1, userId: this.searchUserId}))
   }
 }
 </script>

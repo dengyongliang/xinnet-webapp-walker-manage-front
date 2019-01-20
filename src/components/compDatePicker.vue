@@ -1,8 +1,7 @@
 <template lang="pug">
-  div(style="display:inline-block")
+  div.compDatePicker(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",style="width:240px",:name="name",@on-change="selectChange")
-      Option(v-for="item in list",:value="item.value") {{ item.label }}
+    DatePicker(type="daterange",placeholder="",v-model="value", ref="time",format="yyyy-MM-dd", @on-change="dataChange",)
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
@@ -22,28 +21,20 @@ export default {
       type: String,
       default: ''
     },
-    show: {
-      type: Boolean,
-      default: true
+    type: {
+      type: String,
+      default: 'datePicker'
     },
-    list: {
+    defaultValue: {
       type: Array,
       default: function () {
         return []
       }
-    },
-    type: {
-      type: String,
-      default: 'select'
-    },
-    defaultValue: {
-      type: String,
-      default: ''
     }
   },
   data () {
     return {
-      value: '',
+      value: [],
       showError: false,
       errorText: `请选择${this.label}！`
     }
@@ -52,7 +43,7 @@ export default {
     showValidateResult (v) {
       this.showError = true
     },
-    selectChange (val) {
+    dataChange () {
       this.showError = false
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
         this.onParentmethod(this.value)
@@ -62,11 +53,21 @@ export default {
   beforeMount () {
   },
   mounted () {
-    if (this.defaultValue !== '') {
+    if (this.defaultValue.length > 0) {
+      console.log(this.defaultValue)
       this.value = this.defaultValue
     }
   },
   computed: {
+  },
+  watch: {
+    defaultValue (val) {
+      if (val.length) {
+        this.value = val
+      } else {
+        this.value = []
+      }
+    }
   }
 }
 </script>

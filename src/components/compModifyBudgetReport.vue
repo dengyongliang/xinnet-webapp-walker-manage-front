@@ -5,19 +5,20 @@
     FormItem(label="公司：")
       comp-select(name='companyId',label="公司", :list="listClient",ref="companyId",defaultValue="", :on-parentmethod="companyChange")
     FormItem(label="预算周期：")
-      comp-date-picker(label="预算周期", ref="time", :on-parentmethod="dataChange")
+      comp-date-picker(label="预算周期", ref="time", :on-parentmethod="dataChange", :defaultValue="[budgetData.beginTime, budgetData.endTime]")
     div.secT
       span.t 通用顶级域名注册
-      comp-checkbox(:list="listCheckbox1", ref="budgetType1", :on-parentmethod="changeNormal",)
+      comp-checkbox(:list="listCheckbox1", ref="budgetType1", :on-parentmethod="changeNormal", :defaultValue="defaultNormal")
     table.table1
       tr(v-for="(item, index) in budgetData.budgetReportNormalInfo", v-if="item.budgetType * 1 === 1")
         td.col1
-          comp-input(name='domainSuffix',label="后缀：", ref="domainSuffix", defaultValue="", styles="width: 80px;")
+          comp-input(name='domainSuffix',label="后缀：", ref="domainSuffix", :defaultValue="item.domainSuffix.toString()", styles="width: 80px;")
+            span(slot="left", style="display:inline-block;margin-right: 3px") .
         td.col2
-          comp-input(name='price',label="1年价格：", ref="price", defaultValue="", styles="width: 80px;", validate="money")
+          comp-input(name='price',label="1年价格：", ref="price", :defaultValue="item.price.toString()", styles="width: 80px;", validate="money")
             span(slot="right") 元
         td.col3
-          comp-input(name='budgetNumber',label="数量：", ref="budgetNumber", defaultValue="", styles="width: 80px;", validate="number")
+          comp-input(name='budgetNumber',label="数量：", ref="budgetNumber", :defaultValue="item.budgetNumber.toString()", styles="width: 80px;", validate="number")
             span(slot="right") 个
         td.col4(valign="top")
           a(href="javascript:;", @click="delNormal(index)", v-show="showDelNormal") 删除
@@ -25,16 +26,17 @@
 
     div.secT
       span.t 新顶级域名注册
-      comp-checkbox(:list="listCheckbox2", ref="budgetType2", :on-parentmethod="changeNew")
+      comp-checkbox(:list="listCheckbox2", ref="budgetType2", :on-parentmethod="changeNew", :defaultValue="defaultNew")
     table.table1
       tr(v-for="(item, index) in budgetData.budgetReportNewInfo", v-if="item.budgetType * 1 === 2")
         td.col1
-          comp-input(name='domainSuffix',label="后缀：", ref="domainSuffix", defaultValue="", styles="width: 80px;")
+          comp-input(name='domainSuffix',label="后缀：", ref="domainSuffix", :defaultValue="item.domainSuffix.toString()", styles="width: 80px;")
+            span(slot="left", style="display:inline-block;margin-right: 3px") .
         td.col2
-          comp-input(name='price',label="1年价格：", ref="price", defaultValue="", styles="width: 80px;", validate="money")
+          comp-input(name='price',label="1年价格：", ref="price", :defaultValue="item.price.toString()", styles="width: 80px;", validate="money")
             span(slot="right") 元
         td.col3
-          comp-input(name='budgetNumber',label="数量：", ref="budgetNumber", defaultValue="", styles="width: 80px;", validate="number")
+          comp-input(name='budgetNumber',label="数量：", ref="budgetNumber", :defaultValue="item.budgetNumber.toString()", styles="width: 80px;", validate="number")
             span(slot="right") 个
         td.col4(valign="top")
           a(href="javascript:;", @click="delNew(index)", v-show="showDelNew") 删除
@@ -42,14 +44,14 @@
 
     div.secT
       span.t 域名回购
-      comp-checkbox(:list="listCheckbox3", ref="budgetType3", :on-parentmethod="changeRepurchase")
+      comp-checkbox(:list="listCheckbox3", ref="budgetType3", :on-parentmethod="changeRepurchase", :defaultValue="defaultRepurchase")
     table.table2
       tr(v-for="(item, index) in budgetData.budgetReportRepurchaseInfo")
         td.col1
-          comp-input(name='domainName',label="域名：", ref="domainName", defaultValue="", styles="width: 171px;")
-          comp-input(name='budgetPrice',label="预估价格：", ref="budgetPrice", defaultValue="", styles="width: 171px;", validate="money")
+          comp-input(name='domainName',label="域名：", ref="domainName", :defaultValue="item.domainName.toString()", styles="width: 171px;")
+          comp-input(name='budgetPrice',label="预估价格：", ref="budgetPrice", :defaultValue="item.budgetPrice.toString()", styles="width: 171px;", validate="money")
             span(slot="right") 元
-          comp-input(name='reason',label="域回购原因：", ref="reason", defaultValue="", styles="width: 445px;")
+          comp-input(name='reason',label="域回购原因：", ref="reason", :defaultValue="item.reason.toString()", styles="width: 445px;")
         td.col2
           a(href="javascript:;", @click="delRepurchase(index)", v-show="showDelRepurchase") 删除
           a(href="javascript:;", @click="addRepurchase", v-show="showAddRepurchase && index===budgetData.budgetReportRepurchaseInfo.length-1") 增加
@@ -74,16 +76,19 @@ export default {
     compDatePicker
   },
   props: {
-
+    reportId: {
+      type: Number,
+      default: 0
+    }
   },
   data () {
     return {
       loadingBtn: false,
       budgetData: {
-        customerId: 1,
-        companyId: 2,
-        beginTime: '123',
-        endTime: '123',
+        customerId: 0,
+        companyId: 0,
+        beginTime: '',
+        endTime: '',
         budgetReportNormalInfo: [],
         budgetReportNewInfo: [],
         budgetReportRepurchaseInfo: []
@@ -120,7 +125,10 @@ export default {
       showDelNew: false,
       showAddNew: true,
       showDelRepurchase: false,
-      showAddRepurchase: true
+      showAddRepurchase: true,
+      defaultNormal: [],
+      defaultNew: [],
+      defaultRepurchase: []
     }
   },
   methods: {
@@ -176,6 +184,7 @@ export default {
       this.budgetData.budgetReportRepurchaseInfo.splice(index, 1)
     },
     changeNormal (obj) {
+      console.log(obj)
       if (obj.value.length) {
         this.addNormal()
         this.budgetReportNormalInfo = true
@@ -234,7 +243,7 @@ export default {
       }
     },
     ...mapActions({
-      creatNewAccount: types.CREAT_NEW_ACCOUNT
+      queryBudgetReportDetail: types.QUERY_BUDGET_REPORT_DETAIL
     })
   },
   computed: {
@@ -242,7 +251,52 @@ export default {
   beforeMount () {
   },
   mounted () {
+    let params = {
+      param: {
+        reportId: this.reportId
+      },
+      callback: (response) => {
+        this.loadingBtn = false
+        if (response.data.code === '1000') {
+          let budgetReportNormalInfo = []
+          let budgetReportNewInfo = []
+          let budgetReportRepurchaseInfo = []
+          this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId)
+          this.$set(this.budgetData, 'companyId', response.data.data.budgetReportInfo.companyId)
+          this.$set(this.budgetData, 'beginTime', response.data.data.budgetReportInfo.budgetCycleStart)
+          this.$set(this.budgetData, 'endTime', response.data.data.budgetReportInfo.budgetCycleEnd)
+          if (response.data.data.budgetReportDetailList.length) {
+            response.data.data.budgetReportDetailList.map((v) => {
+              if (v.budgetType === 1) {
+                budgetReportNormalInfo.push(v)
+              } else if (v.budgetType === 2) {
+                budgetReportNewInfo.push(v)
+              } else {
+                budgetReportRepurchaseInfo.push(v)
+              }
+            })
+            if (budgetReportNormalInfo.length) {
+              this.budgetReportNormalInfo = true
+              this.defaultNormal = ['1']
+            }
+            if (budgetReportNewInfo.length) {
+              this.budgetReportNewInfo = true
+              this.defaultNew = ['1']
+            }
+            if (budgetReportRepurchaseInfo.length) {
+              this.budgetReportRepurchaseInfo = true
+              this.defaultRepurchase = ['1']
+            }
 
+            this.$set(this.budgetData, 'budgetReportNormalInfo', budgetReportNormalInfo)
+            this.$set(this.budgetData, 'budgetReportNewInfo', budgetReportNewInfo)
+            this.$set(this.budgetData, 'budgetReportRepurchaseInfo', budgetReportRepurchaseInfo)
+          }
+        } else {
+        }
+      }
+    }
+    this.queryBudgetReportDetail(params)
   },
   watch: {
     budgetData: {

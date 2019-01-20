@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       refresh: false,
-      searchUserCode:'',
+      searchUserCode: '',
       loadingTable: true,
       loadingBtn: false,
       drawerCreatAccount: false,
@@ -181,26 +181,25 @@ export default {
         content: '<p>请确认是否要删除此账号！</p>',
         loading: true,
         onOk: () => {
-          let vm = this
           let params = {
             param: {
               userCode: userCode
             },
-            callback: function (response) {
-              vm.$Modal.remove()
-              if( response.data.code === '1000' ){
-                vm.$Message.success('删除成功')
+            callback: (response) => {
+              this.$Modal.remove()
+              if (response.data.code === '1000') {
+                this.$Message.success('删除成功')
                 // 删除成功，重新加载用户列表数据
-                vm.page.pageNo = 1
-                vm.loadingTable = true
-                vm.$store.dispatch(types.GET_USER_LIST_DATA, vm.getUserListParam({pageNum: 1,userCode: vm.searchUserCode}))
+                this.page.pageNo = 1
+                this.loadingTable = true
+                this.$store.dispatch(types.GET_USER_LIST_DATA, this.getUserListParam({pageNum: 1, userCode: this.searchUserCode}))
               } else {
                 if (response.data.code === '200') {
-                  vm.$Message.error('用户不存在')
+                  this.$Message.error('用户不存在')
                 } else if (response.data.code === '300') {
-                  vm.$Message.error('用户被锁定')
+                  this.$Message.error('用户被锁定')
                 } else {
-                  vm.$Message.error('删除失败')
+                  this.$Message.error('删除失败')
                 }
               }
             }
@@ -221,23 +220,22 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
           userCode: obj.userCode
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.userList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.userList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }

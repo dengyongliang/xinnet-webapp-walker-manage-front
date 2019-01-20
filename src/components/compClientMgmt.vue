@@ -32,9 +32,9 @@
     strong.t 联系人信息
     comp-input(name='contactor',label="联系人：",:show="status==='creat' || modify",ref="contactor",:defaultValue="contactor")
       span.text(v-if="status==='view' && !modify",slot="left") {{contactor}}
-    comp-input(name='userMobile',label="手机：",:show="status==='creat' || modify",ref="mobile",:defaultValue="mobile")
+    comp-input(name='userMobile',label="手机：",:show="status==='creat' || modify",ref="mobile",:defaultValue="mobile", validate="mobile")
       span.text(v-if="status==='view' && !modify",slot="left") {{mobile}}
-    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email",:maxLength="64")
+    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email",:maxLength="64", validate="email")
       span.text(v-if="status==='view' && !modify",slot="left") {{email}}
     comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="tel",:required="false")
       span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compImgUpload from './compImgUpload'
@@ -136,27 +136,26 @@ export default {
 
     },
     closeButler (status) {
-      let vm = this
       let params = {
         param: {
           code: this.id,
           status: status
         },
-        callback: function (response) {
-          vm.$Modal.remove()
-          if( response.data.code === '1000' ){
+        callback: (response) => {
+          this.$Modal.remove()
+          if (response.data.code === '1000') {
             if (status === 0) {
-              vm.customerStatus = 0
-              vm.$Message.success('停用成功')
+              this.customerStatus = 0
+              this.$Message.success('停用成功')
             } else {
-              vm.customerStatus = 1
-              vm.$Message.success('启用成功')
+              this.customerStatus = 1
+              this.$Message.success('启用成功')
             }
           } else {
             if (status === 0) {
-              vm.$Message.error('停用失败')
+              this.$Message.error('停用失败')
             } else {
-              vm.$Message.error('启用失败')
+              this.$Message.error('启用失败')
             }
           }
         }
@@ -191,7 +190,6 @@ export default {
       if (!result) {
         this.loadingBtn = false
       } else {
-        let vm = this
         let params = {
           param: {
             name: this.$refs.enterprise.value,
@@ -207,7 +205,7 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               if (type === 'new') {
                 this.$Message.success('新建客户成功！')
               } else {
@@ -217,7 +215,7 @@ export default {
               this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {
-                this.$refs.enterprise.showValidateResult({text:"企业名称重复，请重新输入！"})
+                this.$refs.enterprise.showValidateResult({text: '企业名称重复，请重新输入！'})
                 // vm.$Message.error('企业名称重复，请重新输入！')
               } else if (response.data.code === '200') {
                 this.$Message.error('用户不存在')
@@ -256,19 +254,18 @@ export default {
   },
   beforeMount () {
     this.customerStatus = this.open
-    let vm = this
     let params = {
       param: {},
-      callback: function (response) {
-        if (response.data.code === '1000'){
+      callback: (response) => {
+        if (response.data.code === '1000') {
           let data = response.data.data
           if (data.length > 0) {
-            vm.butlerList = data.map(function (value, index, array) {
+            this.butlerList = data.map(function (value, index, array) {
               return {value: value.id, label: value.userName}
             })
           }
         } else {
-          vm.$Message.error('客户查询失败')
+          this.$Message.error('客户查询失败')
         }
       }
     }

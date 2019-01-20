@@ -80,13 +80,12 @@ export default {
       this.errorTextReMoney = v.text
     },
     onFocus (e) {
-      let val = e.target.value
       let name = e.target.name
       if (name === 'money') {
-        this.errorTextMoney = '',
+        this.errorTextMoney = ''
         this.showMoneyError = false
-      } else if (name === 'reMoney'){
-        this.errorTextReMoney = '',
+      } else if (name === 'reMoney') {
+        this.errorTextReMoney = ''
         this.showReMoneyError = false
       }
     },

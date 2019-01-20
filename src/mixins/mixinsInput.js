@@ -41,7 +41,7 @@ export default {
     return {
       value: '',
       errorText: '',
-      showError: false,
+      showError: false
     }
   },
   computed: {
@@ -58,36 +58,39 @@ export default {
       this.showError = true
     },
     onFocus (e) {
-      this.errorText = '',
+      this.errorText = ''
       this.showError = false
     },
     onBlur (e) {
-      let vm = this
       let val = this.value
-      let name = this.name
+      let validate = this.validate
       if (val === '' && this.required) {
         this.showError = true
-        this.errorText = '请输入' + (vm.label.substr(0,vm.label.length-1) || '') + '！'
+        this.errorText = `请输入${this.label.substr(0, this.label.length - 1) || ''}！`
       } else {
-        if (this.number && isNaN(val)) {
-          this.showError = true
-          this.errorText = '只允许输入数字！'
-        } else {
-          if (name === 'userEmail') {
-            if (val !== '' && !this.GLOBALS.IS_EMAIL_AVAILABLE(val)) {
-              this.showError = true
-              this.errorText = '请输入正确的邮件地址，如xinnet@xinnet.com！'
-            }
-            if (val !== '' && !this.GLOBALS.IS_EMAIL_AVAILABLE(val) && val > 64) {
-              this.showError = true
-              this.errorText = '最多允许输入64个字符！！'
-            }
+        if (validate === 'email') {
+          if (!this.GLOBALS.IS_EMAIL_AVAILABLE(val)) {
+            this.showError = true
+            this.errorText = '请输入正确的邮件地址，如xinnet@xinnet.com！'
           }
-          if (name === 'userMobile') {
-            if (val !== '' && !this.GLOBALS.IS_PHONE_AVAILABLE(val)) {
-              this.showError = true
-              this.errorText = '请输入11位的手机号码！'
-            }
+          if (!this.GLOBALS.IS_EMAIL_AVAILABLE(val) && val > 64) {
+            this.showError = true
+            this.errorText = '最多允许输入64个字符！！'
+          }
+        } else if (validate === 'mobile') {
+          if (!this.GLOBALS.IS_PHONE_AVAILABLE(val)) {
+            this.showError = true
+            this.errorText = '请输入11位的手机号码！'
+          }
+        } else if (validate === 'number') {
+          if (isNaN(val)) {
+            this.showError = true
+            this.errorText = '只允许输入数字！'
+          }
+        } else if (validate === 'money') {
+          if (!this.GLOBALS.IS_MONEY_AVAILABLE(val)) {
+            this.showError = true
+            this.errorText = '只允许输入数字！'
           }
         }
       }

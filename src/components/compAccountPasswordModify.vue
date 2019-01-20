@@ -12,6 +12,7 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compRePassword from './compRePassword'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput,
@@ -30,80 +31,44 @@ export default {
   },
   methods: {
     btnModifyPw () {
-      // console.log(this.$refs)
-      // this.$refs.oldPassword.$refs.msgError.$el.style.display="inline-block"
-      // this.$refs.oldPassword.$refs.msgError.$el.children[1].innerHTML="JSAALJFSKFK"
-      let oldp = this.$refs.oldPassword.$refs.input.$refs.input._value
-      let newp = this.$refs.compRePassword.$refs.password.$refs.input._value
-      let rep = this.$refs.compRePassword.$refs.rePassword.$refs.input._value
-      let userCode = this.$refs.userCode.value
-
       this.loadingBtn = true
-      if (oldp === '') {
-        this.$refs.oldPassword.$refs.input.focus()
-        this.$refs.oldPassword.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (newp === '') {
-        this.$refs.compRePassword.$refs.password.focus()
-        this.$refs.compRePassword.$refs.password.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.regPw.test(newp)) {
-        this.$refs.compRePassword.$refs.password.focus()
-        this.$refs.compRePassword.$refs.password.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (rep === '') {
-        this.$refs.compRePassword.$refs.rePassword.focus()
-        this.$refs.compRePassword.$refs.rePassword.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.regPw.test(rep)) {
-        this.$refs.compRePassword.$refs.rePassword.focus()
-        this.$refs.compRePassword.$refs.rePassword.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (newp !== rep) {
-        this.$refs.compRePassword.$refs.rePassword.focus()
-        this.$refs.compRePassword.$refs.rePassword.blur()
-        this.loadingBtn = false
-        return false
-      }
-      let vm = this
-      let params = {
-        param: {
-          oldPassword: oldp,
-          newPassword: newp,
-          userCode: userCode
-        },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if (response.data.code === '1000') {
-            vm.$Message.success('密码修改成功')
-            vm.$emit('refreshData')
-          } else {
-            if (response.data.code === '200') {
-              vm.$Message.error('用户不存在')
-            } else if (response.data.code === '300') {
-              vm.$Message.error('用户被锁定')
-            } else if (response.data.code === '400') {
-              vm.$Message.error('原始密码错误')
+      let result = validateFormResult([
+        this.$refs.oldPassword,
+        this.$refs.compRePassword
+      ])
+
+      if (result) {
+        let params = {
+          param: {
+            oldPassword: this.$refs.oldPassword.value,
+            newPassword: this.$refs.compRePassword.value1,
+            userCode: this.$refs.userCode
+          },
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('密码修改成功')
+              this.$emit('refreshData')
             } else {
-              vm.$Message.error('密码修改失败')
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else if (response.data.code === '400') {
+                this.$Message.error('原始密码错误')
+              } else {
+                this.$Message.error('密码修改失败')
+              }
             }
           }
         }
+        this.savePw(params)
+      } else {
+        this.loadingBtn = false
       }
-      this.savePw(params)
     },
     ...mapActions({
-      savePw: types.SET_USER_PASSWORD,
+      savePw: types.SET_USER_PASSWORD
     })
   },
   computed: {

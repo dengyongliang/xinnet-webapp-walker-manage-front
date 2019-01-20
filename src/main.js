@@ -10,9 +10,11 @@ import directives from './directives'
 import iView from 'iview'
 // 自定义方法及变量
 import GLOBAL from './global/global'
+import DATAS from './global/datas'
 require('es6-promise').polyfill()
 
 Vue.prototype.GLOBALS = GLOBAL
+Vue.prototype.DATAS = DATAS
 // Vue.prototype.$ajax = axios
 Vue.config.productionTip = false
 Vue.use(iView)

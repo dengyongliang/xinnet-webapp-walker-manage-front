@@ -157,11 +157,11 @@ export default {
       // 关闭 drawer弹出层
       this.drawerBillConfirm = false
       // 查询数据
-      this.getBillList(this.getBillListParam({pageNum: 1,userId: this.searchUserId}))
+      this.getBillList(this.getBillListParam({pageNum: 1, userId: this.searchUserId}))
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getBillList(this.getBillListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.getBillList(this.getBillListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     showDrawerBillConfirm (param) {
       // 重置数据
@@ -177,23 +177,22 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          userId: obj.userId
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.billList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.billList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -210,7 +209,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getBillList(this.getBillListParam({pageNum: 1,userId: this.searchUserId}))
+    this.getBillList(this.getBillListParam({pageNum: 1, userId: this.searchUserId}))
   }
 }
 </script>

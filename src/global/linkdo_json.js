@@ -55,12 +55,14 @@ export const EXPORT_ORDER_LIST = 'http://localhost:4400/static/data/clientList.j
 // 添加录入订单
 export const SUBMIT_ADD_ORDER_ENTRY = 'http://localhost:4400/static/data/clientList.js'
 // 查询管家
-export const QUERY_BUTLER = "http://localhost:4400/static/data/adminList.js"
+export const QUERY_BUTLER = 'http://localhost:4400/static/data/adminList.js'
 // 上传图片
-export const UPLOAD_IMG = "http://localhost:4400/static/data/adminList.js"
+export const UPLOAD_IMG = 'http://localhost:4400/static/data/adminList.js'
 // 停/启用客户
-export const SET_CUSTOMER_STATUS = "http://localhost:4400/static/data/adminList.js"
+export const SET_CUSTOMER_STATUS = 'http://localhost:4400/static/data/adminList.js'
 // 客户可用企业列表
-export const QUERY_COMPANYS = "http://localhost:4400/static/data/adminList.js"
+export const QUERY_COMPANYS = 'http://localhost:4400/static/data/adminList.js'
 // 域名预算报告-管理
-export const QUERY_BUDGET_REPORT_MANAGE = "http://localhost:4400/static/data/budgetReportManage.js"
+export const QUERY_BUDGET_REPORT_MANAGE = 'http://localhost:4400/static/data/budgetReportManage.js'
+// 域名预算报告-查询预算报告
+export const QUERY_BUDGET_REPORT_DETAIL = 'http://localhost:4400/static/data/findBudgetReportDetail.js'

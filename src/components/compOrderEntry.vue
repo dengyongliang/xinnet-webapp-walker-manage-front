@@ -53,8 +53,8 @@ export default {
       ],
       orderTypeList: [
         {
-            value: '1',
-            label: '新开'
+          value: '1',
+          label: '新开'
         }
       ],
       clientList: [],
@@ -83,11 +83,11 @@ export default {
             orderGoodsInfo: this.$refs.domain.value,
             orderMoney: this.$refs.money.value,
             orderType: this.$refs.orderType.value,
-            orderPayType: this.$refs.orderPayType.value,
+            orderPayType: this.$refs.orderPayType.value
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.$Message.success('录入成功')
               // 添加成功，重新加载列表数据
               this.$emit('refreshData')
@@ -115,7 +115,7 @@ export default {
           customerId: id
         },
         callback: (response) => {
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             let data = response.data.data
             this.showCompany = true
             if (data.length > 0) {
@@ -142,7 +142,7 @@ export default {
     let params = {
       param: {},
       callback: (response) => {
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           let data = response.data.data.list
           if (data.length > 0) {
             this.clientList = data.map(function (value, index, array) {

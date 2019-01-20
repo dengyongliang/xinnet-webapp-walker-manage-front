@@ -24,7 +24,7 @@ export default {
       'islogin',
       'showBodySpin'
     ])
-  },
+  }
 }
 </script>
 

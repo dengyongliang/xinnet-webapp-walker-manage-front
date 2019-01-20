@@ -36,13 +36,13 @@ export default {
       vm.$Message.error('登录超时，请重新登录！')
       setTimeout(() => {
         vm.$router.replace({ path: '/login' })
-      },300)
+      }, 300)
     })
     restEmitter.on('noPermission', () => {
       vm.$Message.error('权限错误！')
       setTimeout(() => {
         vm.$router.replace({ path: '/' })
-      },300)
+      }, 300)
     })
     restEmitter.on('paramError', () => {
       vm.$Message.error('参数错误！')
@@ -68,7 +68,7 @@ export default {
       'islogin',
       'showBodySpin'
     ])
-  },
+  }
 }
 </script>
 

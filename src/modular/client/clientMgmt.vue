@@ -20,7 +20,7 @@
   Drawer(:closable="true" width="640" v-model="drawerClientMgmt",:title="drawerTitle",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-client-mgmt(
       @refreshData="searchListData",
-      v-if="refresh",
+      v-if="drawerClientMgmt",
       :status="status",
       :enterprise = "enterprise",
       :orgCode = "orgCode",
@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       refresh: false,
-      drawerTitle:'',
+      drawerTitle: '',
       searchUserId: '',
       status: '',
       columns: [
@@ -134,7 +134,7 @@ export default {
                       email: this.clientList[params.index].email,
                       tel: this.clientList[params.index].tel
                     }
-                    this.showDrawerClient('view',param)
+                    this.showDrawerClient('view', param)
                   }
                 }
               }, '详情')
@@ -170,24 +170,23 @@ export default {
       // 关闭 drawer弹出层
       this.drawerClientMgmt = false
       // 查询数据
-      this.getClientList(this.getClientListParam({pageNum: 1,userId: this.searchUserId}))
+      this.getClientList(this.getClientListParam({pageNum: 1, userId: this.searchUserId}))
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getClientList(this.getClientListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.getClientList(this.getClientListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     drawerChange () {
-      this.refresh = this.drawerClientMgmt ? true : false
     },
     showDrawerClient (status, param) {
       if (status === 'creat') {
-        this.status = "creat"
+        this.status = 'creat'
         this.drawerTitle = '新增客户'
         this.enterprise = ''
         this.orgCode = ''
-        this.id = 0,
-        this.userId = '',
-        this.userName = '',
+        this.id = 0
+        this.userId = ''
+        this.userName = ''
         this.accountPeriod = ''
         this.creditBalance = ''
         this.orgFile = ''
@@ -197,7 +196,7 @@ export default {
         this.email = ''
         this.tel = ''
       } else if (status === 'view') {
-        this.status = "view"
+        this.status = 'view'
         this.drawerTitle = '客户详情'
         this.enterprise = param.enterprise
         this.orgCode = param.orgCode
@@ -221,23 +220,22 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          customerCode:obj.userId
+          customerCode: obj.userId
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.clientList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.clientList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -254,7 +252,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getClientList(this.getClientListParam({pageNum: 1,userId: this.searchUserId}))
+    this.getClientList(this.getClientListParam({pageNum: 1, userId: this.searchUserId}))
   }
 }
 </script>

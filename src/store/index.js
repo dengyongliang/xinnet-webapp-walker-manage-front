@@ -19,19 +19,19 @@ export default function makeStore () {
       pending: true
     },
     mutations: {
-      [types.SHOW_BODY_SPIN] (state,payload) {
+      [types.SHOW_BODY_SPIN] (state, payload) {
         state.showBodySpin = false
       }
     },
     actions: {
       [types.LOGIN_VERIFICATIONCODE] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_VERIFICATIONCODE, JSON.stringify(params.param),params.callback)
+        rest.post(links.LOGIN_VERIFICATIONCODE, JSON.stringify(params.param), params.callback)
       },
       [types.LOGIN_SUBMIT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_SUBMIT, JSON.stringify(params.param),params.callback)
+        rest.post(links.LOGIN_SUBMIT, JSON.stringify(params.param), params.callback)
       },
       [types.LOGIN_OUT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_OUT, '',params.callback)
+        rest.post(links.LOGIN_OUT, '', params.callback)
       }
     },
     getters: {

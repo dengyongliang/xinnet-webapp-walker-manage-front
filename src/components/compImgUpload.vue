@@ -101,7 +101,7 @@ export default {
         })
       }
       return check
-    },
+    }
   },
   beforeMount () {
     if (this.status === 'view') {

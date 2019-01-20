@@ -88,11 +88,11 @@ export default {
       // 关闭 drawer弹出层
       this.drawerPaymentAdd = false
       // 查询数据
-      this.getPaymentList(this.getPaymentListParam({pageNum: 1,userId: this.searchUserId}))
+      this.getPaymentList(this.getPaymentListParam({pageNum: 1, userId: this.searchUserId}))
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getPaymentList(this.getPaymentListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.getPaymentList(this.getPaymentListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     drawerChange () {
       if (this.drawerPaymentAdd) {
@@ -114,23 +114,22 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          customerCode:obj.userId
+          customerCode: obj.userId
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.paymentList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.paymentList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -147,7 +146,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getPaymentList(this.getPaymentListParam({pageNum: 1,userId: this.searchUserId}))
+    this.getPaymentList(this.getPaymentListParam({pageNum: 1, userId: this.searchUserId}))
   }
 }
 </script>

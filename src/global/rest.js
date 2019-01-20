@@ -4,8 +4,9 @@ import NProgress from 'nprogress'
 import Event from './event'
 
 export const emitter = new Event()
-let cancel, promiseArr = {}
-const CancelToken = axios.CancelToken;
+let cancel = {}
+let promiseArr = {}
+const CancelToken = axios.CancelToken
 // 请求拦截器
 axios.interceptors.request.use(config => {
   // 发起请求时，取消掉当前正在进行的相同请求
@@ -53,15 +54,15 @@ axios.interceptors.response.use(response => {
         // err.message = `连接错误${err.response.status}`
     }
   } else {
+    // err.message = '连接到服务器失败'
     emitter.emit('errorServer')
-    //err.message = '连接到服务器失败'
   }
   // message.err(err.message)
   return Promise.resolve(err.response)
 })
 
 axios.defaults.baseURL = '/'
-  // 设置默认请求头
+// 设置默认请求头
 axios.defaults.headers = {
   'Content-Type': 'application/json; charset=utf-8'
 }
@@ -69,7 +70,7 @@ axios.defaults.timeout = 5000
 
 export default {
   // get请求
-  get(url, param, callback) {
+  get (url, param, callback) {
     NProgress.start()
     return new Promise((resolve, reject) => {
       axios({
@@ -89,7 +90,7 @@ export default {
     })
   },
   // post请求
-  post(url, param, callback) {
+  post (url, param, callback) {
     NProgress.start()
     return new Promise((resolve, reject) => {
       axios({

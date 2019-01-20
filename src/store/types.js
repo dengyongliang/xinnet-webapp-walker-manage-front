@@ -39,3 +39,5 @@ export const SUBMIT_ADD_ORDER_ENTRY = 'submitAddOrderEntry'
 
 // 域名预算报告-管理
 export const QUERY_BUDGET_REPORT_MANAGE = 'queryBudgetReportManage'
+// 域名预算报告-查询预算报告
+export const QUERY_BUDGET_REPORT_DETAIL = 'queryBudgetReportDetail'

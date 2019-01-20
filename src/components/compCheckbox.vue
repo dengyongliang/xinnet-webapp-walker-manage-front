@@ -44,10 +44,7 @@ export default {
     defaultValue: {
       type: Array,
       default: function () {
-        return {
-          data: [
-          ]
-        }
+        return []
       }
     }
   },
@@ -65,14 +62,13 @@ export default {
     onChange (v) {
       this.showError = false
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
-
         this.onParentmethod({from: this.from, value: this.value, index: this.index})
       }
     }
   },
   beforeMount () {
     if (this.defaultValue.length) {
-      this.value = this.defaultValue.map((v)=>{
+      this.value = this.defaultValue.map((v) => {
         return v.label
       })
     }
@@ -84,9 +80,13 @@ export default {
   },
   watch: {
     defaultValue (val) {
-      this.value = val.map((v)=>{
-        return v.label
-      })
+      if (val.length) {
+        this.value = val.map((v) => {
+          return v
+        })
+      } else {
+        this.value = []
+      }
     }
   }
 }

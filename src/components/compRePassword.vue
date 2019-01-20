@@ -1,12 +1,12 @@
 <template lang="pug">
   div
-    FormItem(:label="label1")
+    FormItem(:label="label1",class="compInput")
+      slot(name="left1")
       Input(
-        type="text",
-        v-if="type === 'text'",
+        type="password",
         :name="name1",
-        :placeholder="placeholder",
-        style="width:240px",
+        :placeholder="placeholder1",
+        :style="styles1",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="password",
@@ -14,14 +14,16 @@
         v-model = "value1",
         :class="{ 'error': showPasswordError }"
       )
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showPasswordError",ref="msgErrorPw") {{errorTextPassword}}
-    FormItem(:label="label2")
+      Icon.ok(custom="i-icon i-icon-correct_",size="16",v-show="ok1")
+      slot(name="right1")
+      Alert(type="error",show-icon, style="display:inline-block;max-width:350px;",v-show="showPasswordError",ref="msgErrorPw") {{errorTextPassword}}
+    FormItem(:label="label2",class="compInput")
+      slot(name="left2")
       Input(
-        type="text",
-        v-if="type === 'text'",
+        type="password",
         :name="name2",
-        :placeholder="placeholder",
-        style="width:240px",
+        :placeholder="placeholder2",
+        :style="styles2",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="rePassword",
@@ -29,7 +31,9 @@
         v-model = "value2",
         :class="{ 'error': showRePasswordError }"
       )
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showRePasswordError",ref="msgErrorRePw") {{errorTextRePassword}}
+      Icon.ok(custom="i-icon i-icon-correct_",size="16",v-show="ok2")
+      slot(name="right2")
+      Alert(type="error",show-icon, style="display:inline-block;max-width:350px;",v-show="showRePasswordError",ref="msgErrorRePw") {{errorTextRePassword}}
 </template>
 
 <script>
@@ -51,3 +55,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.ok{
+  color:#7aca33;
+}
+</style>

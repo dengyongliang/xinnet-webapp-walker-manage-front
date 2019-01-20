@@ -165,7 +165,6 @@ export default {
       this.loadingBtn = true
       this.loadingTable = true
 
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
@@ -173,16 +172,16 @@ export default {
           orderGoodsInfo: this.orderGoodsInfo,
           orderMode: 3
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.orderList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.orderList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -209,4 +208,3 @@ export default {
   padding-top:0px;
 }
 </style>
-

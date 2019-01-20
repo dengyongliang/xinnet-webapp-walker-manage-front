@@ -34,7 +34,6 @@ export default {
     compCreditAdd
   },
   data () {
-    let vm = this
     return {
       refresh: false,
       drawerCreditAdd: false,
@@ -93,33 +92,32 @@ export default {
     searchListData () {
       this.drawerCreditAdd = false
       // 查询数据
-      this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: 1,userId: this.searchUserId}))
+      this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: 1, userId: this.searchUserId}))
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     queryCreditMoneyListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          customerCode:obj.userId
+          customerCode: obj.userId
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.creditList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.creditList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -143,7 +141,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: 1,userId: this.searchUserId}))
+    this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: 1, userId: this.searchUserId}))
   }
 }
 </script>

@@ -2,7 +2,7 @@
   Modal.modalAddAccount(width="480", :status="isShow",v-model="showed",title="创建账户",:mask-closable="maskClosable",:footer-hide="true")
     Form(:label-width="80")
       comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",:show="showed")
-      comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="showed")
+      comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="showed", validate="email")
     .footer
       Button(@click="showed=false") 取消
       Button(type="primary", @click="saveAccount",:loading="loadingBtn") 确定
@@ -12,6 +12,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput
@@ -33,51 +34,37 @@ export default {
   methods: {
     saveAccount () {
       this.loadingBtn = true
-      let emailV = this.$refs.userEmail.$refs.input.$refs.input._value
-      let nameV = this.$refs.userName.$refs.input.$refs.input._value
-      if (nameV === '') {
-        this.$refs.userName.$refs.input.focus()
-        this.$refs.userName.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
+      let result = validateFormResult([
+        this.$refs.userEmail,
+        this.$refs.userName
+      ])
 
-      if (emailV === '') {
-        this.$refs.userEmail.$refs.input.focus()
-        this.$refs.userEmail.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.IS_EMAIL_AVAILABLE(emailV)) {
-        this.$refs.userEmail.$refs.input.focus()
-        this.$refs.userEmail.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      let vm = this
-      let params = {
-        param: {
-          userName: nameV,
-          userEmail: emailV
-        },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if( response.data.code === '1000' ){
-            vm.$Message.success('账号创建成功！')
-            vm.showed = false
-            // 重置账号列表
-            vm.$emit('refreshData')
-          } else {
-            if (response.data.code === '200') {
-              vm.$Message.error('用户已存在')
+      if (result) {
+        let params = {
+          param: {
+            userName: this.$refs.userName.value,
+            userEmail: this.$refs.userEmail.value
+          },
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('账号创建成功！')
+              this.showed = false
+              // 重置账号列表
+              this.$emit('refreshData')
             } else {
-              vm.$Message.error('账号创建失败')
+              if (response.data.code === '200') {
+                this.$Message.error('用户已存在')
+              } else {
+                this.$Message.error('账号创建失败')
+              }
             }
           }
         }
+        this.creatAdmin(params)
+      } else {
+        this.loadingBtn = false
       }
-
-      this.creatAdmin(params)
     },
     ...mapActions({
       creatAdmin: types.CREAT_ADMIN

@@ -44,7 +44,6 @@ export default {
   },
   data () {
     return {
-      customerCode: '',
       loadingBtn: false,
       showed: false,
       showErrorMoney: false,
@@ -71,7 +70,7 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.$Message.success('预付款修改成功！')
               this.$emit('refreshData')
             } else {
@@ -89,7 +88,7 @@ export default {
       }
     },
     close () {
-      this.onClose();
+      this.onClose()
     },
     querySubmit () {
       this.loadingBtn = true
@@ -99,8 +98,8 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
-            if (response.data.data !== null ) {
+          if (response.data.code === '1000') {
+            if (response.data.data !== null) {
               this.customerId = response.data.data.id
               this.customerCode = response.data.data.code
               this.customerName = response.data.data.name

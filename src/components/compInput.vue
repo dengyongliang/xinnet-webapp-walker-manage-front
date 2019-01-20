@@ -15,7 +15,8 @@
         :required = "required",
         :disabled = "disabled",
         :number = "number",
-        :class="{ 'error': showError }"
+        :class="{ 'error': showError }",
+        :validate="validate"
       )
       Input(
         type="text",
@@ -31,7 +32,8 @@
         :required = "required",
         :disabled = "disabled",
         :number = "number",
-        :class="{ 'error': showError }"
+        :class="{ 'error': showError }",
+        :validate="validate"
       )
       slot(name="right")
       Alert(type="error",show-icon, style="display:inline-block",v-show="showError",ref="msgError") {{errorText}}
@@ -50,6 +52,10 @@ export default {
     styles: {
       type: String,
       default: 'width: 240px'
+    },
+    validate: {
+      type: String,
+      default: ''
     }
   },
   data () {

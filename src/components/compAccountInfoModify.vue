@@ -1,8 +1,8 @@
 <template lang="pug">
   Form(:label-width="150")
-    comp-input(name='userEmail',label="邮箱：",ref="userEmail",:defaultValue="detailData.userEmail")
-    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="detailData.userName")
-    comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="detailData.userMobile")
+    comp-input(name='userEmail',label="邮箱：",ref="userEmail",:defaultValue="detailData.userEmail", validate="email")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="detailData.userName", )
+    comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="detailData.userMobile", validate="mobile")
     FormItem(label="角色：")
       RadioGroup(v-model="roleId",@on-change="onChange",ref="roleId")
         Radio(v-for="item in rolesList",:label="item.id") {{item.roleName}}
@@ -15,6 +15,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput
@@ -42,76 +43,48 @@ export default {
   methods: {
     btnModifyInfo () {
       this.loadingBtn = true
-      console.log(this.$refs)
-      let userName = this.$refs.userName.value
-      let userEmail = this.$refs.userEmail.value
-      let userMobile = this.$refs.userMobile.value
-      let userCode = this.$refs.userCode.value
+      let result = validateFormResult([
+        this.$refs.userName,
+        this.$refs.userMobile,
+        this.$refs.userEmail
+      ])
 
-      if (userEmail === '') {
-        this.$refs.userEmail.$refs.input.focus()
-        this.$refs.userEmail.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.IS_EMAIL_AVAILABLE(userEmail)) {
-        this.$refs.userEmail.$refs.input.focus()
-        this.$refs.userEmail.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (userName === '') {
-        this.$refs.userName.$refs.input.focus()
-        this.$refs.userName.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-
-      if (userMobile === '') {
-        this.$refs.userMobile.$refs.input.focus()
-        this.$refs.userMobile.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      if (!this.GLOBALS.IS_PHONE_AVAILABLE(userMobile)) {
-        this.$refs.userMobile.$refs.input.focus()
-        this.$refs.userMobile.$refs.input.blur()
-        this.loadingBtn = false
-        return false
-      }
-      let vm = this
-      let params = {
-        param: {
-          userName: userName,
-          userMobile: userMobile,
-          userEmail: userEmail,
-          userCode: userCode,
-          roleId: this.roleId
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (response.data.code === '1000') {
-            this.$Message.success('用户信息修改成功')
-            // 重置store用户信息
-            if (this.from === "accountMy") {
-              // vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
+      if (result) {
+        let params = {
+          param: {
+            userName: this.$refs.userName,
+            userMobile: this.$refs.userMobile,
+            userEmail: this.$refs.userEmail,
+            userCode: this.$refs.userCode,
+            roleId: this.roleId
+          },
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('用户信息修改成功')
+              // 重置store用户信息
+              if (this.from === 'accountMy') {
+                // vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
+              } else {
+                this.$emit('refreshData')
+              }
             } else {
-              this.$emit('refreshData')
-            }
-          } else {
-            if (response.data.code === '200') {
-              this.$Message.error('用户不存在')
-            } else if (response.data.code === '300') {
-              this.$Message.error('用户被锁定')
-            } else if (response.data.code === '400') {
-              this.$Message.error('手机号码已存在')
-            } else if (response.data.code === '600') {
-              this.$Message.error('角色不存在')
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else if (response.data.code === '400') {
+                this.$Message.error('手机号码已存在')
+              } else if (response.data.code === '600') {
+                this.$Message.error('角色不存在')
+              }
             }
           }
         }
+        this.saveUserInfo(params)
+      } else {
+        this.loadingBtn = false
       }
-      this.saveUserInfo(params)
     },
     ...mapActions({
       saveUserInfo: types.SET_USER_INFO

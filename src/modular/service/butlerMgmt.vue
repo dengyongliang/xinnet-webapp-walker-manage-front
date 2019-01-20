@@ -154,7 +154,7 @@ export default {
       this.modalAddAccount = false
       setTimeout(() => {
         this.modalAddAccount = true
-      },100)
+      }, 100)
     },
     delAdmin (customerNum, userCode) {
       if (customerNum) {
@@ -172,24 +172,23 @@ export default {
           content: '<p>请确认是否删除此管家账户</p>',
           loading: true,
           onOk: () => {
-            let vm = this
             let params = {
               param: {
-                userCode:userCode,
+                userCode: userCode
               },
-              callback: function (response) {
-                vm.$Modal.remove()
-                if( response.data.code === '1000' ){
-                  vm.$Message.success('删除成功')
+              callback: (response) => {
+                this.$Modal.remove()
+                if (response.data.code === '1000') {
+                  this.$Message.success('删除成功')
                   // 删除成功，重新加载列表数据
-                  vm.searchListData()
+                  this.searchListData()
                 } else {
                   if (response.data.code === '200') {
-                    vm.$Message.error('用户不存在')
+                    this.$Message.error('用户不存在')
                   } else if (response.data.code === '300') {
-                    vm.$Message.error('用户被锁定')
+                    this.$Message.error('用户被锁定')
                   } else {
-                    vm.$Message.error('删除失败')
+                    this.$Message.error('删除失败')
                   }
                 }
               }
@@ -203,7 +202,7 @@ export default {
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getAdminList(this.getAdminListParam({pageNum: curPage,userId: this.searchUserId}))
+      this.getAdminList(this.getAdminListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     closeDrawerDetail () {
     },
@@ -218,23 +217,22 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId:obj.userId
+          userId: obj.userId
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.adminList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.adminList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -245,7 +243,7 @@ export default {
       // 关闭 账号详情层
       this.drawerDetail = false
       // 查询数据
-      this.getAdminList(this.getAdminListParam({pageNum: 1,userId: this.searchUserId}))
+      this.getAdminList(this.getAdminListParam({pageNum: 1, userId: this.searchUserId}))
     },
     ...mapActions({
       getAdminList: types.GET_ADMIN_LIST_DATA,
@@ -258,7 +256,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getAdminList(this.getAdminListParam({pageNum: 1,userId: this.searchUserId}))
+    this.getAdminList(this.getAdminListParam({pageNum: 1, userId: this.searchUserId}))
   }
 }
 </script>

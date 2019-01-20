@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compAccountInfoModify from '@/components/compAccountInfoModify'
 import compAccountPasswordModify from '@/components/compAccountPasswordModify'
 export default {
@@ -49,9 +48,9 @@ export default {
   },
   mounted () {
     this.showSpin = false
-    setTimeout( () => {
+    setTimeout(() => {
       this.showCont = true
-    }, 350 )
+    }, 350)
   },
   methods: {
     drawerChange () {

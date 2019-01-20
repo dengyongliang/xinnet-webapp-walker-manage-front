@@ -19,7 +19,9 @@ export default {
     },
     list: {
       type: Array,
-      default: []
+      default: function () {
+        return []
+      }
     },
     type: {
       type: String,
@@ -34,7 +36,7 @@ export default {
     return {
       value: '',
       showError: false,
-      errorText: '请选择' + this.label + "！"
+      errorText: `请选择${this.label}！`
     }
   },
   methods: {

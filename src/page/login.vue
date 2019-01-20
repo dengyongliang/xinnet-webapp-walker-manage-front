@@ -37,7 +37,6 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
-import * as links from '../global/linkdo.js'
 export default {
   data () {
     return {
@@ -86,42 +85,37 @@ export default {
         this.loadingBtn = false
         return false
       }
-      let param = {
-        account: this.$refs.account.value,
-        password: this.$refs.password.value,
-        verificationCode: this.$refs.verificationCode.value
-      }
-      let vm = this
+
       let params = {
         param: {
           account: this.$refs.account.value,
           password: this.$refs.password.value,
           verificationCode: this.$refs.verificationCode.value
         },
-        callback: function (response) {
+        callback: (response) => {
           let data = response.data
           if (data.code === '1000') {
             window.location.href = '/'
           } else {
-            vm.loadingBtn = false
+            this.loadingBtn = false
             if (data.code === '100') {
-              vm.account.error = 2
+              this.account.error = 2
             } else if (data.code === '200') {
-              vm.modalAlertInfo.show = true
-              vm.modalAlertInfo.title = '失败'
-              vm.modalAlertInfo.content = '用户已登录'
+              this.modalAlertInfo.show = true
+              this.modalAlertInfo.title = '失败'
+              this.modalAlertInfo.content = '用户已登录'
             } else if (data.code === '300') {
-              vm.verificationCode.error = 3
+              this.verificationCode.error = 3
             } else if (data.code === '400') {
-              vm.password.error = 2
+              this.password.error = 2
             } else if (data.code === '600') {
-              vm.modalAlertInfo.show = true
-              vm.modalAlertInfo.title = '失败'
-              vm.modalAlertInfo.content = '用户被锁定'
+              this.modalAlertInfo.show = true
+              this.modalAlertInfo.title = '失败'
+              this.modalAlertInfo.content = '用户被锁定'
             } else if (data.code === '700') {
-              vm.modalAlertInfo.show = true
-              vm.modalAlertInfo.title = '失败'
-              vm.modalAlertInfo.content = '用户权限异常'
+              this.modalAlertInfo.show = true
+              this.modalAlertInfo.title = '失败'
+              this.modalAlertInfo.content = '用户权限异常'
             }
           }
         }
@@ -195,7 +189,7 @@ export default {
   },
   beforeMount () {
   },
-  mounted(){
+  mounted () {
     this.$store.commit(types.SHOW_BODY_SPIN)
   }
 }
