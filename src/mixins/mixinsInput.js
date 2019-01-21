@@ -104,9 +104,7 @@ export default {
   },
   watch: {
     defaultValue (val) {
-      if (val !== '') {
-        this.value = val
-      }
+      this.value = val
     }
   }
 }
