@@ -2,7 +2,7 @@
   div(style="display:inline-block")
     slot(name="left")
     Select(v-model="value",style="width:240px",:name="name",@on-change="selectChange")
-      Option(v-for="item in list",:value="item.value") {{ item.label }}
+      Option(v-for="item in list",:value="item.value.toString()", @click.native="getMoreParams(item)") {{ item.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
@@ -43,9 +43,10 @@ export default {
   },
   data () {
     return {
-      value: '',
+      value: '1',
       showError: false,
-      errorText: `请选择${this.label}！`
+      errorText: `请选择${this.label}！`,
+      param: {}
     }
   },
   methods: {
@@ -55,8 +56,11 @@ export default {
     selectChange (val) {
       this.showError = false
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
-        this.onParentmethod(this.value)
+        this.onParentmethod({value: this.value, param: this.param})
       }
+    },
+    getMoreParams (param) {
+      this.param = param
     }
   },
   beforeMount () {
@@ -67,6 +71,13 @@ export default {
     }
   },
   computed: {
+  },
+  watch: {
+    defaultValue (val) {
+      if (val !== '') {
+        this.value = val
+      }
+    }
   }
 }
 </script>

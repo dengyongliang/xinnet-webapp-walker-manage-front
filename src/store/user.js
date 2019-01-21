@@ -93,7 +93,7 @@ export default {
       rest.post(links.QUERY_CLIENT, params.param, params.callback)
     },
     [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_CLIENT_LIST, params.param, params.callback)
+      rest.get(links.QUERY_CLIENT_LIST, params.param, params.callback)
     },
     [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
       rest.post(links.QUERY_COMPANYS, params.param, params.callback)

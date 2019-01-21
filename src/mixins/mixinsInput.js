@@ -2,6 +2,9 @@ export default {
   components: {
   },
   props: {
+    onParentmethod: {
+      type: Function
+    },
     name: {
       type: String,
       required: false
@@ -62,6 +65,9 @@ export default {
       this.showError = false
     },
     onBlur (e) {
+      if (this.onParentmethod && typeof this.onParentmethod === 'function') {
+        this.onParentmethod(this.value)
+      }
       let val = this.value
       let validate = this.validate
       if (val === '' && this.required) {
@@ -93,6 +99,13 @@ export default {
             this.errorText = '只允许输入数字！'
           }
         }
+      }
+    }
+  },
+  watch: {
+    defaultValue (val) {
+      if (val !== '') {
+        this.value = val
       }
     }
   }

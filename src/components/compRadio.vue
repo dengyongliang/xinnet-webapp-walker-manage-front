@@ -56,6 +56,13 @@ export default {
 
   },
   computed: {
+  },
+  watch: {
+    defaultValue (val) {
+      if (val !== '') {
+        this.value = val
+      }
+    }
   }
 }
 </script>

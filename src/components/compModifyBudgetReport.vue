@@ -1,9 +1,7 @@
 <template lang="pug">
   Form.compCreatBudgetReport(:label-width="150",)
     FormItem(label="客户：")
-      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",defaultValue="", :on-parentmethod="customerChange")
-    FormItem(label="公司：")
-      comp-select(name='companyId',label="公司", :list="listClient",ref="companyId",defaultValue="", :on-parentmethod="companyChange")
+      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",:defaultValue="budgetData.customerId.toString()", :on-parentmethod="customerChange")
     FormItem(label="预算周期：")
       comp-date-picker(label="预算周期", ref="time", :on-parentmethod="dataChange", :defaultValue="[budgetData.beginTime, budgetData.endTime]")
     div.secT
@@ -51,7 +49,7 @@
           comp-input(name='domainName',label="域名：", ref="domainName", :defaultValue="item.domainName.toString()", styles="width: 171px;")
           comp-input(name='budgetPrice',label="预估价格：", ref="budgetPrice", :defaultValue="item.budgetPrice.toString()", styles="width: 171px;", validate="money")
             span(slot="right") 元
-          comp-input(name='reason',label="域回购原因：", ref="reason", :defaultValue="item.reason.toString()", styles="width: 445px;")
+          comp-input(name='reason',label="域回购原因：", ref="reason", :defaultValue="item.reason.toString()", styles="width: 445px;", :maxLength="30")
         td.col2
           a(href="javascript:;", @click="delRepurchase(index)", v-show="showDelRepurchase") 删除
           a(href="javascript:;", @click="addRepurchase", v-show="showAddRepurchase && index===budgetData.budgetReportRepurchaseInfo.length-1") 增加
@@ -86,7 +84,6 @@ export default {
       loadingBtn: false,
       budgetData: {
         customerId: 0,
-        companyId: 0,
         beginTime: '',
         endTime: '',
         budgetReportNormalInfo: [],
@@ -132,16 +129,13 @@ export default {
     }
   },
   methods: {
-    customerChange (val) {
-      this.budgetData.customerId = val
-    },
-    companyChange (val) {
-      this.budgetData.companyId = val
+    customerChange (obj) {
+      this.budgetData.customerId = obj.value
     },
     dataChange (val) {
       if (val.length === 2) {
-        this.budgetData.beginTime = val[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[0]) : ''
-        this.budgetData.endTime = val[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[1]) : ''
+        this.budgetData.beginTime = val[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[0]) + ' 00:00:00' : ''
+        this.budgetData.endTime = val[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[1]) + ' 00:00:00' : ''
       } else {
         this.budgetData.beginTime = ''
         this.budgetData.endTime = ''
@@ -149,43 +143,118 @@ export default {
     },
     addNormal () {
       let data = {
-        'budgetType': '1',
-        'domainSuffix': '',
-        'price': '',
-        'budgetNumber': ''
+        "id": 0,
+        "budgetType": '1',
+        "domainSuffix": '',
+        "price": '',
+        "budgetNumber": '',
+        "domainName": '',
+        "budgetPrice": '',
+        "reason": '',
+        "reportId": 0,
+        "createTime": '',
+        'operatorType': 'new'
       }
       this.budgetData.budgetReportNormalInfo.push(data)
     },
     addNew () {
       let data = {
-        'budgetType': '2',
-        'domainSuffix': '',
-        'price': '',
-        'budgetNumber': ''
+        "id": 0,
+        "budgetType": '2',
+        "domainSuffix": '',
+        "price": '',
+        "budgetNumber": '',
+        "domainName": '',
+        "budgetPrice": '',
+        "reason": '',
+        "reportId": 0,
+        "createTime": '',
+        'operatorType': 'new'
       }
       this.budgetData.budgetReportNewInfo.push(data)
     },
     addRepurchase () {
       let data = {
-        'budgetType': '3',
-        'domainName': '',
-        'budgetPrice': '',
-        'reason': ''
+        "id": 0,
+        "budgetType": '3',
+        "domainSuffix": '',
+        "price": '',
+        "budgetNumber": '',
+        "domainName": '',
+        "budgetPrice": '',
+        "reason": '',
+        "reportId": 0,
+        "createTime": '',
+        'operatorType': 'new'
       }
       this.budgetData.budgetReportRepurchaseInfo.push(data)
     },
     delNormal (index) {
-      this.budgetData.budgetReportNormalInfo.splice(index, 1)
+      console.log(this.budgetData.budgetReportNormalInfo)
+      if (this.budgetData.budgetReportNormalInfo[index].id === 0) {
+        this.budgetData.budgetReportNormalInfo.splice(index, 1)
+      } else {
+        let params = {
+          param: this.budgetData.budgetReportNormalInfo[index],
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              console.log(this.budgetData.budgetReportNormalInfo)
+              this.budgetData.budgetReportNormalInfo.splice(index, 1)
+              // this.$delete(this.budgetData.budgetReportNormalInfo, index)
+              this.$Message.success('删除成功')
+            } else {
+              this.$Message.error('删除失败')
+            }
+          }
+        }
+        params.param.operatorType = 'delete'
+        this.deleteBudgetReport(params)
+      }
     },
     delNew (index) {
-      this.budgetData.budgetReportNewInfo.splice(index, 1)
+      if (this.budgetData.budgetReportNewInfo[index].id === 0) {
+        this.budgetData.budgetReportNewInfo.splice(index, 1)
+      } else {
+        let params = {
+          param: this.budgetData.budgetReportNewInfo[index],
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.budgetData.budgetReportNewInfo.splice(index, 1)
+              this.$Message.success('删除成功')
+            } else {
+              this.$Message.error('删除失败')
+            }
+          }
+        }
+        params.param.operatorType = 'delete'
+        this.deleteBudgetReport(params)
+      }
     },
     delRepurchase (index) {
-      this.budgetData.budgetReportRepurchaseInfo.splice(index, 1)
+      if (this.budgetData.budgetReportRepurchaseInfo[index].id === 0) {
+        this.budgetData.budgetReportRepurchaseInfo.splice(index, 1)
+      } else {
+        let params = {
+          param: this.budgetData.budgetReportRepurchaseInfo[index],
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.budgetData.budgetReportRepurchaseInfo.splice(index, 1)
+              this.$Message.success('删除成功')
+            } else {
+              this.$Message.error('删除失败')
+            }
+          }
+        }
+        params.param.operatorType = 'delete'
+        this.deleteBudgetReport(params)
+      }
     },
     changeNormal (obj) {
       console.log(obj)
-      if (obj.value.length) {
+      if (!obj.value.length) {
         this.addNormal()
         this.budgetReportNormalInfo = true
       } else {
@@ -194,7 +263,7 @@ export default {
       }
     },
     changeNew (obj) {
-      if (obj.value.length) {
+      if (!obj.value.length) {
         this.addNew()
         this.budgetReportNewInfo = true
       } else {
@@ -203,7 +272,7 @@ export default {
       }
     },
     changeRepurchase (obj) {
-      if (obj.value.length) {
+      if (!obj.value.length) {
         this.addRepurchase()
         this.budgetReportRepurchaseInfo = true
       } else {
@@ -215,7 +284,6 @@ export default {
       this.loadingBtn = true
       let validataItem = [].concat(
         this.$refs.customerId,
-        this.$refs.companyId,
         this.$refs.time,
         this.$refs.domainSuffix ? this.$refs.domainSuffix : [],
         this.$refs.price ? this.$refs.price : [],
@@ -231,24 +299,61 @@ export default {
           callback: (response) => {
             this.loadingBtn = false
             if (response.data.code === '1000') {
-              this.$Message.success('停用成功')
+              this.$Message.success('修改成功')
+              this.$emit('refreshData')
             } else {
-              this.$Message.error('停用失败')
+              this.$Message.error('修改失败')
             }
           }
         }
+        params.param.budgetReportNormalInfo = params.param.budgetReportNormalInfo.concat(params.param.budgetReportNewInfo)
+        // 赋值
+        if (params.param.budgetReportNormalInfo.length) {
+          params.param.budgetReportNormalInfo.map((v, i) => {
+            v.domainSuffix = this.$refs.domainSuffix[i].value
+            v.price = this.$refs.price[i].value
+            v.budgetNumber = this.$refs.budgetNumber[i].value
+          })
+        }
+        if (params.param.budgetReportRepurchaseInfo.length) {
+          params.param.budgetReportRepurchaseInfo.map((v, i) => {
+            v.domainName = this.$refs.domainName[i].value
+            v.budgetPrice = this.$refs.budgetPrice[i].value
+            v.reason = this.$refs.reason[i].value
+          })
+        }
         console.log(params.param)
+        this.updateBudgetReport(params)
       } else {
         this.loadingBtn = false
       }
     },
     ...mapActions({
-      queryBudgetReportDetail: types.QUERY_BUDGET_REPORT_DETAIL
+      queryBudgetReportDetail: types.QUERY_BUDGET_REPORT_DETAIL,
+      deleteBudgetReport: types.DELETE_BUDGET_REPORT,
+      queryClientList: types.QUERY_CLIENT_LIST,
+      updateBudgetReport: types.ADD_BUDGET_REPORT
     })
   },
   computed: {
   },
   beforeMount () {
+    let params = {
+      param: {},
+      callback: (response) => {
+        if (response.data.code === '1000') {
+          let data = response.data.data.list
+          if (data.length > 0) {
+            this.listClient = data.map(function (value, index, array) {
+              return {value: value.id, label: value.name}
+            })
+          }
+        } else {
+          this.$Message.error('客户查询失败')
+        }
+      }
+    }
+    this.queryClientList(params)
   },
   mounted () {
     let params = {
@@ -262,11 +367,11 @@ export default {
           let budgetReportNewInfo = []
           let budgetReportRepurchaseInfo = []
           this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId)
-          this.$set(this.budgetData, 'companyId', response.data.data.budgetReportInfo.companyId)
           this.$set(this.budgetData, 'beginTime', response.data.data.budgetReportInfo.budgetCycleStart)
           this.$set(this.budgetData, 'endTime', response.data.data.budgetReportInfo.budgetCycleEnd)
           if (response.data.data.budgetReportDetailList.length) {
             response.data.data.budgetReportDetailList.map((v) => {
+              v.operatorType = 'update'
               if (v.budgetType === 1) {
                 budgetReportNormalInfo.push(v)
               } else if (v.budgetType === 2) {
@@ -275,16 +380,16 @@ export default {
                 budgetReportRepurchaseInfo.push(v)
               }
             })
-            if (budgetReportNormalInfo.length) {
+            if (!budgetReportNormalInfo.length) {
               this.budgetReportNormalInfo = true
               this.defaultNormal = ['1']
             }
-            if (budgetReportNewInfo.length) {
-              this.budgetReportNewInfo = true
+            if (!budgetReportNewInfo.length) {
+              this.budgetReportNewInfo = false
               this.defaultNew = ['1']
             }
-            if (budgetReportRepurchaseInfo.length) {
-              this.budgetReportRepurchaseInfo = true
+            if (!budgetReportRepurchaseInfo.length) {
+              this.budgetReportRepurchaseInfo = false
               this.defaultRepurchase = ['1']
             }
 
@@ -301,21 +406,21 @@ export default {
   watch: {
     budgetData: {
       handler (newV, oldV) {
-        if (this.budgetReportNormalInfo) {
+        if (!this.budgetReportNormalInfo) {
           if (newV.budgetReportNormalInfo.length > 1) {
             this.showDelNormal = true
           } else {
             this.showDelNormal = false
           }
         }
-        if (this.budgetReportNewInfo) {
+        if (!this.budgetReportNewInfo) {
           if (newV.budgetReportNewInfo.length > 1) {
             this.showDelNew = true
           } else {
             this.showDelNew = false
           }
         }
-        if (this.budgetReportRepurchaseInfo) {
+        if (!this.budgetReportRepurchaseInfo) {
           if (newV.budgetReportRepurchaseInfo.length > 1) {
             this.showDelRepurchase = true
           } else {

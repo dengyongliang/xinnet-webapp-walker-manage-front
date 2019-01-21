@@ -13,6 +13,15 @@ export default {
     },
     [types.QUERY_BUDGET_REPORT_DETAIL] ({ commit, rootState }, params) {
       rest.get(links.QUERY_BUDGET_REPORT_DETAIL, JSON.stringify(params.param), params.callback)
+    },
+    [types.ADD_BUDGET_REPORT] ({ commit, rootState }, params) {
+      rest.get(links.ADD_BUDGET_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.UPDATE_BUDGET_REPORT] ({ commit, rootState }, params) {
+      rest.get(links.UPDATE_BUDGET_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.DELETE_BUDGET_REPORT] ({ commit, rootState }, params) {
+      rest.get(links.DELETE_BUDGET_REPORT, JSON.stringify(params.param), params.callback)
     }
   }
 }

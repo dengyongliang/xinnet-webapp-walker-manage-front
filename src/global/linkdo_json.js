@@ -66,3 +66,9 @@ export const QUERY_COMPANYS = 'http://localhost:4400/static/data/adminList.js'
 export const QUERY_BUDGET_REPORT_MANAGE = 'http://localhost:4400/static/data/budgetReportManage.js'
 // 域名预算报告-查询预算报告
 export const QUERY_BUDGET_REPORT_DETAIL = 'http://localhost:4400/static/data/findBudgetReportDetail.js'
+// 域名预算报告-添加预算报告
+export const ADD_BUDGET_REPORT = 'http://localhost:4400/static/data/findBudgetReportDetail.js'
+// 域名预算报告-修改预算报告
+export const UPDATE_BUDGET_REPORT = 'http://localhost:4400/static/data/findBudgetReportDetail.js'
+// 域名预算报告-修改预算报告
+export const DELETE_BUDGET_REPORT = 'http://localhost:4400/static/data/findBudgetReportDetail.js'

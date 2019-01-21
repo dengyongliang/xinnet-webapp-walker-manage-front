@@ -108,11 +108,11 @@ export default {
         this.submitAddOrderEntry(params)
       }
     },
-    queryCompanysFun (id) {
+    queryCompanysFun (obj) {
       this.showCompany = false
       let params = {
         param: {
-          customerId: id
+          customerId: obj.value
         },
         callback: (response) => {
           if (response.data.code === '1000') {

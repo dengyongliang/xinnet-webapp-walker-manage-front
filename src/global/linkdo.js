@@ -67,3 +67,9 @@ export const QUERY_COMPANYS = api + '/admin-api/manage/customer/companys'
 export const QUERY_BUDGET_REPORT_MANAGE = api + '/admin-api/manage/report/budgetReportManage'
 // 域名预算报告-查询预算报告
 export const QUERY_BUDGET_REPORT_DETAIL = api + '/admin-api/manage/report/findBudgetReportDetail'
+// 域名预算报告-添加预算报告
+export const ADD_BUDGET_REPORT = api + '/admin-api/manage/report/addBudgetReport'
+// 域名预算报告-修改预算报告
+export const UPDATE_BUDGET_REPORT = api + '/admin-api/manage/report/updateBudgetReport'
+// 域名预算报告-修改预算报告
+export const DELETE_BUDGET_REPORT = api + '/admin-api/manage/report/deleteBudgetReport'

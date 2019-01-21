@@ -59,7 +59,7 @@ export default {
         },
         {
           title: '客户ID',
-          key: 'customerId',
+          key: 'code',
           className: 'col3'
         },
         {
@@ -93,7 +93,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.delAdmin(this.adminList[params.index].customerCount, this.adminList[params.index].userCode)
+                    this.delReport(this.list[params.index].id)
                   }
                 }
               }, '删除')
@@ -119,55 +119,45 @@ export default {
 
     },
     showModifyReport (id) {
+      this.reportId = id
       this.drawerModifyBudgetReport = true
     },
-    delAdmin (customerNum, userCode) {
-      if (customerNum) {
-        this.$Modal.confirm({
-          title: '提示',
-          content: '<p>此管家账户下关联客户账户，<br />请先修改客户账户归属再提交删除！</p>',
-          onOk: () => {
-          },
-          onCancel: () => {
-          }
-        })
-      } else {
-        this.$Modal.confirm({
-          title: '确认',
-          content: '<p>请确认是否删除此管家账户</p>',
-          loading: true,
-          onOk: () => {
-            let params = {
-              param: {
-                userCode: userCode
-              },
-              callback: (response) => {
-                this.$Modal.remove()
-                if (response.data.code === '1000') {
-                  this.$Message.success('删除成功')
-                  // 删除成功，重新加载列表数据
-                  this.searchListData()
+    delReport (id) {
+      this.$Modal.confirm({
+        title: '确认',
+        content: '<p>请确认是否删除此预算报告</p>',
+        loading: true,
+        onOk: () => {
+          let params = {
+            param: {
+              reportId: id
+            },
+            callback: (response) => {
+              this.$Modal.remove()
+              if (response.data.code === '1000') {
+                this.$Message.success('删除成功')
+                // 删除成功，重新加载列表数据
+                this.searchListData()
+              } else {
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户被锁定')
                 } else {
-                  if (response.data.code === '200') {
-                    this.$Message.error('用户不存在')
-                  } else if (response.data.code === '300') {
-                    this.$Message.error('用户被锁定')
-                  } else {
-                    this.$Message.error('删除失败')
-                  }
+                  this.$Message.error('删除失败')
                 }
               }
             }
-            this.delUser(params)
-          },
-          onCancel: () => {
           }
-        })
-      }
+          this.deleteBudgetReport(params)
+        },
+        onCancel: () => {
+        }
+      })
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getList(this.getListParam({pageNum: curPage, userId: this.searchUserId}))
+      this.getList(this.getListParam({pageNum: curPage}))
     },
     drawerChange () {
 
@@ -180,7 +170,7 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          userId: obj.userId
+          queryCondition: this.value
         },
         callback: (response) => {
           this.loadingBtn = false
@@ -199,14 +189,15 @@ export default {
       return params
     },
     searchListData () {
-      // 关闭 账号详情层
-      this.drawerDetail = false
+      // 关闭 drawer
+      this.drawerCreatBudgetReport = false
+      this.drawerModifyBudgetReport = false
       // 查询数据
-      this.getList(this.getListParam({pageNum: 1, userId: this.searchUserId}))
+      this.getList(this.getListParam({pageNum: 1}))
     },
     ...mapActions({
       getList: types.QUERY_BUDGET_REPORT_MANAGE,
-      delUser: types.DEL_USER
+      deleteBudgetReport: types.DELETE_BUDGET_REPORT
     })
   },
   computed: {
@@ -215,7 +206,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getList(this.getListParam({pageNum: 1, userId: this.searchUserId}))
+    this.getList(this.getListParam({pageNum: 1}))
   }
 }
 </script>
