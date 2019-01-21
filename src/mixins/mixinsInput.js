@@ -66,7 +66,7 @@ export default {
     },
     onBlur (e) {
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
-        this.onParentmethod(this.value)
+        this.onParentmethod(this)
       }
       let val = this.value
       let validate = this.validate
