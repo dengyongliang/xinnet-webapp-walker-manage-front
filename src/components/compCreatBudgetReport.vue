@@ -1,14 +1,14 @@
 <template lang="pug">
   Form.compCreatBudgetReport(:label-width="150",)
     FormItem(label="客户：")
-      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",defaultValue="", :on-parentmethod="customerChange")
+      comp-select(name='customerId',label="客户", :list="listClient", ref="customerId", :on-parentmethod="customerChange")
     FormItem(label="预算周期：")
       comp-date-picker(label="预算周期", ref="time", :on-parentmethod="dataChange",)
     div.secT
       span.t 通用顶级域名注册
       comp-checkbox(:list="listCheckbox1", ref="budgetType1", :on-parentmethod="changeNormal",)
     table.table1
-      tr(v-for="(item, index) in budgetData.budgetReportNormalInfo", :key="index")
+      tr(v-for="(item, index) in budgetData.budgetReportNormalInfo", v-if="budgetData.budgetReportNormalInfo.length")
         td.col1
           comp-input(:name="'domainSuffixNormal_' + index" ,label="后缀：", :ref="'domainSuffixNormal_' + index", :defaultValue="item.domainSuffix", styles="width: 80px;", :on-parentmethod="domainSuffixNormalChange")
             span(slot="left", style="display:inline-block;margin-right: 3px") .
@@ -26,7 +26,7 @@
       span.t 新顶级域名注册
       comp-checkbox(:list="listCheckbox2", ref="budgetType2", :on-parentmethod="changeNew")
     table.table1
-      tr(v-for="(item, index) in budgetData.budgetReportNewInfo", :key="index")
+      tr(v-for="(item, index) in budgetData.budgetReportNewInfo", v-if="budgetData.budgetReportNewInfo.length")
         td.col1
           comp-input(:name="'domainSuffixNew_' + index", label="后缀：", :ref="'domainSuffixNew_' + index", :defaultValue="item.domainSuffix", styles="width: 80px;", :on-parentmethod="domainSuffixNewChange")
             span(slot="left", style="display:inline-block;margin-right: 3px") .
@@ -44,7 +44,7 @@
       span.t 域名回购
       comp-checkbox(:list="listCheckbox3", ref="budgetType3", :on-parentmethod="changeRepurchase")
     table.table2
-      tr(v-for="(item, index) in budgetData.budgetReportRepurchaseInfo", :key="index")
+      tr(v-for="(item, index) in budgetData.budgetReportRepurchaseInfo", v-if="budgetData.budgetReportRepurchaseInfo.length")
         td.col1
           comp-input(:name="'domainName_' + index", label="域名：", :ref="'domainName_' + index", :defaultValue="item.domainName", styles="width: 171px;", :on-parentmethod="domainNameChange")
           comp-input(:name="'budgetPrice_' + index", label="预估价格：", :ref="'budgetPrice_' + index", :defaultValue="item.budgetPrice", styles="width: 171px;", validate="money", :on-parentmethod="budgetPriceChange")
@@ -74,7 +74,9 @@ export default {
     compDatePicker
   },
   props: {
-
+    onClose: {
+      type: Function
+    }
   },
   data () {
     return {
@@ -106,9 +108,6 @@ export default {
           value: '无域名回购计划'
         }
       ],
-      budgetReportNormalInfo: false,
-      budgetReportNewInfo: false,
-      budgetReportRepurchaseInfo: false,
       showDelNormal: false,
       showAddNormal: true,
       showDelNew: false,
@@ -214,44 +213,52 @@ export default {
     changeNormal (obj) {
       if (!obj.value.length) {
         this.addNormal()
-        this.budgetReportNormalInfo = true
       } else {
         this.budgetData.budgetReportNormalInfo = []
-        this.budgetReportNormalInfo = false
       }
     },
     changeNew (obj) {
       if (!obj.value.length) {
         this.addNew()
-        this.budgetReportNewInfo = true
       } else {
         this.budgetData.budgetReportNewInfo = []
-        this.budgetReportNewInfo = false
       }
     },
     changeRepurchase (obj) {
       if (!obj.value.length) {
         this.addRepurchase()
-        this.budgetReportRepurchaseInfo = true
       } else {
         this.budgetData.budgetReportRepurchaseInfo = []
-        this.budgetReportRepurchaseInfo = false
       }
     },
     formSubmit () {
       this.loadingBtn = true
-      let arr = Object.keys(this.$refs)
-      let validataItem = []
-
-      for (var i = 0; i < arr.length; i++) {
-        if (arr[i].indexOf("budgetType") < 0) {
-          if (arr[i].indexOf("customerId") >= 0 || arr[i].indexOf("time") >= 0) {
-            validataItem.push(this.$refs[arr[i]])
-          } else {
-            validataItem.push(this.$refs[arr[i]][0])
-          }
-        }
+      let validataItem = [
+        this.$refs.customerId,
+        this.$refs.time
+      ]
+      if (this.budgetData.budgetReportNormalInfo.length) {
+        this.budgetData.budgetReportNormalInfo.map((v, i) => {
+          validataItem.push(this.$refs['domainSuffixNormal_' + i][0])
+          validataItem.push(this.$refs['priceNormal_' + i][0])
+          validataItem.push(this.$refs['budgetNumberNormal_' + i][0])
+        })
       }
+      if (this.budgetData.budgetReportNewInfo.length) {
+        this.budgetData.budgetReportNewInfo.map((v, i) => {
+          validataItem.push(this.$refs['domainSuffixNew_' + i][0])
+          validataItem.push(this.$refs['priceNew_' + i][0])
+          validataItem.push(this.$refs['budgetNumberNew_' + i][0])
+        })
+      }
+      if (this.budgetData.budgetReportRepurchaseInfo.length) {
+        this.budgetData.budgetReportRepurchaseInfo.map((v, i) => {
+          validataItem.push(this.$refs['domainName_' + i][0])
+          validataItem.push(this.$refs['budgetPrice_' + i][0])
+          validataItem.push(this.$refs['reason_' + i][0])
+        })
+      }
+
       let result = validateFormResult(validataItem)
       if (result) {
         let params = {
@@ -260,7 +267,8 @@ export default {
             this.loadingBtn = false
             if (response.data.code === '1000') {
               this.$Message.success('创建成功')
-              this.$emit('refreshData')
+              this.onClose()
+              // this.$emit('refreshData')
             } else {
               this.$Message.error('创建失败')
             }
@@ -308,26 +316,22 @@ export default {
   watch: {
     budgetData: {
       handler (newV, oldV) {
-        if (!this.budgetReportNormalInfo) {
-          if (newV.budgetReportNormalInfo.length > 1) {
-            this.showDelNormal = true
-          } else {
-            this.showDelNormal = false
-          }
+        if (newV.budgetReportNormalInfo.length > 1) {
+          this.showDelNormal = true
+        } else {
+          this.showDelNormal = false
         }
-        if (!this.budgetReportNewInfo) {
-          if (newV.budgetReportNewInfo.length > 1) {
-            this.showDelNew = true
-          } else {
-            this.showDelNew = false
-          }
+
+        if (newV.budgetReportNewInfo.length > 1) {
+          this.showDelNew = true
+        } else {
+          this.showDelNew = false
         }
-        if (!this.budgetReportRepurchaseInfo) {
-          if (newV.budgetReportRepurchaseInfo.length > 1) {
-            this.showDelRepurchase = true
-          } else {
-            this.showDelRepurchase = false
-          }
+
+        if (newV.budgetReportRepurchaseInfo.length > 1) {
+          this.showDelRepurchase = true
+        } else {
+          this.showDelRepurchase = false
         }
       },
       deep: true

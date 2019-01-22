@@ -17,18 +17,20 @@
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 
   <!-- 预算报告-创建 抽屉 -->
-  Drawer(:closable="true",width="700",v-model="drawerCreatBudgetReport",title="预算报告",@on-close="closeDrawer",@on-visible-change="drawerChange",:mask-closable="maskClosable")
+  Drawer(:closable="true",width="700",v-model="drawerCreatBudgetReport",title="预算报告",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-creat-budget-report(
       v-if="drawerCreatBudgetReport",
-      @refreshData="searchListData"
+      @refreshData="searchListData",
+      :on-close="closeDrawer"
     )
 
   <!-- 预算报告-修改 抽屉 -->
-  Drawer(:closable="true",width="700",v-model="drawerModifyBudgetReport",title="预算报告",@on-close="closeDrawer",@on-visible-change="drawerChange",:mask-closable="maskClosable")
+  Drawer(:closable="true",width="700",v-model="drawerModifyBudgetReport",title="预算报告",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-modify-budget-report(
       v-if="drawerModifyBudgetReport",
       :reportId="reportId",
-      @refreshData="searchListData"
+      @refreshData="searchListData",
+      :on-close="closeDrawer"
     )
 </template>
 
@@ -116,7 +118,8 @@ export default {
   },
   methods: {
     closeDrawer () {
-
+      this.drawerCreatBudgetReport = false
+      this.drawerModifyBudgetReport = false
     },
     showModifyReport (id) {
       this.reportId = id
@@ -160,7 +163,10 @@ export default {
       this.getList(this.getListParam({pageNum: curPage}))
     },
     drawerChange () {
-
+      // 层关闭，刷新数据
+      if (!this.drawerCreatBudgetReport && !this.drawerModifyBudgetReport) {
+        this.searchListData()
+      }
     },
     getListParam (obj) {
       this.page.pageNo = obj.pageNum

@@ -43,7 +43,7 @@ export default {
   },
   data () {
     return {
-      value: '1',
+      value: '',
       showError: false,
       errorText: `请选择${this.label}！`,
       param: {}
@@ -74,9 +74,7 @@ export default {
   },
   watch: {
     defaultValue (val) {
-      if (val !== '') {
-        this.value = val
-      }
+      this.value = val
     }
   }
 }
