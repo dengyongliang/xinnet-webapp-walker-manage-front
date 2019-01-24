@@ -121,47 +121,47 @@ export default {
       this.budgetData.customerId = obj.value
     },
     domainSuffixNormalChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNormalInfo[index], 'domainSuffix', this.$refs[ref][0].value)
     },
     priceNormalChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNormalInfo[index], 'price', this.$refs[ref][0].value)
     },
     budgetNumberNormalChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNormalInfo[index], 'budgetNumber', this.$refs[ref][0].value)
     },
     domainSuffixNewChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNewInfo[index], 'domainSuffix', this.$refs[ref][0].value)
     },
     priceNewChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNewInfo[index], 'price', this.$refs[ref][0].value)
     },
     budgetNumberNewChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNewInfo[index], 'budgetNumber', this.$refs[ref][0].value)
     },
     domainNameChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'domainName', this.$refs[ref][0].value)
     },
     budgetPriceChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'budgetPrice', this.$refs[ref][0].value)
     },
     reasonChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'reason', this.$refs[ref][0].value)
     },

@@ -1,14 +1,15 @@
 <template lang="pug">
   Form.compCreatBudgetReport(:label-width="150",)
     FormItem(label="客户：")
-      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",:defaultValue="budgetData.customerId.toString()", :on-parentmethod="customerChange")
+      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",:defaultValue="budgetData.customerId.toString()", :disabled="true")
+    input(ref="reportId", :value="budgetData.reportId", type="hidden")
     FormItem(label="预算周期：")
       comp-date-picker(label="预算周期", ref="time", :on-parentmethod="dataChange", :defaultValue="[budgetData.beginTime, budgetData.endTime]")
     div.secT
       span.t 通用顶级域名注册
       comp-checkbox(:list="listCheckbox1", ref="budgetType1", :on-parentmethod="changeNormal", :defaultValue="defaultNormal")
     table.table1
-      tr(v-for="(item, index) in budgetData.budgetReportNormalInfo", v-if="item.budgetType * 1 === 1")
+      tr(v-for="(item, index) in budgetData.budgetReportNormalInfo", v-show="item.operatorType !== 'delete'")
         td.col1
           comp-input(:name="'domainSuffixNormal_' + index" ,label="后缀：", :ref="'domainSuffixNormal_' + index", :defaultValue="item.domainSuffix.toString()", styles="width: 80px;", :on-parentmethod="domainSuffixNormalChange")
             span(slot="left", style="display:inline-block;margin-right: 3px") .
@@ -26,7 +27,7 @@
       span.t 新顶级域名注册
       comp-checkbox(:list="listCheckbox2", ref="budgetType2", :on-parentmethod="changeNew", :defaultValue="defaultNew")
     table.table1
-      tr(v-for="(item, index) in budgetData.budgetReportNewInfo", v-if="item.budgetType * 1 === 2")
+      tr(v-for="(item, index) in budgetData.budgetReportNewInfo", v-show="item.operatorType !== 'delete'")
         td.col1
           comp-input(:name="'domainSuffixNew_' + index", label="后缀：", :ref="'domainSuffixNew_' + index", :defaultValue="item.domainSuffix.toString()", styles="width: 80px;", :on-parentmethod="domainSuffixNewChange")
             span(slot="left", style="display:inline-block;margin-right: 3px") .
@@ -44,12 +45,12 @@
       span.t 域名回购
       comp-checkbox(:list="listCheckbox3", ref="budgetType3", :on-parentmethod="changeRepurchase", :defaultValue="defaultRepurchase")
     table.table2
-      tr(v-for="(item, index) in budgetData.budgetReportRepurchaseInfo")
+      tr(v-for="(item, index) in budgetData.budgetReportRepurchaseInfo", v-show="item.operatorType !== 'delete'")
         td.col1
-          comp-input(:name="'domainName_' + index", label="域名：", :ref="'domainName_' + index", :defaultValue="item.domainName.toString()", styles="width: 171px;", :on-parentmethod="domainNameChange")
-          comp-input(:name="'budgetPrice_' + index", label="预估价格：", :ref="'budgetPrice_' + index", :defaultValue="item.budgetPrice.toString()", styles="width: 171px;", validate="money", :on-parentmethod="budgetPriceChange")
+          comp-input(:name="'domainName_' + index", label="域名：", :ref="'domainName_' + index", :defaultValue="item.domainName.toString()", styles="width: 169px;", :on-parentmethod="domainNameChange")
+          comp-input(:name="'budgetPrice_' + index", label="预估价格：", :ref="'budgetPrice_' + index", :defaultValue="item.budgetPrice.toString()", styles="width: 169px;", validate="money", :on-parentmethod="budgetPriceChange")
             span(slot="right") 元
-          comp-input(:name="'reason_' + index", label="域回购原因：", :ref="'reason_' + index", :defaultValue="item.reason.toString()", styles="width: 445px;", :maxLength="30", :on-parentmethod="reasonChange")
+          comp-input(:name="'reason_' + index", label="域回购原因：", :ref="'reason_' + index", :defaultValue="item.reason.toString()", styles="width: 435px;", :maxLength="30", :on-parentmethod="reasonChange")
         td.col2
           a(href="javascript:;", @click="delRepurchase(index)", v-show="showDelRepurchase") 删除
           a(href="javascript:;", @click="addRepurchase", v-show="showAddRepurchase && index===budgetData.budgetReportRepurchaseInfo.length-1") 增加
@@ -86,7 +87,7 @@ export default {
     return {
       loadingBtn: false,
       budgetData: {
-        customerId: 0,
+        customerId: '',
         beginTime: '',
         endTime: '',
         budgetReportNormalInfo: [],
@@ -129,51 +130,48 @@ export default {
     }
   },
   methods: {
-    customerChange (obj) {
-      this.budgetData.customerId = obj.value
-    },
     domainSuffixNormalChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNormalInfo[index], 'domainSuffix', this.$refs[ref][0].value)
     },
     priceNormalChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNormalInfo[index], 'price', this.$refs[ref][0].value)
     },
     budgetNumberNormalChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNormalInfo[index], 'budgetNumber', this.$refs[ref][0].value)
     },
     domainSuffixNewChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNewInfo[index], 'domainSuffix', this.$refs[ref][0].value)
     },
     priceNewChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNewInfo[index], 'price', this.$refs[ref][0].value)
     },
     budgetNumberNewChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportNewInfo[index], 'budgetNumber', this.$refs[ref][0].value)
     },
     domainNameChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'domainName', this.$refs[ref][0].value)
     },
     budgetPriceChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'budgetPrice', this.$refs[ref][0].value)
     },
     reasonChange (vm) {
-      let index = vm.name.split("_")[1]
+      let index = vm.name.split('_')[1]
       let ref = vm.name
       this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'reason', this.$refs[ref][0].value)
     },
@@ -188,133 +186,134 @@ export default {
     },
     addNormal () {
       let data = {
-        "id": 0,
-        "budgetType": '1',
-        "domainSuffix": '',
-        "price": '',
-        "budgetNumber": '',
-        "domainName": '',
-        "budgetPrice": '',
-        "reason": '',
-        "reportId": 0,
-        "createTime": '',
+        'id': '',
+        'budgetType': '1',
+        'domainSuffix': '',
+        'price': '',
+        'budgetNumber': '',
+        'domainName': '',
+        'budgetPrice': '',
+        'reason': '',
+        'reportId': 0,
+        'createTime': '',
         'operatorType': 'new'
       }
       this.budgetData.budgetReportNormalInfo.push(data)
     },
     addNew () {
       let data = {
-        "id": 0,
-        "budgetType": '2',
-        "domainSuffix": '',
-        "price": '',
-        "budgetNumber": '',
-        "domainName": '',
-        "budgetPrice": '',
-        "reason": '',
-        "reportId": 0,
-        "createTime": '',
+        'id': '',
+        'budgetType': '2',
+        'domainSuffix': '',
+        'price': '',
+        'budgetNumber': '',
+        'domainName': '',
+        'budgetPrice': '',
+        'reason': '',
+        'reportId': 0,
+        'createTime': '',
         'operatorType': 'new'
       }
       this.budgetData.budgetReportNewInfo.push(data)
     },
     addRepurchase () {
       let data = {
-        "id": 0,
-        "budgetType": '3',
-        "domainSuffix": '',
-        "price": '',
-        "budgetNumber": '',
-        "domainName": '',
-        "budgetPrice": '',
-        "reason": '',
-        "reportId": 0,
-        "createTime": '',
+        'id': '',
+        'budgetType': '3',
+        'domainSuffix': '',
+        'price': '',
+        'budgetNumber': '',
+        'domainName': '',
+        'budgetPrice': '',
+        'reason': '',
+        'reportId': 0,
+        'createTime': '',
         'operatorType': 'new'
       }
       this.budgetData.budgetReportRepurchaseInfo.push(data)
     },
     delNormal (index) {
-      console.log(this.budgetData.budgetReportNormalInfo)
-      if (this.budgetData.budgetReportNormalInfo[index].id === 0) {
+      if (this.budgetData.budgetReportNormalInfo[index].id === '') {
         this.budgetData.budgetReportNormalInfo.splice(index, 1)
       } else {
-        let params = {
-          param: this.budgetData.budgetReportNormalInfo[index],
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.budgetData.budgetReportNormalInfo.splice(index, 1)
-              // this.$delete(this.budgetData.budgetReportNormalInfo, index)
-              this.$Message.success('删除成功')
-            } else {
-              this.$Message.error('删除失败')
-            }
-          }
-        }
-        params.param.operatorType = 'delete'
-        this.updateBudgetReport(params)
+        this.$set(this.budgetData.budgetReportNormalInfo[index], 'operatorType', 'delete')
       }
     },
     delNew (index) {
-      if (this.budgetData.budgetReportNewInfo[index].id === 0) {
+      if (this.budgetData.budgetReportNewInfo[index].id === '') {
         this.budgetData.budgetReportNewInfo.splice(index, 1)
       } else {
-        let params = {
-          param: this.budgetData.budgetReportNewInfo[index],
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.budgetData.budgetReportNewInfo.splice(index, 1)
-              this.$Message.success('删除成功')
-            } else {
-              this.$Message.error('删除失败')
-            }
-          }
-        }
-        params.param.operatorType = 'delete'
-        this.updateBudgetReport(params)
+        this.$set(this.budgetData.budgetReportNewInfo[index], 'operatorType', 'delete')
       }
     },
     delRepurchase (index) {
-      if (this.budgetData.budgetReportRepurchaseInfo[index].id === 0) {
+      if (this.budgetData.budgetReportRepurchaseInfo[index].id === '') {
         this.budgetData.budgetReportRepurchaseInfo.splice(index, 1)
       } else {
-        let params = {
-          param: this.budgetData.budgetReportRepurchaseInfo[index],
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.budgetData.budgetReportRepurchaseInfo.splice(index, 1)
-              this.$Message.success('删除成功')
-            } else {
-              this.$Message.error('删除失败')
-            }
-          }
-        }
-        params.param.operatorType = 'delete'
-        this.updateBudgetReport(params)
+        this.$set(this.budgetData.budgetReportRepurchaseInfo[index], 'operatorType', 'delete')
       }
     },
     changeNormal (obj) {
       if (!obj.value.length) {
-        this.addNormal()
+        if (this.budgetData.budgetReportNormalInfo.length) {
+          this.budgetData.budgetReportNormalInfo = this.budgetData.budgetReportNormalInfo.map((v) => {
+            v.operatorType = 'update'
+            return v
+          })
+        } else {
+          this.addNormal()
+        }
       } else {
-        this.budgetData.budgetReportNormalInfo = []
+        let arr = []
+        this.budgetData.budgetReportNormalInfo.forEach((item, index, array) => {
+          if (item.id !== '') {
+            item.operatorType = 'delete'
+            arr.push(item)
+          }
+        })
+        this.budgetData.budgetReportNormalInfo = arr
       }
     },
     changeNew (obj) {
       if (!obj.value.length) {
-        this.addNew()
+        if (this.budgetData.budgetReportNewInfo.length) {
+          this.budgetData.budgetReportNewInfo = this.budgetData.budgetReportNewInfo.map((v) => {
+            v.operatorType = 'update'
+            return v
+          })
+        } else {
+          this.addNew()
+        }
       } else {
-        this.budgetData.budgetReportNewInfo = []
+        let arr = []
+        this.budgetData.budgetReportNewInfo.forEach((item, index, array) => {
+          if (item.id !== '') {
+            item.operatorType = 'delete'
+            arr.push(item)
+          }
+        })
+        this.budgetData.budgetReportNewInfo = arr
       }
     },
     changeRepurchase (obj) {
       if (!obj.value.length) {
-        this.addRepurchase()
+        if (this.budgetData.budgetReportRepurchaseInfo.length) {
+          this.budgetData.budgetReportRepurchaseInfo = this.budgetData.budgetReportRepurchaseInfo.map((v) => {
+            v.operatorType = 'update'
+            return v
+          })
+        } else {
+          this.addRepurchase()
+        }
       } else {
-        this.budgetData.budgetReportRepurchaseInfo = []
+        let arr = []
+        this.budgetData.budgetReportRepurchaseInfo.forEach((item, index, array) => {
+          if (item.id !== '') {
+            item.operatorType = 'delete'
+            arr.push(item)
+          }
+        })
+        this.budgetData.budgetReportRepurchaseInfo = arr
       }
     },
     formSubmit () {
@@ -325,25 +324,32 @@ export default {
       ]
       if (this.budgetData.budgetReportNormalInfo.length) {
         this.budgetData.budgetReportNormalInfo.map((v, i) => {
-          validataItem.push(this.$refs['domainSuffixNormal_' + i][0])
-          validataItem.push(this.$refs['priceNormal_' + i][0])
-          validataItem.push(this.$refs['budgetNumberNormal_' + i][0])
+          if (v.operatorType !== 'delete') {
+            validataItem.push(this.$refs['domainSuffixNormal_' + i][0])
+            validataItem.push(this.$refs['priceNormal_' + i][0])
+            validataItem.push(this.$refs['budgetNumberNormal_' + i][0])
+          }
         })
       }
       if (this.budgetData.budgetReportNewInfo.length) {
         this.budgetData.budgetReportNewInfo.map((v, i) => {
-          validataItem.push(this.$refs['domainSuffixNew_' + i][0])
-          validataItem.push(this.$refs['priceNew_' + i][0])
-          validataItem.push(this.$refs['budgetNumberNew_' + i][0])
+          if (v.operatorType !== 'delete') {
+            validataItem.push(this.$refs['domainSuffixNew_' + i][0])
+            validataItem.push(this.$refs['priceNew_' + i][0])
+            validataItem.push(this.$refs['budgetNumberNew_' + i][0])
+          }
         })
       }
       if (this.budgetData.budgetReportRepurchaseInfo.length) {
         this.budgetData.budgetReportRepurchaseInfo.map((v, i) => {
-          validataItem.push(this.$refs['domainName_' + i][0])
-          validataItem.push(this.$refs['budgetPrice_' + i][0])
-          validataItem.push(this.$refs['reason_' + i][0])
+          if (v.operatorType !== 'delete') {
+            validataItem.push(this.$refs['domainName_' + i][0])
+            validataItem.push(this.$refs['budgetPrice_' + i][0])
+            validataItem.push(this.$refs['reason_' + i][0])
+          }
         })
       }
+      console.log(validataItem)
       let result = validateFormResult(validataItem)
       if (result) {
         let params = {
@@ -391,9 +397,8 @@ export default {
       }
     }
     this.queryClientList(params)
-  },
-  mounted () {
-    let params = {
+
+    let params2 = {
       param: {
         reportId: this.reportId
       },
@@ -404,6 +409,7 @@ export default {
           let budgetReportNewInfo = []
           let budgetReportRepurchaseInfo = []
           this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId)
+          this.$set(this.budgetData, 'reportId', response.data.data.budgetReportInfo.id)
           this.$set(this.budgetData, 'beginTime', response.data.data.budgetReportInfo.budgetCycleStart)
           this.$set(this.budgetData, 'endTime', response.data.data.budgetReportInfo.budgetCycleEnd)
           if (response.data.data.budgetReportDetailList.length) {
@@ -439,24 +445,45 @@ export default {
         }
       }
     }
-    this.queryBudgetReportDetail(params)
+    this.queryBudgetReportDetail(params2)
+  },
+  mounted () {
+
   },
   watch: {
     budgetData: {
       handler (newV, oldV) {
-        if (newV.budgetReportNormalInfo.length > 1) {
+        let _normal = 0
+        let _new = 0
+        let _repurchase = 0
+        newV.budgetReportNormalInfo.map((v) => {
+          if (v.operatorType !== 'delete') {
+            _normal ++
+          }
+        })
+        newV.budgetReportNewInfo.map((v) => {
+          if (v.operatorType !== 'delete') {
+            _new ++
+          }
+        })
+        newV.budgetReportRepurchaseInfo.map((v) => {
+          if (v.operatorType !== 'delete') {
+            _repurchase ++
+          }
+        })
+        if (_normal > 1) {
           this.showDelNormal = true
         } else {
           this.showDelNormal = false
         }
 
-        if (newV.budgetReportNewInfo.length > 1) {
+        if (_new > 1) {
           this.showDelNew = true
         } else {
           this.showDelNew = false
         }
 
-        if (newV.budgetReportRepurchaseInfo.length > 1) {
+        if (_repurchase > 1) {
           this.showDelRepurchase = true
         } else {
           this.showDelRepurchase = false
