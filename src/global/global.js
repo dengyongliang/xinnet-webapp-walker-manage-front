@@ -26,14 +26,6 @@ const IS_MONEY_AVAILABLE = (val) => {
     return true
   }
 }
-const CRT_TIME_FORMAT = (val) => {
-  if (val != null) {
-    var date = new Date(val)
-    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-  } else {
-    return ''
-  }
-}
 
 export default
 {
@@ -41,6 +33,5 @@ export default
   regPw,
   IS_PHONE_AVAILABLE,
   IS_EMAIL_AVAILABLE,
-  IS_MONEY_AVAILABLE,
-  CRT_TIME_FORMAT
+  IS_MONEY_AVAILABLE
 }

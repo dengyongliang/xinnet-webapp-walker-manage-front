@@ -66,6 +66,7 @@ import compInput from './compInput'
 import compSelect from './compSelect'
 import compCheckbox from './compCheckbox'
 import compDatePicker from './compDatePicker'
+import moment from 'moment'
 export default {
   components: {
     compInput,
@@ -167,8 +168,8 @@ export default {
     },
     dataChange (val) {
       if (val.length === 2) {
-        this.budgetData.beginTime = val[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[0]) + ' 00:00:00' : ''
-        this.budgetData.endTime = val[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[1]) + ' 00:00:00' : ''
+        this.budgetData.beginTime = val[0] !== '' ? moment(val[0]).format('YYYY-MM-DD') + ' 00:00:00' : ''
+        this.budgetData.endTime = val[1] !== '' ? moment(val[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       } else {
         this.budgetData.beginTime = ''
         this.budgetData.endTime = ''

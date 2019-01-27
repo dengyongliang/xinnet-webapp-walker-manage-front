@@ -1,7 +1,7 @@
 <template lang="pug">
   Form.compCreatBudgetReport(:label-width="150",)
     FormItem(label="客户：")
-      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",:defaultValue="budgetData.customerId.toString()", :disabled="true")
+      comp-select(name='customerId',label="客户", :list="listClient",ref="customerId",:defaultValue="budgetData.customerId", :disabled="true")
     input(ref="reportId", :value="budgetData.reportId", type="hidden")
     FormItem(label="预算周期：")
       comp-date-picker(label="预算周期", ref="time", :on-parentmethod="dataChange", :defaultValue="[budgetData.beginTime, budgetData.endTime]")
@@ -67,6 +67,7 @@ import compInput from './compInput'
 import compSelect from './compSelect'
 import compCheckbox from './compCheckbox'
 import compDatePicker from './compDatePicker'
+import moment from 'moment'
 export default {
   components: {
     compInput,
@@ -177,8 +178,8 @@ export default {
     },
     dataChange (val) {
       if (val.length === 2) {
-        this.budgetData.beginTime = val[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[0]) + ' 00:00:00' : ''
-        this.budgetData.endTime = val[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(val[1]) + ' 00:00:00' : ''
+        this.budgetData.beginTime = val[0] !== '' ? moment(val[0]).format('YYYY-MM-DD') + ' 00:00:00' : ''
+        this.budgetData.endTime = val[1] !== '' ? moment(val[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       } else {
         this.budgetData.beginTime = ''
         this.budgetData.endTime = ''
@@ -408,7 +409,7 @@ export default {
           let budgetReportNormalInfo = []
           let budgetReportNewInfo = []
           let budgetReportRepurchaseInfo = []
-          this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId)
+          this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId.toString())
           this.$set(this.budgetData, 'reportId', response.data.data.budgetReportInfo.id)
           this.$set(this.budgetData, 'beginTime', response.data.data.budgetReportInfo.budgetCycleStart)
           this.$set(this.budgetData, 'endTime', response.data.data.budgetReportInfo.budgetCycleEnd)
@@ -458,17 +459,17 @@ export default {
         let _repurchase = 0
         newV.budgetReportNormalInfo.map((v) => {
           if (v.operatorType !== 'delete') {
-            _normal ++
+            _normal++
           }
         })
         newV.budgetReportNewInfo.map((v) => {
           if (v.operatorType !== 'delete') {
-            _new ++
+            _new++
           }
         })
         newV.budgetReportRepurchaseInfo.map((v) => {
           if (v.operatorType !== 'delete') {
-            _repurchase ++
+            _repurchase++
           }
         })
         if (_normal > 1) {

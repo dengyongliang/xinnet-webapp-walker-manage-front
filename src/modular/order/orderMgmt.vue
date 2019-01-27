@@ -54,6 +54,7 @@
 import { mapActions } from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
+import moment from 'moment'
 export default {
   components: {
   },
@@ -275,22 +276,6 @@ export default {
       this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
     },
     exportOrder () {
-      // let params = {
-      //  param: {
-      //    createTimeBegin: this.param.createTime[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[0]) : '',
-      //    createTimeEnd: this.param.createTime[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[1]) : '',
-      //    orderGoodsInfo: this.param.orderGoodsInfo,
-      //    orderGoodsType: this.param.orderGoodsType,
-      //    orderMode: this.param.orderMode,
-      //    orderPayType: this.param.orderPayType,
-      //    orderType: this.param.orderType
-      //   },
-      //  callback: function (response) {
-
-      //  }
-      // }
-      // 导出
-      // this.exportOrderList(params)
       this.$refs.exportForm.submit()
     },
     queryOrderListParam (obj) {
@@ -302,8 +287,8 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          createTimeBegin: this.param.createTime[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[0]) : '',
-          createTimeEnd: this.param.createTime[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[1]) : '',
+          createTimeBegin: this.param.createTime[0] !== '' ? moment(this.param.createTime[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          createTimeEnd: this.param.createTime[1] !== '' ? moment(this.param.createTime[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
           orderGoodsInfo: this.param.orderGoodsInfo,
           orderGoodsType: this.param.orderGoodsType,
           orderMode: this.param.orderMode,

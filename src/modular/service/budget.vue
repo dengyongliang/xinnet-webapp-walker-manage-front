@@ -39,6 +39,7 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compCreatBudgetReport from '@/components/compCreatBudgetReport'
 import compModifyBudgetReport from '@/components/compModifyBudgetReport'
+import moment from 'moment'
 export default {
   components: {
     compCreatBudgetReport,
@@ -52,7 +53,12 @@ export default {
         {
           title: '创建时间',
           key: 'createTime',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {}, moment(this.list[params.index].createTime).format('YYYY-MM-DD HH:mm:ss'))
+            ])
+          }
         },
         {
           title: '企业名称',
@@ -69,7 +75,7 @@ export default {
           className: 'col5',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, `${this.list[params.index].budgetCycleStart}至${this.list[params.index].budgetCycleStart}`)
+              h('span', {}, `${moment(this.list[params.index].budgetCycleStart).format('YYYY-MM-DD HH:mm:ss')}至${moment(this.list[params.index].budgetCycleEnd).format('YYYY-MM-DD HH:mm:ss')}`)
             ])
           }
         },
