@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 export default {
   state: {
     myUserInfo: {
@@ -90,10 +90,10 @@ export default {
       rest.post(links.GET_USER_LIST_DATA, JSON.stringify(params.param), params.callback)
     },
     [types.QUERY_CLIENT] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT, params.param, params.callback)
+      rest.post(links.QUERY_CLIENT, params.param, params.callback)
     },
     [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT_LIST, params.param, params.callback)
+      rest.post(links.QUERY_CLIENT_LIST, params.param, params.callback)
     },
     [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
       rest.post(links.QUERY_COMPANYS, params.param, params.callback)
