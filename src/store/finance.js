@@ -8,37 +8,37 @@ export default {
   },
   actions: {
     [types.GET_BILL_LIST] ({ commit, rootState }, params) {
-      rest.get(links.GET_BILL_LIST, params.param)
+      rest.post(links.GET_BILL_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.CONFIRM_BILL_CLEAN] ({ commit, rootState }, params) {
-      rest.get(links.CONFIRM_BILL_CLEAN, params.param)
+      rest.post(links.CONFIRM_BILL_CLEAN, params.param)
         .then(params.callback)
         .catch()
     },
     [types.GET_CLIENT_BALANCE_LIST] ({ commit, rootState }, params) {
-      rest.get(links.GET_CLIENT_BALANCE_LIST, params.param)
+      rest.post(links.GET_CLIENT_BALANCE_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.GET_PAYMENT_LIST] ({ commit, rootState }, params) {
-      rest.get(links.GET_PAYMENT_LIST, params.param)
+      rest.post(links.GET_PAYMENT_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.QUERY_CREDIT_MONEY_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CREDIT_MONEY_LIST, params.param)
+      rest.post(links.QUERY_CREDIT_MONEY_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.SUBMIT_ADD_CREDIT] ({ commit, rootState }, params) {
-      rest.get(links.SUBMIT_ADD_CREDIT, params.param)
+      rest.post(links.SUBMIT_ADD_CREDIT, params.param)
         .then(params.callback)
         .catch()
     },
     [types.SUBMIT_ADD_PAYMENT] ({ commit, rootState }, params) {
-      rest.get(links.SUBMIT_ADD_PAYMENT, params.param)
+      rest.post(links.SUBMIT_ADD_PAYMENT, params.param)
         .then(params.callback)
         .catch()
     }

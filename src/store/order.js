@@ -8,17 +8,17 @@ export default {
   },
   actions: {
     [types.QUERY_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_ORDER_LIST, params.param)
+      rest.post(links.QUERY_ORDER_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.EXPORT_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.get(links.EXPORT_ORDER_LIST, params.param)
+      rest.post(links.EXPORT_ORDER_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.SUBMIT_ADD_ORDER_ENTRY] ({ commit, rootState }, params) {
-      rest.get(links.SUBMIT_ADD_ORDER_ENTRY, params.param)
+      rest.post(links.SUBMIT_ADD_ORDER_ENTRY, params.param)
         .then(params.callback)
         .catch()
     }

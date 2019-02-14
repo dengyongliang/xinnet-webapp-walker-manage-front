@@ -96,27 +96,27 @@ export default {
         .catch()
     },
     [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState }, params) {
-      rest.get(links.CREAT_NEW_ACCOUNT, params.param)
+      rest.post(links.CREAT_NEW_ACCOUNT, params.param)
         .then(params.callback)
         .catch()
     },
     [types.GET_USER_LIST_DATA] ({ commit, rootState }, params) {
-      rest.get(links.GET_USER_LIST_DATA, params.param)
+      rest.post(links.GET_USER_LIST_DATA, params.param)
         .then(params.callback)
         .catch()
     },
     [types.QUERY_CLIENT] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT, params.param)
+      rest.post(links.QUERY_CLIENT, params.param)
         .then(params.callback)
         .catch()
     },
     [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT_LIST, params.param)
+      rest.post(links.QUERY_CLIENT_LIST, params.param)
         .then(params.callback)
         .catch()
     },
     [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_COMPANYS, params.param)
+      rest.post(links.QUERY_COMPANYS, params.param)
         .then(params.callback)
         .catch()
     }
