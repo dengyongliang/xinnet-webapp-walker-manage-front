@@ -87,6 +87,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('录入成功')
               // 添加成功，重新加载列表数据
@@ -115,6 +118,9 @@ export default {
           customerId: obj.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             let data = response.data.data
             this.showCompany = true
@@ -142,6 +148,9 @@ export default {
     let params = {
       param: {},
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           let data = response.data.data.list
           if (data.length > 0) {

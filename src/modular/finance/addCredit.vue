@@ -19,7 +19,7 @@
     comp-credit-add(
       @refreshData="searchListData",
       :on-close="closeDrawer",
-      v-if = "refresh",
+      v-if = "drawerCreditAdd",
       :customerName="customerName",
       :customerId="customerId"
     )
@@ -35,7 +35,6 @@ export default {
   },
   data () {
     return {
-      refresh: false,
       drawerCreditAdd: false,
       searchUserId: '',
       status: '',
@@ -111,6 +110,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.creditList = response.data.data.list
@@ -125,11 +127,6 @@ export default {
       return params
     },
     drawerChange () {
-      if (this.drawerCreditAdd) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
     },
     ...mapActions({
       queryCreditMoneyList: types.QUERY_CREDIT_MONEY_LIST

@@ -16,9 +16,9 @@
       span 客户管理
     ul.menuList
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_list")>=0')
-        router-link(to="/client/client") 客户管理
+        router-link(to="/client/mgmt") 客户管理
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0')
-        router-link(to="/client/clientAccount") 客户账号管理
+        router-link(to="/client/account") 客户账号管理
 
   .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order")>=0')
     h3.menuT.lv1

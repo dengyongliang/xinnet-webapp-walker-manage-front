@@ -5,7 +5,7 @@
     comp-input(name='userEmail',label="联系邮箱：",ref="userEmail",defaultValue="", validate="email")
     FormItem(label="角色：")
       RadioGroup(v-model="roleCode.value",@on-change="onChange",ref="roleCode")
-        Radio(v-for="item in rolesList",:label="item.roleCode") {{item.roleName}}
+        Radio(v-for="item in rolesList",:label="item.roleCode", :key="item.roleCode") {{item.roleName}}
       Alert(type="error",show-icon, style="display:inline-block",v-show="roleCode.error!=0") 请选择角色权限！
     comp-re-password(defaultValue="",ref="compRePassword",label1="请输入登录密码：",label2="重复输入密码：")
 
@@ -60,6 +60,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('添加成功')
               // 添加成功，重新加载用户列表数据

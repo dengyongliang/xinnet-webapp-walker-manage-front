@@ -70,6 +70,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('预付款修改成功！')
               this.$emit('refreshData')
@@ -98,6 +101,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             if (response.data.data !== null) {
               this.customerId = response.data.data.id

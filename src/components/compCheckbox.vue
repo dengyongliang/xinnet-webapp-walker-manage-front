@@ -1,7 +1,7 @@
 <template lang="pug">
 div.compCheckbox(style="display:inline-block")
   CheckboxGroup(v-model="value", @on-change="onChange",)
-    Checkbox(v-for="item in list", :label="item.label")
+    Checkbox(v-for="item in list", :label="item.label", :key="item.label")
       span {{item.value}}
 </template>
 

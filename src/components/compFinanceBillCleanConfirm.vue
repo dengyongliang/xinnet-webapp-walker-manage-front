@@ -52,6 +52,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.$Message.success('结算确认成功')
             // 添加成功，重新加载列表数据

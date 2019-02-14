@@ -5,10 +5,20 @@ export default {
   },
   children: [
     {
-      path: 'my',
-      name: 'ACCOUNT_MY',
+      path: '/',
+      name: 'account_my',
       component (resolve) {
-        return require(['@/modular/accountMy'], resolve)
+        return require(['@/modular/account/accountMy'], resolve)
+      },
+      meta: {
+        title: '我的账号'
+      }
+    },
+    {
+      path: 'my',
+      name: 'account_my',
+      component (resolve) {
+        return require(['@/modular/account/accountMy'], resolve)
       },
       meta: {
         title: '我的账号'
@@ -16,9 +26,9 @@ export default {
     },
     {
       path: 'mgmt',
-      name: 'ACCOUNT_MGMT',
+      name: 'account_mgmt',
       component (resolve) {
-        return require(['@/modular/accountMgmt'], resolve)
+        return require(['@/modular/account/accountMgmt'], resolve)
       },
       meta: {
         title: '账号管理'

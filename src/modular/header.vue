@@ -27,6 +27,9 @@ export default {
     logout () {
       let params = {
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.$Message.success('登出成功')
             this.$router.replace({ path: '/login' })

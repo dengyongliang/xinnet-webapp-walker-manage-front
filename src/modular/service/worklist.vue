@@ -19,6 +19,7 @@
   <!-- 添加/修改 账户 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerClientMgmt",:title="drawerTitle",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-client-mgmt(
+      v-if="drawerClientMgmt",
       :status="status",
       @refreshData="searchClientData",
       :enterprise = "enterprise",
@@ -149,8 +150,7 @@ export default {
       this.getClientList(this.getClientListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     drawerChange () {
-      if (this.drawerClientMgmt) {
-      } else {
+      if (!this.drawerClientMgmt) {
         this.status = ''
       }
     },
@@ -203,6 +203,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.clientList = response.data.data.list

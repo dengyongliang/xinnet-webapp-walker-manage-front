@@ -20,7 +20,7 @@
     comp-payment-add(
       @refreshData="searchListData",
       :on-close="closeDrawer",
-      v-if = "refresh"
+      v-if = "drawerPaymentAdd"
     )
 </template>
 
@@ -34,7 +34,6 @@ export default {
   },
   data () {
     return {
-      refresh: false,
       searchUserId: '',
       columns: [
         {
@@ -95,11 +94,6 @@ export default {
       this.getPaymentList(this.getPaymentListParam({pageNum: curPage, userId: this.searchUserId}))
     },
     drawerChange () {
-      if (this.drawerPaymentAdd) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
     },
     showDrawerBillConfirm (param) {
       // 重置数据
@@ -123,6 +117,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.paymentList = response.data.data.list

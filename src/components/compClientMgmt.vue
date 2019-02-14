@@ -142,6 +142,9 @@ export default {
           status: status
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           this.$Modal.remove()
           if (response.data.code === '1000') {
             if (status === 0) {
@@ -205,6 +208,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               if (type === 'new') {
                 this.$Message.success('新建客户成功！')
@@ -257,6 +263,9 @@ export default {
     let params = {
       param: {},
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           let data = response.data.data
           if (data.length > 0) {

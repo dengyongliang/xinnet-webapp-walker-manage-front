@@ -1,7 +1,7 @@
 import * as types from './types'
-import rest from '../global/rest.js'
+import rest from '../global/http.js'
 import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+
 export default {
   state: {
   },
@@ -9,25 +9,39 @@ export default {
   },
   actions: {
     [types.GET_ADMIN_LIST_DATA] ({ commit, rootState }, params) {
-      rest.post(links.GET_ADMIN_LIST_DATA, JSON.stringify(params.param), params.callback)
+      rest.get(links.GET_ADMIN_LIST_DATA, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.GET_CLIENT_LIST_DATA] ({ commit, rootState }, params) {
-      rest.post(links.GET_CLIENT_LIST_DATA, JSON.stringify(params.param), params.callback)
+      rest.get(links.GET_CLIENT_LIST_DATA, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.CREAT_ADMIN] ({ commit, rootState }, params) {
-      rest.post(links.CREAT_ADMIN, JSON.stringify(params.param), params.callback)
+      rest.get(links.CREAT_ADMIN, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.CREAT_CLIENT] ({ commit, rootState }, params) {
-      rest.post(links.CREAT_CLIENT, JSON.stringify(params.param), params.callback)
+      rest.get(links.CREAT_CLIENT, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.MODIFY_CLIENT] ({ commit, rootState }, params) {
-      rest.post(links.MODIFY_CLIENT, JSON.stringify(params.param), params.callback)
+      rest.get(links.MODIFY_CLIENT, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.QUERY_BUTLER] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_BUTLER, JSON.stringify(params.param), params.callback)
+      rest.get(links.QUERY_BUTLER, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.SET_CUSTOMER_STATUS] ({ commit, rootState }, params) {
-      rest.post(links.SET_CUSTOMER_STATUS, JSON.stringify(params.param), params.callback)
+      rest.get(links.SET_CUSTOMER_STATUS, params.param)
+        .then(params.callback)
+        .catch()
     }
   }
 }

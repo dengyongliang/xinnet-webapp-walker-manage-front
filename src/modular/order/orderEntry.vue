@@ -18,7 +18,7 @@
   Drawer(:closable="true" width="640" v-model="drawerOrderEntry",title="录入订单",:mask-closable="maskClosable",@on-visible-change="drawerChange")
     comp-order-entry(
       @refreshData="searchListData",
-      v-if="refresh"
+      v-if="drawerOrderEntry"
     )
 </template>
 
@@ -32,7 +32,6 @@ export default {
   },
   data () {
     return {
-      refresh: false,
       orderGoodsInfo: '',
       columns: [
         {
@@ -154,11 +153,6 @@ export default {
       this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
     },
     drawerChange () {
-      if (this.drawerOrderEntry) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
     },
     queryOrderListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -175,6 +169,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.orderList = response.data.data.list

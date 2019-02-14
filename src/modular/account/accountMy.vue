@@ -20,11 +20,11 @@
 
   <!-- 修改密码 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyPw",@on-close="closeDrawerModifyPw",title="修改密码",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-password-modify(v-if="refresh",:userCode="myUserInfo.userCode")
+    comp-account-password-modify(v-if="drawerModifyPw",:userCode="myUserInfo.userCode")
 
   <!-- 修改信息 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyInfo",@on-close="closeDrawerModifyInfo",title="修改信息",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-info-modify(v-if="refresh",:userName="myUserInfo.userName",:userMobile="myUserInfo.userMobile",:userEmail="myUserInfo.userEmail",:userCode="myUserInfo.userCode", from="accountMy")
+    comp-account-info-modify(v-if="drawerModifyInfo",:userName="myUserInfo.userName",:userMobile="myUserInfo.userMobile",:userEmail="myUserInfo.userEmail",:userCode="myUserInfo.userCode", from="accountMy")
 
 </template>
 
@@ -39,7 +39,6 @@ export default {
   },
   data () {
     return {
-      refresh: false,
       showSpin: true,
       showCont: false,
       drawerModifyPw: false,
@@ -54,17 +53,10 @@ export default {
   },
   methods: {
     drawerChange () {
-      if (this.drawerModifyPw || this.drawerModifyInfo) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
     },
     closeDrawerModifyPw () {
-
     },
     closeDrawerModifyInfo () {
-
     }
   },
   computed: {

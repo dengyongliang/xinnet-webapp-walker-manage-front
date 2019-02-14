@@ -93,6 +93,9 @@ export default {
           verificationCode: this.$refs.verificationCode.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           let data = response.data
           if (data.code === '1000') {
             window.location.href = '/'
@@ -129,32 +132,34 @@ export default {
         this.loadingBtn = false
         return false
       }
-      let vm = this
       let params = {
         param: {
           userCode: this.$refs.account.value
         },
-        callback: function (response) {
+        callback: (response) => {
+          if (!response) {
+            return false
+          }
           let data = response.data
           if (data.code === '1000') {
-            vm.verificationCode.success = true
-            vm.modalAlertInfo.show = true
-            vm.modalAlertInfo.title = '发送成功'
-            vm.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
+            this.verificationCode.success = true
+            this.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '发送成功'
+            this.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
           } else if (data.code === '100') {
-            vm.modalAlertInfo.show = true
-            vm.modalAlertInfo.title = '发送失败'
-            vm.modalAlertInfo.content = '手机号码错误'
+            this.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '发送失败'
+            this.modalAlertInfo.content = '手机号码错误'
           } else if (data.code === '200') {
-            vm.modalAlertInfo.show = true
-            vm.modalAlertInfo.title = '发送失败'
-            vm.modalAlertInfo.content = '短信验证码已超上限'
+            this.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '发送失败'
+            this.modalAlertInfo.content = '短信验证码已超上限'
           } else if (data.code === '300') {
-            vm.modalAlertInfo.title = '提示'
-            vm.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
-            vm.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '提示'
+            this.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
+            this.modalAlertInfo.show = true
           } else if (data.code === '900') {
-            vm.verificationCode.error = 4
+            this.verificationCode.error = 4
           }
         }
       }

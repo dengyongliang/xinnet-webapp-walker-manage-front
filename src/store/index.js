@@ -6,9 +6,8 @@ import account from './account.js'
 import finance from './finance.js'
 import order from './order.js'
 import service from './service.js'
-import rest from '../global/rest.js'
+import rest from '../global/http.js'
 import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
@@ -25,13 +24,19 @@ export default function makeStore () {
     },
     actions: {
       [types.LOGIN_VERIFICATIONCODE] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_VERIFICATIONCODE, JSON.stringify(params.param), params.callback)
+        rest.post(links.LOGIN_VERIFICATIONCODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.LOGIN_SUBMIT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_SUBMIT, JSON.stringify(params.param), params.callback)
+        rest.post(links.LOGIN_SUBMIT, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.LOGIN_OUT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_OUT, '', params.callback)
+        rest.post(links.LOGIN_OUT, '')
+          .then(params.callback)
+          .catch()
       }
     },
     getters: {

@@ -1,11 +1,11 @@
 <template lang="pug">
-  Modal.modalAddAccount(width="480", :status="isShow",v-model="showed",title="创建账户",:mask-closable="maskClosable",:footer-hide="true")
-    Form(:label-width="80")
-      comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName",:show="showed")
-      comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail",:show="showed", validate="email")
-    .footer
-      Button(@click="showed=false") 取消
-      Button(type="primary", @click="saveAccount",:loading="loadingBtn") 确定
+.compButlerAdd
+  Form(:label-width="80")
+    comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="userName")
+    comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="userEmail", validate="email")
+  .footer
+    Button(@click="close") 取消
+    Button(type="primary", @click="saveAccount",:loading="loadingBtn") 确定
 
 </template>
 <script>
@@ -25,13 +25,15 @@ export default {
   },
   data () {
     return {
-      showed: false,
       loadingBtn: false,
       userName: '',
       userEmail: ''
     }
   },
   methods: {
+    close () {
+      this.$emit('closeModal')
+    },
     saveAccount () {
       this.loadingBtn = true
       let result = validateFormResult([
@@ -47,9 +49,12 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('账号创建成功！')
-              this.showed = false
+              this.$emit('closeModal')
               // 重置账号列表
               this.$emit('refreshData')
             } else {
@@ -71,13 +76,6 @@ export default {
     })
   },
   computed: {
-    isShow () {
-      if (this.showModal) {
-        this.showed = true
-      } else {
-        this.showed = false
-      }
-    },
     ...mapState([
       'maskClosable'
     ])

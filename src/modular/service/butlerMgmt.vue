@@ -6,7 +6,7 @@
       span 搜索
       Input(style="width:200px",placeholder="姓名/用户名/邮箱/手机",name="searchUserId",ref="searchUserId",v-model.trim="searchUserId")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-      Button(@click="showModalAddAccount") + 添加账号
+      Button(@click="modalAddAccount=true") + 添加账号
 
   .secMain
     <!-- 列表主体 -->
@@ -17,7 +17,8 @@
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 
   <!-- 添加账户 弹窗 -->
-  comp-butler-add(ref="accountAdd",:showModal="modalAddAccount",@refreshData="searchListData")
+  Modal.modalAddAccount(width="480", v-model="modalAddAccount",title="创建账户",:mask-closable="maskClosable",:footer-hide="true")
+    comp-butler-add(ref="accountAdd",@refreshData="searchListData",@closeModal="closeModal",v-if="modalAddAccount")
 
   <!-- 详情 抽屉 -->
   Drawer(:closable="true",width="640",v-model="drawerDetail",title="管家账号",@on-close="closeDrawerDetail",@on-visible-change="drawerChange",:mask-closable="maskClosable")
@@ -31,7 +32,7 @@
       :qq="qq",
       :wx="wx",
       :status="status",
-      v-if="refresh",
+      v-if="drawerDetail",
       ref="accountModify",
       @refreshData="searchListData",
     )
@@ -144,17 +145,12 @@ export default {
         pagePages: 1,
         pageItems: 1
       },
-      refresh: false,
       detailData: {}
     }
   },
   methods: {
-    showModalAddAccount () {
-      // 触发数据变动，驱使弹层显示
+    closeModal () {
       this.modalAddAccount = false
-      setTimeout(() => {
-        this.modalAddAccount = true
-      }, 100)
     },
     delAdmin (customerNum, userCode) {
       if (customerNum) {
@@ -177,6 +173,9 @@ export default {
                 userCode: userCode
               },
               callback: (response) => {
+                if (!response) {
+                  return false
+                }
                 this.$Modal.remove()
                 if (response.data.code === '1000') {
                   this.$Message.success('删除成功')
@@ -207,11 +206,6 @@ export default {
     closeDrawerDetail () {
     },
     drawerChange () {
-      if (this.drawerDetail) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
     },
     getAdminListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -226,6 +220,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.adminList = response.data.data.list

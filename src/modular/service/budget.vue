@@ -48,7 +48,6 @@ export default {
   data () {
     return {
       value: '',
-      refresh: false,
       columns: [
         {
           title: '创建时间',
@@ -142,6 +141,9 @@ export default {
               reportId: id
             },
             callback: (response) => {
+              if (!response) {
+                return false
+              }
               this.$Modal.remove()
               if (response.data.code === '1000') {
                 this.$Message.success('删除成功')
@@ -187,6 +189,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.list = response.data.data.list

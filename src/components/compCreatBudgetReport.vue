@@ -266,6 +266,9 @@ export default {
           param: this.budgetData,
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('创建成功')
               this.onClose()
@@ -295,6 +298,9 @@ export default {
     let params = {
       param: {},
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           let data = response.data.data.list
           if (data.length > 0) {

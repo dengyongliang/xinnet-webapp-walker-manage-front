@@ -1,7 +1,7 @@
 <template lang="pug">
   div(style="display:inline-block")
     RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
-      Radio(v-for="item in list",:label="item.label") {{item.value}}
+      Radio(v-for="item in list",:label="item.label",:key="item.label") {{item.value}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 

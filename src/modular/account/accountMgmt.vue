@@ -17,16 +17,16 @@
 
   <!-- 新建账号 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerCreatAccount",@on-close="closeDrawerCreatAccount",title="新建账号",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-creat(v-if="refresh", @refreshData="searchListData")
+    comp-account-creat(v-if="drawerCreatAccount", @refreshData="searchListData")
 
   <!-- 修改密码 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyPw",@on-close="closeDrawerModifyPw",title="修改密码",:mask-closable="maskClosable",@on-visible-change="drawerChange")
-    comp-account-password-modify(v-if="refresh",:userCode="userCode", @refreshData="searchListData")
+    comp-account-password-modify(v-if="drawerModifyPw",:userCode="userCode", @refreshData="searchListData")
 
   <!-- 修改信息 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerModifyInfo",@on-close="closeDrawerModifyInfo",title="修改信息",:mask-closable="maskClosable",@on-visible-change="drawerChange")
     comp-account-info-modify(
-      v-if="refresh",
+      v-if="drawerModifyInfo",
       :detailData="detailData",
       @refreshData="searchListData",
       from="accountMgmt"
@@ -66,7 +66,7 @@ export default {
           key: 'userRoles',
           className: 'col2',
           render: (h, params) => {
-            if (this.userList[params.index].roles === null) {
+            if (!this.userList[params.index].roles) {
               return h('div', [
                 h('span', {}, '-')
               ])
@@ -165,11 +165,6 @@ export default {
       this.getUserListData(this.getUserListParam({pageNum: curPage, userCode: this.searchUserCode}))
     },
     drawerChange () {
-      if (this.drawerModifyPw || this.drawerModifyInfo || this.drawerCreatAccount) {
-        this.refresh = true
-      } else {
-        this.refresh = false
-      }
     },
     showModifyPw (param) {
       this.userCode = param.userCode
@@ -186,6 +181,9 @@ export default {
               userCode: userCode
             },
             callback: (response) => {
+              if (!response) {
+                return false
+              }
               this.$Modal.remove()
               if (response.data.code === '1000') {
                 this.$Message.success('删除成功')
@@ -229,6 +227,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.userList = response.data.data.list

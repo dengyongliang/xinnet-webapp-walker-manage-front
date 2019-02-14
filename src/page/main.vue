@@ -12,7 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '../store/types'
-import { emitter as restEmitter } from '../global/rest'
+import { emitter as restEmitter } from '../global/http'
 import menuBody from '../modular/menu'
 import headerBody from '../modular/header'
 export default {

@@ -5,7 +5,7 @@
     comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="detailData.userMobile", validate="mobile")
     FormItem(label="角色：")
       RadioGroup(v-model="roleId",@on-change="onChange",ref="roleId")
-        Radio(v-for="item in rolesList",:label="item.id") {{item.roleName}}
+        Radio(v-for="item in rolesList",:label="item.id", :key="item.id") {{item.roleName}}
     input(type="hidden",:value="detailData.userCode",ref="userCode")
     FormItem(label="")
       Button(type="primary",@click="btnModifyInfo",:loading="loadingBtn") 修改
@@ -60,6 +60,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('用户信息修改成功')
               // 重置store用户信息

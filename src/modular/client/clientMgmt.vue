@@ -48,7 +48,6 @@ export default {
   },
   data () {
     return {
-      refresh: false,
       drawerTitle: '',
       searchUserId: '',
       status: '',
@@ -229,6 +228,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           // console.log(response)
           if (response.data.code === '1000') {
             this.clientList = response.data.data.list
