@@ -10,17 +10,17 @@ export default {
     [types.QUERY_ORDER_LIST] ({ commit, rootState }, params) {
       rest.post(links.QUERY_ORDER_LIST, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.EXPORT_ORDER_LIST] ({ commit, rootState }, params) {
       rest.post(links.EXPORT_ORDER_LIST, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.SUBMIT_ADD_ORDER_ENTRY] ({ commit, rootState }, params) {
       rest.post(links.SUBMIT_ADD_ORDER_ENTRY, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     }
   }
 }

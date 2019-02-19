@@ -81,23 +81,31 @@ axios.defaults.headers = {'Content-Type': 'application/json; charset=utf-8'}
 //   },
 //   error => Promise.error(error)
 // )
-
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  NProgress.start()
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error)
+})
 // 响应拦截器
 axios.interceptors.response.use(
   // 请求成功
   response => {
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
+    NProgress.done()
     if (response.status === 200) {
       successHandle(response.data.code)
       return Promise.resolve(response)
+    } else {
+      return Promise.reject(response)
     }
-    // else {
-    //   return Promise.reject(response)
-    // }
   },
   // 请求失败
   error => {
+    NProgress.done()
     const { response } = error
     if (response) {
       // 请求已发出，但是不在2xx的范围
@@ -119,11 +127,9 @@ export default {
    * @param {Object} params [请求时携带的参数]
    */
   get (url, params) {
-    NProgress.start()
     return new Promise((resolve, reject) => {
       axios.get(url, params)
         .then(res => {
-          NProgress.done()
           resolve(res)
           // if (res && callback && typeof callback === 'function') {
           //   callback(res)
@@ -140,11 +146,9 @@ export default {
      * @param {Object} params [请求时携带的参数]
      */
   post (url, params) {
-    NProgress.start()
     return new Promise((resolve, reject) => {
       axios.post(url, JSON.stringify(params))
         .then(res => {
-          NProgress.done()
           resolve(res)
           // if (res && callback && typeof callback === 'function') {
           //   callback(res)

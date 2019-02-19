@@ -77,48 +77,48 @@ export default {
             rootState.showBodySpin = false
           }
         })
-        .catch()
+        .catch(() => {})
     },
     [types.SET_USER_PASSWORD] ({ commit, rootState }, params) {
       rest.post(links.SET_USER_PASSWORD, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.SET_USER_INFO] ({ commit, rootState }, params) {
       // /manage/user/updateUserInfo
       rest.post(links.SET_USER_INFO, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.DEL_USER] ({ dispatch, commit, rootState }, params) {
       rest.post(links.DEL_USER, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState }, params) {
       rest.post(links.CREAT_NEW_ACCOUNT, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.GET_USER_LIST_DATA] ({ commit, rootState }, params) {
       rest.post(links.GET_USER_LIST_DATA, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_CLIENT] ({ commit, rootState }, params) {
       rest.post(links.QUERY_CLIENT, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
       rest.post(links.QUERY_CLIENT_LIST, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
       rest.post(links.QUERY_COMPANYS, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     }
   }
 }

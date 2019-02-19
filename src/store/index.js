@@ -26,17 +26,17 @@ export default function makeStore () {
       [types.LOGIN_VERIFICATIONCODE] ({ commit, rootState }, params) {
         rest.post(links.LOGIN_VERIFICATIONCODE, params.param)
           .then(params.callback)
-          .catch()
+          .catch(() => {})
       },
       [types.LOGIN_SUBMIT] ({ commit, rootState }, params) {
         rest.post(links.LOGIN_SUBMIT, params.param)
           .then(params.callback)
-          .catch()
+          .catch(() => {})
       },
       [types.LOGIN_OUT] ({ commit, rootState }, params) {
         rest.post(links.LOGIN_OUT, '')
           .then(params.callback)
-          .catch()
+          .catch(() => {})
       }
     },
     getters: {
