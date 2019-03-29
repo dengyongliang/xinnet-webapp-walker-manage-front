@@ -56,7 +56,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.balanceList[params.index].creditBalance + ' 元')
+              }, this.balanceList[params.index].totalCreditBalance + ' 元')
             ])
           }
         },
@@ -67,7 +67,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.balanceList[params.index].totalCreditBalance + ' 元')
+              }, this.balanceList[params.index].creditBalance + ' 元')
             ])
           }
         }
