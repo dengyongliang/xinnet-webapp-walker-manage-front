@@ -43,7 +43,7 @@ export const SUBMIT_ADD_PAYMENT = '/manage/finance/addPayMoney' + suffix
 // 查询客户 一个
 export const QUERY_CLIENT = '/manage/customer/findCustomer' + suffix
 // 查询客户 多个
-export const QUERY_CLIENT_LIST = '/manage/customer/findCustomerList' + suffix
+export const FIND_CUSTOMER_LIST = '/manage/customer/findCustomerList' + suffix
 // 客户额度调整列表
 export const QUERY_CREDIT_MONEY_LIST = '/manage/finance/creditMoneyList' + suffix
 // 额度调整提交

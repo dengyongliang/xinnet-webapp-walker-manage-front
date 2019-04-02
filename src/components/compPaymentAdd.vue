@@ -64,28 +64,25 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            customerId: this.$refs.customerId.value,
-            payMoney: this.$refs.reMoney.value1
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('预付款修改成功！')
-              this.$emit('refreshData')
-            } else {
-              if (response.data.code === '100') {
-                this.$Message.error('客户账号异常！')
-              } else if (response.data.code === '400') {
-                this.$Message.error('结算失败！')
-              }
+          customerId: this.$refs.customerId.value,
+          payMoney: this.$refs.reMoney.value1
+        }
+        this.$store.dispatch('ADD_PAYMENT', params).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('预付款修改成功！')
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('客户账号异常！')
+            } else if (response.data.code === '400') {
+              this.$Message.error('结算失败！')
             }
           }
-        }
-        this.submitAddPayment(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -95,39 +92,29 @@ export default {
     },
     querySubmit () {
       this.loadingBtn = true
-      let params = {
-        param: {
-          customerCode: this.customerCode
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            if (response.data.data !== null) {
-              this.customerId = response.data.data.id
-              this.customerCode = response.data.data.code
-              this.customerName = response.data.data.name
-              this.payBalance = response.data.data.payBalance
-              this.showed = true
-              this.showErrorMoney = false
-              this.showErrorReMoney = false
-            } else {
-              this.$Message.error('查询不到指定信息')
-            }
-          } else {
-            this.showed = false
-            this.$Message.error('查询失败')
-          }
+      this.$store.dispatch('FIND_CUSTOMER', {customerCode: this.customerCode}).then((response) => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
         }
-      }
-      this.queryClient(params)
-    },
-    ...mapActions({
-      queryClient: types.QUERY_CLIENT,
-      submitAddPayment: types.SUBMIT_ADD_PAYMENT
-    })
+        if (response.data.code === '1000') {
+          if (response.data.data !== null) {
+            this.customerId = response.data.data.id
+            this.customerCode = response.data.data.code
+            this.customerName = response.data.data.name
+            this.payBalance = response.data.data.payBalance
+            this.showed = true
+            this.showErrorMoney = false
+            this.showErrorReMoney = false
+          } else {
+            this.$Message.error('查询不到指定信息')
+          }
+        } else {
+          this.showed = false
+          this.$Message.error('查询失败')
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
   },

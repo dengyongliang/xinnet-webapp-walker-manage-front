@@ -23,16 +23,6 @@ export default {
       meta: {
         title: '客户管理'
       }
-    },
-    {
-      path: 'account',
-      name: 'client_account',
-      component (resolve) {
-        return require(['@/modular/client/clientAccount'], resolve)
-      },
-      meta: {
-        title: '客户账号管理'
-      }
     }
   ]
 }

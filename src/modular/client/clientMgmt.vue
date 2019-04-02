@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import * as types from '@/store/types'
 import compClientMgmt from '@/components/compClientMgmt'
 export default {
@@ -169,11 +169,11 @@ export default {
       // 关闭 drawer弹出层
       this.drawerClientMgmt = false
       // 查询数据
-      this.getClientList(this.getClientListParam({pageNum: 1, userId: this.searchUserId}))
+      this.getClientList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getClientList(this.getClientListParam({pageNum: curPage, userId: this.searchUserId}))
+      this.getClientList(curPage)
     },
     drawerChange () {
     },
@@ -219,34 +219,31 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          customerCode: obj.userId
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.clientList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
+      let param = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        customerCode: this.searchUserId
+      }
+      return param
+    },
+    getClientList (curPage) {
+      this.$store.dispatch('QUERY_CLIENT_LIST', this.getClientListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.clientList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
           }
         }
-      }
-      return params
-    },
-    ...mapActions({
-      getClientList: types.GET_CLIENT_LIST_DATA
-    })
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState([
@@ -254,7 +251,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getClientList(this.getClientListParam({pageNum: 1, userId: this.searchUserId}))
+    this.getClientList(1)
   }
 }
 </script>

@@ -87,11 +87,11 @@ export default {
       // 关闭 drawer弹出层
       this.drawerPaymentAdd = false
       // 查询数据
-      this.getPaymentList(this.getPaymentListParam({pageNum: 1, userId: this.searchUserId}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getPaymentList(this.getPaymentListParam({pageNum: curPage, userId: this.searchUserId}))
+      this.queryList(curPage)
     },
     drawerChange () {
     },
@@ -104,38 +104,35 @@ export default {
       // 显示结算界面
       this.drawerBillConfirm = true
     },
-    getPaymentListParam (obj) {
+    queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          customerCode: obj.userId
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.paymentList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        customerCode: this.searchUserId
       }
       return params
     },
-    ...mapActions({
-      getPaymentList: types.GET_PAYMENT_LIST
-    })
+    queryList (curPage) {
+      this.$store.dispatch('QUERY_PAYMENT_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.paymentList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState([
@@ -143,7 +140,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getPaymentList(this.getPaymentListParam({pageNum: 1, userId: this.searchUserId}))
+    this.queryList(1)
   }
 }
 </script>

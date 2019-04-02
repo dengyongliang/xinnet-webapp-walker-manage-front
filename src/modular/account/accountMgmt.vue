@@ -158,11 +158,11 @@ export default {
       this.drawerModifyPw = false
       this.drawerModifyInfo = false
       this.drawerCreatAccount = false
-      this.getUserListData(this.getUserListParam({pageNum: 1, userCode: this.searchUserCode}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getUserListData(this.getUserListParam({pageNum: curPage, userCode: this.searchUserCode}))
+      this.queryList(curPage)
     },
     drawerChange () {
     },
@@ -176,33 +176,27 @@ export default {
         content: '<p>请确认是否要删除此账号！</p>',
         loading: true,
         onOk: () => {
-          let params = {
-            param: {
-              userCode: userCode
-            },
-            callback: (response) => {
-              if (!response) {
-                return false
-              }
-              this.$Modal.remove()
-              if (response.data.code === '1000') {
-                this.$Message.success('删除成功')
-                // 删除成功，重新加载用户列表数据
-                this.page.pageNo = 1
-                this.loadingTable = true
-                this.$store.dispatch(types.GET_USER_LIST_DATA, this.getUserListParam({pageNum: 1, userCode: this.searchUserCode}))
+          this.$store.dispatch('DEL_USER', {userCode: userCode}).then((response) => {
+            if (!response) {
+              return false
+            }
+            this.$Modal.remove()
+            if (response.data.code === '1000') {
+              this.$Message.success('删除成功')
+              // 删除成功，重新加载用户列表数据
+              this.page.pageNo = 1
+              this.loadingTable = true
+              this.queryList(1)
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
               } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else {
-                  this.$Message.error('删除失败')
-                }
+                this.$Message.error('删除失败')
               }
             }
-          }
-          this.delUser(params)
+          }).catch(() => {})
         },
         onCancel: () => {
         }
@@ -214,39 +208,35 @@ export default {
     },
     closeDrawerCreatAccount () {
     },
-    getUserListParam (obj) {
+    queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          userCode: obj.userCode
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.userList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
+      let param = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        userCode: this.searchUserCode
+      }
+      return param
+    },
+    queryList (curPage) {
+      this.$store.dispatch('QUERY_USER_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.userList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
           }
         }
-      }
-      return params
-    },
-    ...mapActions({
-      getUserListData: types.GET_USER_LIST_DATA,
-      delUser: types.DEL_USER
-    })
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -256,7 +246,7 @@ export default {
     })
   },
   beforeMount () {
-    this.getUserListData(this.getUserListParam({pageNum: 1, userCode: ''}))
+    this.queryList(1)
   },
   watch: {
   }

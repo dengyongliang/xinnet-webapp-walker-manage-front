@@ -169,30 +169,27 @@ export default {
           loading: true,
           onOk: () => {
             let params = {
-              param: {
-                userCode: userCode
-              },
-              callback: (response) => {
-                if (!response) {
-                  return false
-                }
-                this.$Modal.remove()
-                if (response.data.code === '1000') {
-                  this.$Message.success('删除成功')
-                  // 删除成功，重新加载列表数据
-                  this.searchListData()
+              userCode: userCode
+            }
+            this.$store.dispatch('DEL_USER', params).then((response) => {
+              if (!response) {
+                return false
+              }
+              this.$Modal.remove()
+              if (response.data.code === '1000') {
+                this.$Message.success('删除成功')
+                // 删除成功，重新加载列表数据
+                this.searchListData()
+              } else {
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户被锁定')
                 } else {
-                  if (response.data.code === '200') {
-                    this.$Message.error('用户不存在')
-                  } else if (response.data.code === '300') {
-                    this.$Message.error('用户被锁定')
-                  } else {
-                    this.$Message.error('删除失败')
-                  }
+                  this.$Message.error('删除失败')
                 }
               }
-            }
-            this.delUser(params)
+            }).catch(() => {})
           },
           onCancel: () => {
           }
@@ -201,49 +198,48 @@ export default {
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getAdminList(this.getAdminListParam({pageNum: curPage, userId: this.searchUserId}))
+      this.queryList(curPage)
     },
     closeDrawerDetail () {
     },
     drawerChange () {
     },
-    getAdminListParam (obj) {
+    queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          userId: obj.userId
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.adminList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        userId: this.searchUserId
       }
       return params
+    },
+    queryList (curPage) {
+      this.$store.dispatch('QUERY_BUTLER_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.adminList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
     },
     searchListData () {
       // 关闭 账号详情层
       this.drawerDetail = false
       // 查询数据
-      this.getAdminList(this.getAdminListParam({pageNum: 1, userId: this.searchUserId}))
+      this.queryList(1)
     },
     ...mapActions({
-      getAdminList: types.GET_ADMIN_LIST_DATA,
       delUser: types.DEL_USER
     })
   },
@@ -253,7 +249,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getAdminList(this.getAdminListParam({pageNum: 1, userId: this.searchUserId}))
+    this.queryList(1)
   }
 }
 </script>

@@ -137,31 +137,8 @@ export default {
     },
     closeButler (status) {
       let params = {
-        param: {
-          code: this.id,
-          status: status
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          this.$Modal.remove()
-          if (response.data.code === '1000') {
-            if (status === 0) {
-              this.customerStatus = 0
-              this.$Message.success('停用成功')
-            } else {
-              this.customerStatus = 1
-              this.$Message.success('启用成功')
-            }
-          } else {
-            if (status === 0) {
-              this.$Message.error('停用失败')
-            } else {
-              this.$Message.error('启用失败')
-            }
-          }
-        }
+        code: this.id,
+        status: status
       }
 
       this.$Modal.confirm({
@@ -169,7 +146,27 @@ export default {
         content: (status === 0 ? '确认是否要停用该客户？' : '确认是否要启用该客户？'),
         loading: true,
         onOk: () => {
-          this.setCustomerStatus(params)
+          this.$store.dispatch('SET_CUSTOMER_STATUS', params).then((response) => {
+            if (!response) {
+              return false
+            }
+            this.$Modal.remove()
+            if (response.data.code === '1000') {
+              if (status === 0) {
+                this.customerStatus = 0
+                this.$Message.success('停用成功')
+              } else {
+                this.customerStatus = 1
+                this.$Message.success('启用成功')
+              }
+            } else {
+              if (status === 0) {
+                this.$Message.error('停用失败')
+              } else {
+                this.$Message.error('启用失败')
+              }
+            }
+          }).catch(() => {})
         },
         onCancel: () => {
         }
@@ -194,29 +191,27 @@ export default {
         this.loadingBtn = false
       } else {
         let params = {
-          param: {
-            name: this.$refs.enterprise.value,
-            orgCode: this.$refs.orgCode.value,
-            accountPeriod: this.$refs.accountPeriod.value,
-            creditBalance: this.$refs.creditBalance.value,
-            customerUserId: this.$refs.customerUserId.value,
-            orgFile: this.$refs.orgFile.$refs.upload.fileList[0].file,
-            contactor: this.$refs.contactor.value,
-            mobile: this.$refs.mobile.value,
-            email: this.$refs.email.value,
-            tel: this.$refs.tel.value
-          },
-          callback: (response) => {
+          name: this.$refs.enterprise.value,
+          orgCode: this.$refs.orgCode.value,
+          accountPeriod: this.$refs.accountPeriod.value,
+          creditBalance: this.$refs.creditBalance.value,
+          customerUserId: this.$refs.customerUserId.value,
+          orgFile: this.$refs.orgFile.$refs.upload.fileList[0].file,
+          contactor: this.$refs.contactor.value,
+          mobile: this.$refs.mobile.value,
+          email: this.$refs.email.value,
+          tel: this.$refs.tel.value
+        }
+        if (type !== 'new') {
+          let id = this.$refs.id.value
+          params.code = id
+          this.$store.dispatch('UPDATE_CUSTOMER', params).then((response) => {
             this.loadingBtn = false
             if (!response) {
               return false
             }
             if (response.data.code === '1000') {
-              if (type === 'new') {
-                this.$Message.success('新建客户成功！')
-              } else {
-                this.$Message.success('修改客户成功！')
-              }
+              this.$Message.success('修改客户成功！')
               // 重置账号列表
               this.$emit('refreshData')
             } else {
@@ -228,57 +223,59 @@ export default {
               } else if (response.data.code === '300') {
                 this.$Message.error('用户被锁定')
               } else {
-                if (type === 'new') {
-                  this.$Message.error('新建客户失败！')
-                } else {
-                  this.$Message.error('修改客户失败！')
-                }
+                this.$Message.error('修改客户失败！')
               }
             }
-          }
-        }
-        if (type !== 'new') {
-          let id = this.$refs.id.value
-          params.param.code = id
-          this.modifyClient(params)
+          }).catch(() => {})
         } else {
-          this.creatClient(params)
+          this.$store.dispatch('CREATE_CUSTOMER', params).then((response) => {
+            this.loadingBtn = false
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.$Message.success('新建客户成功！')
+              // 重置账号列表
+              this.$emit('refreshData')
+            } else {
+              if (response.data.code === '100') {
+                this.$refs.enterprise.showValidateResult({text: '企业名称重复，请重新输入！'})
+                // vm.$Message.error('企业名称重复，请重新输入！')
+              } else if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else {
+                this.$Message.error('新建客户失败！')
+              }
+            }
+          }).catch(() => {})
         }
       }
     },
     btnModify () {
       this.modify = true
-    },
-    ...mapActions({
-      creatClient: types.CREAT_CLIENT,
-      modifyClient: types.MODIFY_CLIENT,
-      queryButler: types.QUERY_BUTLER,
-      setCustomerStatus: types.SET_CUSTOMER_STATUS
-    })
+    }
   },
   computed: {
   },
   beforeMount () {
     this.customerStatus = this.open
-    let params = {
-      param: {},
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          let data = response.data.data
-          if (data.length > 0) {
-            this.butlerList = data.map(function (value, index, array) {
-              return {value: value.id, label: value.userName}
-            })
-          }
-        } else {
-          this.$Message.error('客户查询失败')
-        }
+    this.$store.dispatch('QUERY_BUTLER').then((response) => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryButler(params)
+      if (response.data.code === '1000') {
+        let data = response.data.data
+        if (data.length > 0) {
+          this.butlerList = data.map(function (value, index, array) {
+            return {value: value.id, label: value.userName}
+          })
+        }
+      } else {
+        this.$Message.error('客户查询失败')
+      }
+    }).catch(() => {})
   },
   mounted () {
   },

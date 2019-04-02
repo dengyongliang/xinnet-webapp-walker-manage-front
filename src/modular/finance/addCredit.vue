@@ -91,46 +91,43 @@ export default {
     searchListData () {
       this.drawerCreditAdd = false
       // 查询数据
-      this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: 1, userId: this.searchUserId}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: curPage, userId: this.searchUserId}))
+      this.queryList(curPage)
     },
-    queryCreditMoneyListParam (obj) {
+    queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          customerCode: obj.userId
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.creditList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
+      let param = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        customerCode: this.searchUserId
+      }
+      return param
+    },
+    queryList (curPage) {
+      this.$store.dispatch('QUERY_CREDIT_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.creditList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
           }
         }
-      }
-      return params
+      }).catch(() => {})
     },
     drawerChange () {
-    },
-    ...mapActions({
-      queryCreditMoneyList: types.QUERY_CREDIT_MONEY_LIST
-    })
+    }
   },
   computed: {
     ...mapState([
@@ -138,7 +135,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.queryCreditMoneyList(this.queryCreditMoneyListParam({pageNum: 1, userId: this.searchUserId}))
+    this.queryList(1)
   }
 }
 </script>

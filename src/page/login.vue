@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import * as types from '@/store/types'
 export default {
   data () {
@@ -85,46 +85,42 @@ export default {
         this.loadingBtn = false
         return false
       }
-
-      let params = {
-        param: {
-          account: this.$refs.account.value,
-          password: this.$refs.password.value,
-          verificationCode: this.$refs.verificationCode.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          let data = response.data
-          if (data.code === '1000') {
-            window.location.href = '/'
-          } else {
-            this.loadingBtn = false
-            if (data.code === '100') {
-              this.account.error = 2
-            } else if (data.code === '200') {
-              this.modalAlertInfo.show = true
-              this.modalAlertInfo.title = '失败'
-              this.modalAlertInfo.content = '用户已登录'
-            } else if (data.code === '300') {
-              this.verificationCode.error = 3
-            } else if (data.code === '400') {
-              this.password.error = 2
-            } else if (data.code === '600') {
-              this.modalAlertInfo.show = true
-              this.modalAlertInfo.title = '失败'
-              this.modalAlertInfo.content = '用户被锁定'
-            } else if (data.code === '700') {
-              this.modalAlertInfo.show = true
-              this.modalAlertInfo.title = '失败'
-              this.modalAlertInfo.content = '用户权限异常'
-            }
+      let param = {
+        account: this.$refs.account.value,
+        password: this.$refs.password.value,
+        verificationCode: this.$refs.verificationCode.value
+      }
+      this.$store.dispatch('LOGIN_BY_USER_NAME', param).then((response) => {
+        if (!response) {
+          return false
+        }
+        let data = response.data
+        if (data.code === '1000') {
+          window.location.href = '/'
+        } else {
+          this.loadingBtn = false
+          if (data.code === '100') {
+            this.account.error = 2
+          } else if (data.code === '200') {
+            this.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '失败'
+            this.modalAlertInfo.content = '用户已登录'
+          } else if (data.code === '300') {
+            this.verificationCode.error = 3
+          } else if (data.code === '400') {
+            this.password.error = 2
+          } else if (data.code === '600') {
+            this.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '失败'
+            this.modalAlertInfo.content = '用户被锁定'
+          } else if (data.code === '700') {
+            this.modalAlertInfo.show = true
+            this.modalAlertInfo.title = '失败'
+            this.modalAlertInfo.content = '用户权限异常'
           }
         }
-      }
-
-      this.loginSubmit(params)
+      }).catch(() => {
+      })
     },
     getVerificationCode (e) {
       if (this.$refs.account.value === '') {
@@ -132,38 +128,36 @@ export default {
         this.loadingBtn = false
         return false
       }
-      let params = {
-        param: {
-          userCode: this.$refs.account.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          let data = response.data
-          if (data.code === '1000') {
-            this.verificationCode.success = true
-            this.modalAlertInfo.show = true
-            this.modalAlertInfo.title = '发送成功'
-            this.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
-          } else if (data.code === '100') {
-            this.modalAlertInfo.show = true
-            this.modalAlertInfo.title = '发送失败'
-            this.modalAlertInfo.content = '手机号码错误'
-          } else if (data.code === '200') {
-            this.modalAlertInfo.show = true
-            this.modalAlertInfo.title = '发送失败'
-            this.modalAlertInfo.content = '短信验证码已超上限'
-          } else if (data.code === '300') {
-            this.modalAlertInfo.title = '提示'
-            this.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
-            this.modalAlertInfo.show = true
-          } else if (data.code === '900') {
-            this.verificationCode.error = 4
-          }
-        }
+      let param = {
+        userCode: this.$refs.account.value
       }
-      this.loginVerificationCode(params)
+      this.$store.dispatch('LOGIN_VERIFICATION_CODE', param).then((response) => {
+        if (!response) {
+          return false
+        }
+        let data = response.data
+        if (data.code === '1000') {
+          this.verificationCode.success = true
+          this.modalAlertInfo.show = true
+          this.modalAlertInfo.title = '发送成功'
+          this.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
+        } else if (data.code === '100') {
+          this.modalAlertInfo.show = true
+          this.modalAlertInfo.title = '发送失败'
+          this.modalAlertInfo.content = '手机号码错误'
+        } else if (data.code === '200') {
+          this.modalAlertInfo.show = true
+          this.modalAlertInfo.title = '发送失败'
+          this.modalAlertInfo.content = '短信验证码已超上限'
+        } else if (data.code === '300') {
+          this.modalAlertInfo.title = '提示'
+          this.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
+          this.modalAlertInfo.show = true
+        } else if (data.code === '900') {
+          this.verificationCode.error = 4
+        }
+      }).catch(() => {
+      })
     },
     onFocus (e) {
       this.account.error = 0
@@ -181,11 +175,7 @@ export default {
           }
         }
       }
-    },
-    ...mapActions({
-      loginSubmit: types.LOGIN_SUBMIT,
-      loginVerificationCode: types.LOGIN_VERIFICATIONCODE
-    })
+    }
   },
   computed: {
     ...mapMutations([

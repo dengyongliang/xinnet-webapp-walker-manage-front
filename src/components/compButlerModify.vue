@@ -62,43 +62,37 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            userName: this.$refs.userName.value,
-            userMobile: this.$refs.userMobile.value,
-            userEmail: this.$refs.userEmail.value,
-            userCode: this.$refs.userCode.value,
-            userTel: this.$refs.tel.value,
-            qq: this.$refs.qq.value,
-            wx: this.$refs.wx.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('管家信息修改成功！')
-              // 重置账号列表
-              this.$emit('refreshData')
+          userName: this.$refs.userName.value,
+          userMobile: this.$refs.userMobile.value,
+          userEmail: this.$refs.userEmail.value,
+          userCode: this.$refs.userCode.value,
+          userTel: this.$refs.tel.value,
+          qq: this.$refs.qq.value,
+          wx: this.$refs.wx.value
+        }
+        this.$store.dispatch('UPDATE_USER_INFO', params).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('管家信息修改成功！')
+            // 重置账号列表
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '200') {
+              this.$Message.error('用户不存在')
+            } else if (response.data.code === '300') {
+              this.$Message.error('用户被锁定')
             } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
-              } else {
-                this.$Message.error('管家信息修改失败')
-              }
+              this.$Message.error('管家信息修改失败')
             }
           }
-        }
-        this.saveUserInfo(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      saveUserInfo: types.SET_USER_INFO
-    })
+    }
   },
   computed: {
 

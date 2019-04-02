@@ -146,11 +146,11 @@ export default {
     searchListData () {
       this.drawerOrderEntry = false
       // 查询数据
-      this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
+      this.queryOrderList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
+      this.queryOrderList(curPage)
     },
     drawerChange () {
     },
@@ -159,35 +159,32 @@ export default {
       this.loadingBtn = true
       this.loadingTable = true
 
-      let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          orderGoodsInfo: this.orderGoodsInfo,
-          orderMode: 3
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.orderList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
+      let param = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        orderGoodsInfo: this.orderGoodsInfo,
+        orderMode: 3
+      }
+      return param
+    },
+    queryOrderList (curPage) {
+      this.$store.dispatch('QUERY_ORDER_LIST', this.queryOrderListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.orderList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
           }
         }
-      }
-      return params
-    },
-    ...mapActions({
-      queryOrderList: types.QUERY_ORDER_LIST
-    })
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState([
@@ -195,7 +192,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
+    this.queryOrderList(1)
   }
 }
 </script>

@@ -39,40 +39,34 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            oldPassword: this.$refs.oldPassword.value,
-            newPassword: this.$refs.compRePassword.value1,
-            userCode: this.$refs.userCode
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('密码修改成功')
-              this.$emit('refreshData')
+          oldPassword: this.$refs.oldPassword.value,
+          newPassword: this.$refs.compRePassword.value1,
+          userCode: this.$refs.userCode
+        }
+        this.$store.dispatch('UPDATE_USER_PASSWORD', params).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('密码修改成功')
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '200') {
+              this.$Message.error('用户不存在')
+            } else if (response.data.code === '300') {
+              this.$Message.error('用户被锁定')
+            } else if (response.data.code === '400') {
+              this.$Message.error('原始密码错误')
             } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
-              } else if (response.data.code === '400') {
-                this.$Message.error('原始密码错误')
-              } else {
-                this.$Message.error('密码修改失败')
-              }
+              this.$Message.error('密码修改失败')
             }
           }
-        }
-        this.savePw(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      savePw: types.SET_USER_PASSWORD
-    })
+    }
   },
   computed: {
     ...mapState({

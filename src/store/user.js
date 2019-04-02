@@ -1,6 +1,8 @@
 import * as types from './types'
 import rest from '../global/http.js'
 import * as links from '../global/linkdo.js'
+import { queryCurrentUserData, queryUserList, delUser, updateUserInfo, addUserInfo, updateUserPassword } from '@/api/user.js'
+import { queryRoles } from '@/api/global.js'
 export default {
   state: {
     myUserInfo: {
@@ -48,9 +50,9 @@ export default {
     }
   },
   actions: {
-    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }) {
-      rest.get(links.GET_CURRENT_USER_DATA, '')
-        .then(function (response) {
+    QUERY_CURRENT_USER_DATA ({ commit, rootState }) {
+      return new Promise((resolve, reject) => {
+        queryCurrentUserData().then(response => {
           if (!response) {
             return false
           }
@@ -58,16 +60,15 @@ export default {
             rootState.islogin = true
             commit(types.SET_CURRENT_USER_DATA, response.data)
             // 获取角色数据
-            rest.get(links.GET_ROLES_DATA, '', function (response) {
+            queryRoles().then(response => {
               if (!response) {
                 return false
               }
               if (response.data.code === '1000') {
                 commit(types.SET_ROLES_DATA, response.data)
               } else {
-
               }
-            })
+            }).catch(error => {})
             setTimeout(() => {
               rootState.pending = false
               rootState.showBodySpin = false
@@ -76,49 +77,101 @@ export default {
             rootState.islogin = false
             rootState.showBodySpin = false
           }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
         })
-        .catch(() => {})
+      })
     },
-    [types.SET_USER_PASSWORD] ({ commit, rootState }, params) {
-      rest.post(links.SET_USER_PASSWORD, params.param)
-        .then(params.callback)
-        .catch(() => {})
+
+    // [types.SET_USER_PASSWORD] ({ commit, rootState }, params) {
+    //   rest.post(links.SET_USER_PASSWORD, params.param)
+    //     .then(params.callback)
+    //     .catch(() => {})
+    // },
+    // [types.SET_USER_INFO] ({ commit, rootState }, params) {
+    //   // /manage/user/updateUserInfo
+    //   rest.post(links.SET_USER_INFO, params.param)
+    //     .then(params.callback)
+    //     .catch(() => {})
+    // },
+    // [types.DEL_USER] ({ dispatch, commit, rootState }, params) {
+    //   rest.post(links.DEL_USER, params.param)
+    //     .then(params.callback)
+    //     .catch(() => {})
+    // },
+    // [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState }, params) {
+    //   rest.post(links.CREAT_NEW_ACCOUNT, params.param)
+    //     .then(params.callback)
+    //     .catch(() => {})
+    // },
+
+    UPDATE_USER_PASSWORD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        updateUserPassword(params.oldPassword, params.newPassword, params.userCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.SET_USER_INFO] ({ commit, rootState }, params) {
-      // /manage/user/updateUserInfo
-      rest.post(links.SET_USER_INFO, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ADD_USER_INFO ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        addUserInfo(params.userName, params.userMobile, params.userEmail, params.roleCode, params.password).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.DEL_USER] ({ dispatch, commit, rootState }, params) {
-      rest.post(links.DEL_USER, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    QUERY_USER_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryUserList(params.pageNum, params.pageSize, params.userCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState }, params) {
-      rest.post(links.CREAT_NEW_ACCOUNT, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    DEL_USER ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        delUser(params.userCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.GET_USER_LIST_DATA] ({ commit, rootState }, params) {
-      rest.post(links.GET_USER_LIST_DATA, params.param)
-        .then(params.callback)
-        .catch(() => {})
-    },
-    [types.QUERY_CLIENT] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_CLIENT, params.param)
-        .then(params.callback)
-        .catch(() => {})
-    },
-    [types.QUERY_CLIENT_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_CLIENT_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
-    },
-    [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_COMPANYS, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    UPDATE_USER_INFO ({ commit }, params) {
+      params = Object.assign({
+        userName: '',
+        userMobile: '',
+        userEmail: '',
+        userCode: '',
+        userTel: '',
+        roleId: '',
+        qq: '',
+        wx: ''
+      }, params)
+      return new Promise((resolve, reject) => {
+        updateUserInfo(params.userName, params.userMobile, params.userEmail, params.userCode, params.userTel, params.qq, params.wx, params.roleId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
+
+    // [types.QUERY_CLIENT] ({ commit, rootState }, params) {
+    //   rest.post(links.QUERY_CLIENT, params.param)
+    //     .then(params.callback)
+    //     .catch(() => {})
+    // }
+
+    // [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
+    //   rest.post(links.QUERY_COMPANYS, params.param)
+    //     .then(params.callback)
+    //     .catch(() => {})
+    // }
   }
 }

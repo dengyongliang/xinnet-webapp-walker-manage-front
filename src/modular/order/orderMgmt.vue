@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
 import moment from 'moment'
@@ -269,11 +268,11 @@ export default {
   methods: {
     searchListData () {
       // 查询数据
-      this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
+      this.queryOrderList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
+      this.queryOrderList(curPage)
     },
     exportOrder () {
       this.$refs.exportForm.submit()
@@ -283,46 +282,42 @@ export default {
       this.loadingBtn = true
       this.loadingTable = true
 
-      let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          createTimeBegin: this.param.createTime[0] !== '' ? moment(this.param.createTime[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.param.createTime[1] !== '' ? moment(this.param.createTime[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-          orderGoodsInfo: this.param.orderGoodsInfo,
-          orderGoodsType: this.param.orderGoodsType,
-          orderMode: this.param.orderMode,
-          orderPayType: this.param.orderPayType,
-          orderType: this.param.orderType
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.orderList = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
+      let param = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        createTimeBegin: this.param.createTime[0] ? moment(this.param.createTime[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.param.createTime[1] ? moment(this.param.createTime[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        orderGoodsInfo: this.param.orderGoodsInfo,
+        orderGoodsType: this.param.orderGoodsType,
+        orderMode: this.param.orderMode,
+        orderPayType: this.param.orderPayType,
+        orderType: this.param.orderType
+      }
+      return param
+    },
+    queryOrderList (curPage) {
+      this.$store.dispatch('QUERY_ORDER_LIST', this.queryOrderListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.orderList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
           }
         }
-      }
-      return params
-    },
-    ...mapActions({
-      queryOrderList: types.QUERY_ORDER_LIST,
-      exportOrderList: types.EXPORT_ORDER_LIST
-    })
+      }).catch(() => {})
+    }
   },
   computed: {
   },
   beforeMount () {
-    this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
+    this.queryOrderList(1)
   }
 }
 </script>

@@ -1,46 +1,76 @@
 import * as types from './types'
 import rest from '../global/http.js'
 import * as links from '../global/linkdo.js'
+import { queryPaymentList, queryBalanceList, queryBillList, queryCreditList, addPayment, addCredit, customerBillPay } from '@/api/finance.js'
+
 export default {
   state: {
   },
   mutations: {
   },
   actions: {
-    [types.GET_BILL_LIST] ({ commit, rootState }, params) {
-      rest.post(links.GET_BILL_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    QUERY_BILL_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryBillList(params.pageNum, params.pageSize, params.userId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.CONFIRM_BILL_CLEAN] ({ commit, rootState }, params) {
-      rest.post(links.CONFIRM_BILL_CLEAN, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    CUSTOMER_BILL_PAY ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        customerBillPay(params.id).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.GET_CLIENT_BALANCE_LIST] ({ commit, rootState }, params) {
-      rest.post(links.GET_CLIENT_BALANCE_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    QUERY_BALANCE_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryBalanceList(params.pageNum, params.pageSize, params.customerCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.GET_PAYMENT_LIST] ({ commit, rootState }, params) {
-      rest.post(links.GET_PAYMENT_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    QUERY_PAYMENT_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryPaymentList(params.pageNum, params.pageSize, params.customerCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.QUERY_CREDIT_MONEY_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_CREDIT_MONEY_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    QUERY_CREDIT_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryCreditList(params.pageNum, params.pageSize, params.customerCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.SUBMIT_ADD_CREDIT] ({ commit, rootState }, params) {
-      rest.post(links.SUBMIT_ADD_CREDIT, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ADD_PAYMENT ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        addPayment(params.customerId, params.payMoney).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.SUBMIT_ADD_PAYMENT] ({ commit, rootState }, params) {
-      rest.post(links.SUBMIT_ADD_PAYMENT, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ADD_CREDIT ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        addCredit(params.customerId, params.creditMoney).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

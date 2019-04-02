@@ -31,7 +31,7 @@ export default {
   beforeMount () {
     let vm = this
     // 获取账号信息
-    this.getCurrentUser()
+    this.$store.dispatch('QUERY_CURRENT_USER_DATA')
     restEmitter.on('noLogin', () => {
       vm.$Message.error('登录超时，请重新登录！')
       setTimeout(() => {
@@ -58,9 +58,6 @@ export default {
     })
   },
   methods: {
-    ...mapActions({
-      getCurrentUser: types.GET_CURRENT_USER_DATA
-    })
   },
   computed: {
     ...mapState([

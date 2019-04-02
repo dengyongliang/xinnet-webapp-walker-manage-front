@@ -43,37 +43,31 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            userName: this.$refs.userName.value,
-            userEmail: this.$refs.userEmail.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('账号创建成功！')
-              this.$emit('closeModal')
-              // 重置账号列表
-              this.$emit('refreshData')
+          userName: this.$refs.userName.value,
+          userEmail: this.$refs.userEmail.value
+        }
+        this.$store.dispatch('ADD_BUTLER', params).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('账号创建成功！')
+            this.$emit('closeModal')
+            // 重置账号列表
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '200') {
+              this.$Message.error('用户已存在')
             } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户已存在')
-              } else {
-                this.$Message.error('账号创建失败')
-              }
+              this.$Message.error('账号创建失败')
             }
           }
-        }
-        this.creatAdmin(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      creatAdmin: types.CREAT_ADMIN
-    })
+    }
   },
   computed: {
     ...mapState([

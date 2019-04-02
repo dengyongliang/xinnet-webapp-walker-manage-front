@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import * as types from '@/store/types'
 export default {
   data () {
@@ -25,25 +25,19 @@ export default {
   },
   methods: {
     logout () {
-      let params = {
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.$Message.success('登出成功')
-            this.$router.replace({ path: '/login' })
-          } else {
-          }
+      this.$store.dispatch('LOGIN_OUT').then((response) => {
+        if (!response) {
+          return false
         }
-      }
-      this.loginOut(params)
-    },
-    ...mapActions({
-      loginOut: types.LOGIN_OUT
-    })
+        if (response.data.code === '1000') {
+          this.$Message.success('登出成功')
+          this.$router.replace({ path: '/login' })
+        } else {
+        }
+      }).catch(() => {
+      })
+    }
   },
-
   beforeMount () {
   }
 }

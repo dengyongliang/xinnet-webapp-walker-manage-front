@@ -262,58 +262,45 @@ export default {
 
       let result = validateFormResult(validataItem)
       if (result) {
-        let params = {
-          param: this.budgetData,
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('创建成功')
-              this.onClose()
-              // this.$emit('refreshData')
-            } else {
-              this.$Message.error('创建失败')
-            }
-          }
-        }
-        params.param.budgetReportNormalInfo = params.param.budgetReportNormalInfo.concat(this.budgetData.budgetReportNewInfo)
+        let budgetData = this.budgetData
+        budgetData.budgetReportNormalInfo = budgetData.budgetReportNormalInfo.concat(this.budgetData.budgetReportNewInfo)
 
-        console.log(params.param)
-        this.addBudgetReport(params)
+        this.$store.dispatch('ADD_BUDGET_REPORT', budgetData).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('创建成功')
+            this.onClose()
+            // this.$emit('refreshData')
+          } else {
+            this.$Message.error('创建失败')
+          }
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      creatNewAccount: types.CREAT_NEW_ACCOUNT,
-      queryClientList: types.QUERY_CLIENT_LIST,
-      addBudgetReport: types.ADD_BUDGET_REPORT
-    })
+    }
   },
   computed: {
   },
   beforeMount () {
-    let params = {
-      param: {},
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          let data = response.data.data.list
-          if (data.length > 0) {
-            this.listClient = data.map(function (value, index, array) {
-              return {value: value.id, label: value.name}
-            })
-          }
-        } else {
-          this.$Message.error('客户查询失败')
-        }
+    this.$store.dispatch('FIND_CUSTOMER_LIST').then((response) => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryClientList(params)
+      if (response.data.code === '1000') {
+        let data = response.data.data.list
+        if (data.length > 0) {
+          this.listClient = data.map(function (value, index, array) {
+            return {value: value.id, label: value.name}
+          })
+        }
+      } else {
+        this.$Message.error('客户查询失败')
+      }
+    }).catch(() => {})
   },
   mounted () {
     this.addNormal()

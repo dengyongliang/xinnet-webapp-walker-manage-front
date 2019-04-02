@@ -353,109 +353,90 @@ export default {
       console.log(validataItem)
       let result = validateFormResult(validataItem)
       if (result) {
-        let params = {
-          param: this.budgetData,
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('修改成功')
-              this.onClose()
-              // this.$emit('refreshData')
-            } else {
-              this.$Message.error('修改失败')
-            }
+        let budgetData = this.budgetData
+        budgetData.budgetReportNormalInfo = budgetData.budgetReportNormalInfo.concat(budgetData.budgetReportNewInfo)
+        this.$store.dispatch('UPDATE_BUDGET_REPORT', budgetData).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
           }
-        }
-        params.param.budgetReportNormalInfo = params.param.budgetReportNormalInfo.concat(params.param.budgetReportNewInfo)
-        console.log(params.param)
-        this.updateBudgetReport(params)
+          if (response.data.code === '1000') {
+            this.$Message.success('修改成功')
+            this.onClose()
+            // this.$emit('refreshData')
+          } else {
+            this.$Message.error('修改失败')
+          }
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      queryBudgetReportDetail: types.QUERY_BUDGET_REPORT_DETAIL,
-      queryClientList: types.QUERY_CLIENT_LIST,
-      updateBudgetReport: types.UPDATE_BUDGET_REPORT
-    })
+    }
   },
   computed: {
   },
   beforeMount () {
-    let params = {
-      param: {},
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          let data = response.data.data.list
-          if (data.length > 0) {
-            this.listClient = data.map(function (value, index, array) {
-              return {value: value.id, label: value.name}
-            })
-          }
-        } else {
-          this.$Message.error('客户查询失败')
-        }
+    this.$store.dispatch('FIND_CUSTOMER_LIST').then((response) => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryClientList(params)
-
-    let params2 = {
-      param: {
-        reportId: this.reportId
-      },
-      callback: (response) => {
-        this.loadingBtn = false
-        if (!response) {
-          return false
+      if (response.data.code === '1000') {
+        let data = response.data.data.list
+        if (data.length > 0) {
+          this.listClient = data.map(function (value, index, array) {
+            return {value: value.id, label: value.name}
+          })
         }
-        if (response.data.code === '1000') {
-          let budgetReportNormalInfo = []
-          let budgetReportNewInfo = []
-          let budgetReportRepurchaseInfo = []
-          this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId.toString())
-          this.$set(this.budgetData, 'reportId', response.data.data.budgetReportInfo.id)
-          this.$set(this.budgetData, 'beginTime', response.data.data.budgetReportInfo.budgetCycleStart)
-          this.$set(this.budgetData, 'endTime', response.data.data.budgetReportInfo.budgetCycleEnd)
-          if (response.data.data.budgetReportDetailList.length) {
-            response.data.data.budgetReportDetailList.map((v) => {
-              v.operatorType = 'update'
-              if (v.budgetType === 1) {
-                budgetReportNormalInfo.push(v)
-              } else if (v.budgetType === 2) {
-                budgetReportNewInfo.push(v)
-              } else {
-                budgetReportRepurchaseInfo.push(v)
-              }
-            })
-            if (!budgetReportNormalInfo.length) {
-              this.defaultNormal = ['1']
-            }
-            if (!budgetReportNewInfo.length) {
-              this.defaultNew = ['1']
-            }
-            if (!budgetReportRepurchaseInfo.length) {
-              this.defaultRepurchase = ['1']
-            }
+      } else {
+        this.$Message.error('客户查询失败')
+      }
+    }).catch(() => {})
 
-            this.$set(this.budgetData, 'budgetReportNormalInfo', budgetReportNormalInfo)
-            this.$set(this.budgetData, 'budgetReportNewInfo', budgetReportNewInfo)
-            this.$set(this.budgetData, 'budgetReportRepurchaseInfo', budgetReportRepurchaseInfo)
-          } else {
+    this.$store.dispatch('QUERY_BUDGET_REPORT_DETAIL', {reportId: this.reportId}).then((response) => {
+      this.loadingBtn = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        let budgetReportNormalInfo = []
+        let budgetReportNewInfo = []
+        let budgetReportRepurchaseInfo = []
+        this.$set(this.budgetData, 'customerId', response.data.data.budgetReportInfo.customerId.toString())
+        this.$set(this.budgetData, 'reportId', response.data.data.budgetReportInfo.id)
+        this.$set(this.budgetData, 'beginTime', response.data.data.budgetReportInfo.budgetCycleStart)
+        this.$set(this.budgetData, 'endTime', response.data.data.budgetReportInfo.budgetCycleEnd)
+        if (response.data.data.budgetReportDetailList.length) {
+          response.data.data.budgetReportDetailList.map((v) => {
+            v.operatorType = 'update'
+            if (v.budgetType === 1) {
+              budgetReportNormalInfo.push(v)
+            } else if (v.budgetType === 2) {
+              budgetReportNewInfo.push(v)
+            } else {
+              budgetReportRepurchaseInfo.push(v)
+            }
+          })
+          if (!budgetReportNormalInfo.length) {
             this.defaultNormal = ['1']
+          }
+          if (!budgetReportNewInfo.length) {
             this.defaultNew = ['1']
+          }
+          if (!budgetReportRepurchaseInfo.length) {
             this.defaultRepurchase = ['1']
           }
+
+          this.$set(this.budgetData, 'budgetReportNormalInfo', budgetReportNormalInfo)
+          this.$set(this.budgetData, 'budgetReportNewInfo', budgetReportNewInfo)
+          this.$set(this.budgetData, 'budgetReportRepurchaseInfo', budgetReportRepurchaseInfo)
         } else {
+          this.defaultNormal = ['1']
+          this.defaultNew = ['1']
+          this.defaultRepurchase = ['1']
         }
+      } else {
       }
-    }
-    this.queryBudgetReportDetail(params2)
+    }).catch(() => {})
   },
   mounted () {
 

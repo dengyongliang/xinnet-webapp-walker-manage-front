@@ -76,94 +76,78 @@ export default {
       if (!result) {
         this.loadingBtn = false
       } else {
-        let params = {
-          param: {
-            customerId: this.$refs.customerId.value,
-            companyId: this.$refs.companyId.value,
-            orderGoodsInfo: this.$refs.domain.value,
-            orderMoney: this.$refs.money.value,
-            orderType: this.$refs.orderType.value,
-            orderPayType: this.$refs.orderPayType.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('录入成功')
-              // 添加成功，重新加载列表数据
-              this.$emit('refreshData')
-            } else {
-              if (response.data.code === '100') {
-                this.$Message.error('客户不存在')
-              } else if (response.data.code === '200') {
-                this.$Message.error('账号余额不足')
-              } else if (response.data.code === '300') {
-                this.$Message.error('账号异常')
-              } else if (response.data.code === '300') {
-                this.$Message.error('结算失败')
-              }
+        let param = {
+          customerId: this.$refs.customerId.value,
+          companyId: this.$refs.companyId.value,
+          orderGoodsInfo: this.$refs.domain.value,
+          orderMoney: this.$refs.money.value,
+          orderType: this.$refs.orderType.value,
+          orderPayType: this.$refs.orderPayType.value
+        }
+        this.$store.dispatch('ORDER_ENTRY', param).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('录入成功')
+            // 添加成功，重新加载列表数据
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('客户不存在')
+            } else if (response.data.code === '200') {
+              this.$Message.error('账号余额不足')
+            } else if (response.data.code === '300') {
+              this.$Message.error('账号异常')
+            } else if (response.data.code === '300') {
+              this.$Message.error('结算失败')
             }
           }
-        }
-        console.log(params.param)
-        this.submitAddOrderEntry(params)
+        }).catch(() => {})
       }
     },
     queryCompanysFun (obj) {
       this.showCompany = false
       let params = {
-        param: {
-          customerId: obj.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            let data = response.data.data
-            this.showCompany = true
-            if (data.length > 0) {
-              this.companysList = data.map(function (value, index, array) {
-                return {value: value.id, label: value.name}
-              })
-            }
-          } else {
-            this.$Message.error('客户可用企业列表查询失败')
-          }
-        }
+        customerId: obj.value
       }
-      this.queryCompanys(params)
-    },
-    ...mapActions({
-      submitAddOrderEntry: types.SUBMIT_ADD_ORDER_ENTRY,
-      queryClientList: types.QUERY_CLIENT_LIST,
-      queryCompanys: types.QUERY_COMPANYS
-    })
-  },
-  computed: {
-  },
-  beforeMount () {
-    let params = {
-      param: {},
-      callback: (response) => {
+      this.$store.dispatch('QUERY_COMPANYS', params).then((response) => {
         if (!response) {
           return false
         }
         if (response.data.code === '1000') {
-          let data = response.data.data.list
+          let data = response.data.data
+          this.showCompany = true
           if (data.length > 0) {
-            this.clientList = data.map(function (value, index, array) {
+            this.companysList = data.map(function (value, index, array) {
               return {value: value.id, label: value.name}
             })
           }
         } else {
-          this.$Message.error('客户查询失败')
+          this.$Message.error('客户可用企业列表查询失败')
         }
-      }
+      }).catch(() => {})
     }
-    this.queryClientList(params)
+  },
+  computed: {
+  },
+  beforeMount () {
+    this.$store.dispatch('FIND_CUSTOMER_LIST').then((response) => {
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        let data = response.data.data.list
+        if (data.length > 0) {
+          this.clientList = data.map(function (value, index, array) {
+            return {value: value.id, label: value.name}
+          })
+        }
+      } else {
+        this.$Message.error('客户查询失败')
+      }
+    }).catch(() => {})
   },
   watch: {
   }

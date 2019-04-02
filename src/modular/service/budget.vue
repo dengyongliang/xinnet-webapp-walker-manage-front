@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import * as types from '@/store/types'
 import compCreatBudgetReport from '@/components/compCreatBudgetReport'
 import compModifyBudgetReport from '@/components/compModifyBudgetReport'
@@ -137,30 +137,27 @@ export default {
         loading: true,
         onOk: () => {
           let params = {
-            param: {
-              reportId: id
-            },
-            callback: (response) => {
-              if (!response) {
-                return false
-              }
-              this.$Modal.remove()
-              if (response.data.code === '1000') {
-                this.$Message.success('删除成功')
-                // 删除成功，重新加载列表数据
-                this.searchListData()
+            reportId: id
+          }
+          this.$store.dispatch('DEL_BUDGET_REPORT', params).then((response) => {
+            if (!response) {
+              return false
+            }
+            this.$Modal.remove()
+            if (response.data.code === '1000') {
+              this.$Message.success('删除成功')
+              // 删除成功，重新加载列表数据
+              this.searchListData()
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
               } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else {
-                  this.$Message.error('删除失败')
-                }
+                this.$Message.error('删除失败')
               }
             }
-          }
-          this.deleteBudgetReport(params)
+          }).catch(() => {})
         },
         onCancel: () => {
         }
@@ -168,7 +165,7 @@ export default {
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getList(this.getListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     drawerChange () {
       // 层关闭，刷新数据
@@ -176,32 +173,14 @@ export default {
         this.searchListData()
       }
     },
-    getListParam (obj) {
+    queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          queryCondition: this.value
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          // console.log(response)
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        queryCondition: this.value
       }
       return params
     },
@@ -210,12 +189,26 @@ export default {
       this.drawerCreatBudgetReport = false
       this.drawerModifyBudgetReport = false
       // 查询数据
-      this.getList(this.getListParam({pageNum: 1}))
+      this.queryList(1)
     },
-    ...mapActions({
-      getList: types.QUERY_BUDGET_REPORT_MANAGE,
-      deleteBudgetReport: types.DELETE_BUDGET_REPORT
-    })
+    queryList (curPage) {
+      this.$store.dispatch('QUERY_BUDGET_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState([
@@ -223,7 +216,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getList(this.getListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

@@ -46,39 +46,31 @@ export default {
   methods: {
     billSubmit () {
       this.loadingBtn = true
-      let params = {
-        param: {
-          id: this.$refs.id.value
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.$Message.success('结算确认成功')
-            // 添加成功，重新加载列表数据
-            this.$emit('refreshData')
-          } else {
-            if (response.data.code === '100') {
-              this.$Message.error('客户不存在')
-            } else if (response.data.code === '200') {
-              this.$Message.error('账号余额不足')
-            } else if (response.data.code === '300') {
-              this.$Message.error('账号异常')
-            } else if (response.data.code === '400') {
-              this.$Message.error('结算失败')
-            } else if (response.data.code === '600') {
-              this.$Message.error('账单已结算')
-            }
+      this.confirmBillClean(params)
+      this.$store.dispatch('CUSTOMER_BILL_PAY', {id: this.$refs.id.value}).then((response) => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.$Message.success('结算确认成功')
+          // 添加成功，重新加载列表数据
+          this.$emit('refreshData')
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('客户不存在')
+          } else if (response.data.code === '200') {
+            this.$Message.error('账号余额不足')
+          } else if (response.data.code === '300') {
+            this.$Message.error('账号异常')
+          } else if (response.data.code === '400') {
+            this.$Message.error('结算失败')
+          } else if (response.data.code === '600') {
+            this.$Message.error('账单已结算')
           }
         }
-      }
-      this.confirmBillClean(params)
-    },
-    ...mapActions({
-      confirmBillClean: types.CONFIRM_BILL_CLEAN
-    })
+      }).catch(() => {})
+    }
   },
   computed: {
   },

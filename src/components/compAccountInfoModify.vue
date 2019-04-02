@@ -51,47 +51,41 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            userName: this.$refs.userName,
-            userMobile: this.$refs.userMobile,
-            userEmail: this.$refs.userEmail,
-            userCode: this.$refs.userCode,
-            roleId: this.roleId
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('用户信息修改成功')
-              // 重置store用户信息
-              if (this.from === 'accountMy') {
-                // vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
-              } else {
-                this.$emit('refreshData')
-              }
+          userName: this.$refs.userName,
+          userMobile: this.$refs.userMobile,
+          userEmail: this.$refs.userEmail,
+          userCode: this.$refs.userCode,
+          roleId: this.roleId
+        }
+        this.$store.dispatch('UPDATE_USER_INFO', params).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('用户信息修改成功')
+            // 重置store用户信息
+            if (this.from === 'accountMy') {
+              // vm.$store.dispatch(types.GET_CURRENT_USER_DATA)
             } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
-              } else if (response.data.code === '400') {
-                this.$Message.error('手机号码已存在')
-              } else if (response.data.code === '600') {
-                this.$Message.error('角色不存在')
-              }
+              this.$emit('refreshData')
+            }
+          } else {
+            if (response.data.code === '200') {
+              this.$Message.error('用户不存在')
+            } else if (response.data.code === '300') {
+              this.$Message.error('用户被锁定')
+            } else if (response.data.code === '400') {
+              this.$Message.error('手机号码已存在')
+            } else if (response.data.code === '600') {
+              this.$Message.error('角色不存在')
             }
           }
-        }
-        this.saveUserInfo(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      saveUserInfo: types.SET_USER_INFO
-    })
+    }
   },
   computed: {
     ...mapState({

@@ -51,41 +51,35 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            userName: this.$refs.userName.value,
-            userMobile: this.$refs.userMobile.value,
-            userEmail: this.$refs.userEmail.value,
-            roleCode: this.roleCode.value,
-            password: this.$refs.compRePassword.value1
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('添加成功')
-              // 添加成功，重新加载用户列表数据
-              this.$emit('refreshData')
+          userName: this.$refs.userName.value,
+          userMobile: this.$refs.userMobile.value,
+          userEmail: this.$refs.userEmail.value,
+          roleCode: this.roleCode.value,
+          password: this.$refs.compRePassword.value1
+        }
+        this.$store.dispatch('ADD_USER_INFO', params).then((response) => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('添加成功')
+            // 添加成功，重新加载用户列表数据
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('角色编码错误')
+            } else if (response.data.code === '200') {
+              this.$Message.error('用户已存在')
             } else {
-              if (response.data.code === '100') {
-                this.$Message.error('角色编码错误')
-              } else if (response.data.code === '200') {
-                this.$Message.error('用户已存在')
-              } else {
-                this.$Message.error('添加失败')
-              }
+              this.$Message.error('添加失败')
             }
           }
-        }
-        this.creatNewAccount(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      creatNewAccount: types.CREAT_NEW_ACCOUNT
-    })
+    }
   },
   computed: {
     ...mapState({
