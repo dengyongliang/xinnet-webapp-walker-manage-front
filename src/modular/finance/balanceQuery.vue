@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as types from '@/store/types'
 export default {
   components: {
   },
@@ -103,7 +101,7 @@ export default {
       return param
     },
     queryList (curPage) {
-      this.$store.dispatch('QUERY_BALANCE_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('CUSTOMER_BALANCE_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

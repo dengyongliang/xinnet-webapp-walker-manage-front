@@ -26,8 +26,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compCreditAdd from '@/components/compCreditAdd'
 export default {
   components: {
@@ -109,7 +108,7 @@ export default {
       return param
     },
     queryList (curPage) {
-      this.$store.dispatch('QUERY_CREDIT_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('CREDIT_MONEY_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

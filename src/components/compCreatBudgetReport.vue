@@ -59,8 +59,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as types from '@/store/types'
 import validateFormResult from '@/global/validateForm'
 import compInput from './compInput'
 import compSelect from './compSelect'

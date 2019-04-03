@@ -1,61 +1,62 @@
+'use strict'
 /*
   finance api
 */
 import axios from '@/global/axios.js'
-import * as links from '@/global/linkdo.js'
+import * as action from '@/global/action.js'
 // 预付款增加管理 - 列表
-export const queryPaymentList = (pageNum, pageSize, customerCode) => {
+export const payMoneyList = (pageNum, pageSize, customerCode) => { // queryPaymentList
   return axios({
-    url: links.GET_PAYMENT_LIST,
+    url: action.PAY_MONEY_LIST,
     method: 'POST',
     data: {pageNum, pageSize, customerCode}
   })
 }
 // 客户账户余额查询 - 列表
-export const queryBalanceList = (pageNum, pageSize, customerCode) => {
+export const customerBalanceList = (pageNum, pageSize, customerCode) => { // queryBalanceList
   return axios({
-    url: links.GET_CLIENT_BALANCE_LIST,
+    url: action.CUSTOMER_BALANCE_LIST,
     method: 'POST',
     data: {pageNum, pageSize, customerCode}
   })
 }
 // 账单结算 - 列表
-export const queryBillList = (pageNum, pageSize, userId) => {
+export const customerBillList = (pageNum, pageSize, userId) => { // queryBillList
   return axios({
-    url: links.GET_BILL_LIST,
+    url: action.CUSTOMER_BILL_LIST,
     method: 'POST',
     data: {pageNum, pageSize, userId}
   })
 }
 // 客户额度调整 - 列表
-export const queryCreditList = (pageNum, pageSize, customerCode) => {
+export const creditMoneyList = (pageNum, pageSize, customerCode) => { // queryCreditList
   return axios({
-    url: links.QUERY_CREDIT_MONEY_LIST,
+    url: action.CREDIT_MONEY_LIST,
     method: 'POST',
     data: {pageNum, pageSize, customerCode}
   })
 }
 // 增加预付款
-export const addPayment = (customerId, payMoney) => {
+export const addPayMoney = (customerId, payMoney) => { // addPayment
   return axios({
-    url: links.SUBMIT_ADD_PAYMENT,
+    url: action.ADD_PAY_MONEY,
     method: 'POST',
     data: {customerId, payMoney}
   })
 }
 // 增加额度
-export const addCredit = (customerId, creditMoney) => {
+export const addCreditMoney = (customerId, creditMoney) => { // addCredit
   return axios({
-    url: links.SUBMIT_ADD_CREDIT,
+    url: action.ADD_CREDIT_MONEY,
     method: 'POST',
     data: {customerId, creditMoney}
   })
 }
 
 // 账单结算确认
-export const customerBillPay = (id) => {
+export const customerBillPay = (id) => { // customerBillPay
   return axios({
-    url: links.CONFIRM_BILL_CLEAN,
+    url: action.CUSTOMER_BILL_PAY,
     method: 'POST',
     data: {id}
   })

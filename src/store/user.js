@@ -1,8 +1,5 @@
-import * as types from './types'
-import rest from '../global/http.js'
-import * as links from '../global/linkdo.js'
-import { queryCurrentUserData, queryUserList, delUser, updateUserInfo, addUserInfo, updateUserPassword } from '@/api/user.js'
-import { queryRoles } from '@/api/global.js'
+
+import * as api from '@/api/user.js'
 export default {
   state: {
     myUserInfo: {
@@ -41,41 +38,45 @@ export default {
     rolesList: []
   },
   mutations: {
-    [types.SET_CURRENT_USER_DATA] (state, payload) {
+    SET_CURRENT_USER_DATA (state, payload) {
       state.myUserInfo = payload.data
     },
-    [types.SET_ROLES_DATA] (state, payload) {
+    SET_ROLES_DATA (state, payload) {
       state.rolesList = payload.data
       console.log(state.rolesList)
     }
   },
   actions: {
-    QUERY_CURRENT_USER_DATA ({ commit, rootState }) {
+    MY_USER_INFO ({ commit, rootState }) {
       return new Promise((resolve, reject) => {
-        queryCurrentUserData().then(response => {
+        api.myUserInfo().then(response => {
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            rootState.islogin = true
-            commit(types.SET_CURRENT_USER_DATA, response.data)
+            // rootState.islogin = true
+            commit('SET_CURRENT_USER_DATA', response.data)
+            commit('LOGIN_TRUE')
             // 获取角色数据
-            queryRoles().then(response => {
+            api.adminRoles().then(response => {
               if (!response) {
                 return false
               }
               if (response.data.code === '1000') {
-                commit(types.SET_ROLES_DATA, response.data)
+                commit('SET_ROLES_DATA', response.data)
               } else {
               }
-            }).catch(error => {})
+            }).catch(() => {})
             setTimeout(() => {
-              rootState.pending = false
-              rootState.showBodySpin = false
+              // rootState.pending = false
+              // rootState.showBodySpin = false
+              commit('HIDE_BODY_SPIN')
             }, 350)
           } else {
-            rootState.islogin = false
-            rootState.showBodySpin = false
+            // rootState.islogin = false
+            // rootState.showBodySpin = false
+            commit('HIDE_BODY_SPIN')
+            commit('LOGIN_FALSE')
           }
           resolve(response)
         }).catch(error => {
@@ -83,32 +84,9 @@ export default {
         })
       })
     },
-
-    // [types.SET_USER_PASSWORD] ({ commit, rootState }, params) {
-    //   rest.post(links.SET_USER_PASSWORD, params.param)
-    //     .then(params.callback)
-    //     .catch(() => {})
-    // },
-    // [types.SET_USER_INFO] ({ commit, rootState }, params) {
-    //   // /manage/user/updateUserInfo
-    //   rest.post(links.SET_USER_INFO, params.param)
-    //     .then(params.callback)
-    //     .catch(() => {})
-    // },
-    // [types.DEL_USER] ({ dispatch, commit, rootState }, params) {
-    //   rest.post(links.DEL_USER, params.param)
-    //     .then(params.callback)
-    //     .catch(() => {})
-    // },
-    // [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState }, params) {
-    //   rest.post(links.CREAT_NEW_ACCOUNT, params.param)
-    //     .then(params.callback)
-    //     .catch(() => {})
-    // },
-
     UPDATE_USER_PASSWORD ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        updateUserPassword(params.oldPassword, params.newPassword, params.userCode).then(response => {
+        api.updateUserPassword(params.oldPassword, params.newPassword, params.userCode).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -117,25 +95,25 @@ export default {
     },
     ADD_USER_INFO ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        addUserInfo(params.userName, params.userMobile, params.userEmail, params.roleCode, params.password).then(response => {
+        api.addUserInfo(params.userName, params.userMobile, params.userEmail, params.roleCode, params.password).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    QUERY_USER_LIST ({ commit }, params) {
+    USER_LIST ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        queryUserList(params.pageNum, params.pageSize, params.userCode).then(response => {
+        api.userList(params.pageNum, params.pageSize, params.userCode).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    DEL_USER ({ commit }, params) {
+    DELETE_USER_INFO ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        delUser(params.userCode).then(response => {
+        api.deleteUserInfo(params.userCode).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -154,24 +132,12 @@ export default {
         wx: ''
       }, params)
       return new Promise((resolve, reject) => {
-        updateUserInfo(params.userName, params.userMobile, params.userEmail, params.userCode, params.userTel, params.qq, params.wx, params.roleId).then(response => {
+        api.updateUserInfo(params.userName, params.userMobile, params.userEmail, params.userCode, params.userTel, params.qq, params.wx, params.roleId).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     }
-
-    // [types.QUERY_CLIENT] ({ commit, rootState }, params) {
-    //   rest.post(links.QUERY_CLIENT, params.param)
-    //     .then(params.callback)
-    //     .catch(() => {})
-    // }
-
-    // [types.QUERY_COMPANYS] ({ commit, rootState }, params) {
-    //   rest.post(links.QUERY_COMPANYS, params.param)
-    //     .then(params.callback)
-    //     .catch(() => {})
-    // }
   }
 }

@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compAccountInfoModify from '@/components/compAccountInfoModify'
 import compAccountPasswordModify from '@/components/compAccountPasswordModify'
 import compAccountCreat from '@/components/compAccountCreat'
@@ -176,7 +175,7 @@ export default {
         content: '<p>请确认是否要删除此账号！</p>',
         loading: true,
         onOk: () => {
-          this.$store.dispatch('DEL_USER', {userCode: userCode}).then((response) => {
+          this.$store.dispatch('DELETE_USER_INFO', {userCode: userCode}).then((response) => {
             if (!response) {
               return false
             }
@@ -220,7 +219,7 @@ export default {
       return param
     },
     queryList (curPage) {
-      this.$store.dispatch('QUERY_USER_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('USER_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

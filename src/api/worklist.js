@@ -1,12 +1,13 @@
+'use strict'
 /*
   worklist api
 */
 import axios from '@/global/axios.js'
-import * as links from '@/global/linkdo.js'
+import * as action from '@/global/action.js'
 // 工单管理 - 列表
-export const queryWorkList = (pageNum, pageSize, userId) => {
+export const queryWorkList = (pageNum, pageSize, userId) => { // queryWorkList
   return axios({
-    url: links.GET_CLIENT_LIST_DATA,
+    url: action.CUSTOMER_LIST,
     method: 'POST',
     data: {pageNum, pageSize, userId}
   })

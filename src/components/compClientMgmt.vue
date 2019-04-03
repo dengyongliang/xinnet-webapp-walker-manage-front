@@ -47,8 +47,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compImgUpload from './compImgUpload'
 import compSelect from './compSelect'
@@ -205,7 +203,7 @@ export default {
         if (type !== 'new') {
           let id = this.$refs.id.value
           params.code = id
-          this.$store.dispatch('UPDATE_CUSTOMER', params).then((response) => {
+          this.$store.dispatch('CUSTOMER_UPDATE', params).then((response) => {
             this.loadingBtn = false
             if (!response) {
               return false
@@ -228,7 +226,7 @@ export default {
             }
           }).catch(() => {})
         } else {
-          this.$store.dispatch('CREATE_CUSTOMER', params).then((response) => {
+          this.$store.dispatch('CUSTOMER_CREATE', params).then((response) => {
             this.loadingBtn = false
             if (!response) {
               return false
@@ -261,7 +259,7 @@ export default {
   },
   beforeMount () {
     this.customerStatus = this.open
-    this.$store.dispatch('QUERY_BUTLER').then((response) => {
+    this.$store.dispatch('CUSTOMER_USERS').then((response) => {
       if (!response) {
         return false
       }

@@ -6,6 +6,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { emitter as restEmitter } from '@/global/axios'
 export default {
   name: 'App',
   data () {
@@ -15,13 +16,35 @@ export default {
   mounted () {
   },
   beforeMount () {
+    restEmitter.on('noLogin', () => {
+      this.$Message.error('登录超时，请重新登录！')
+      setTimeout(() => {
+        this.$router.replace({ path: '/login' })
+      }, 300)
+    })
+    restEmitter.on('noPermission', () => {
+      this.$Message.error('权限错误！')
+      setTimeout(() => {
+        this.$router.replace({ path: '/' })
+      }, 300)
+    })
+    restEmitter.on('paramError', () => {
+      this.$Message.error('参数错误！')
+    })
+    restEmitter.on('requestError', () => {
+      this.$Message.error('请求失败！')
+    })
+    restEmitter.on('errorOther', () => {
+      this.$Message.error('连接错误！')
+    })
+    restEmitter.on('errorServer', () => {
+      this.$Message.error('连接到服务器失败！')
+    })
   },
   methods: {
   },
   computed: {
     ...mapState([
-      'pending',
-      'islogin',
       'showBodySpin'
     ])
   }

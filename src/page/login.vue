@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import * as types from '@/store/types'
 export default {
   data () {
     return {
@@ -90,7 +88,7 @@ export default {
         password: this.$refs.password.value,
         verificationCode: this.$refs.verificationCode.value
       }
-      this.$store.dispatch('LOGIN_BY_USER_NAME', param).then((response) => {
+      this.$store.dispatch('LOGIN', param).then((response) => {
         if (!response) {
           return false
         }
@@ -131,7 +129,7 @@ export default {
       let param = {
         userCode: this.$refs.account.value
       }
-      this.$store.dispatch('LOGIN_VERIFICATION_CODE', param).then((response) => {
+      this.$store.dispatch('ADM_LOGIN', param).then((response) => {
         if (!response) {
           return false
         }
@@ -178,14 +176,11 @@ export default {
     }
   },
   computed: {
-    ...mapMutations([
-      'types.SHOW_BODY_SPIN'
-    ])
   },
   beforeMount () {
   },
   mounted () {
-    this.$store.commit(types.SHOW_BODY_SPIN)
+    this.$store.commit('HIDE_BODY_SPIN')
   }
 }
 </script>

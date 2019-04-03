@@ -9,8 +9,7 @@
 
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -46,7 +45,7 @@ export default {
           userName: this.$refs.userName.value,
           userEmail: this.$refs.userEmail.value
         }
-        this.$store.dispatch('ADD_BUTLER', params).then((response) => {
+        this.$store.dispatch('ADD_KEEPER', params).then((response) => {
           this.loadingBtn = false
           if (!response) {
             return false

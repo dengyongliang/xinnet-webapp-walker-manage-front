@@ -1,30 +1,31 @@
+'use strict'
 /*
   login api
 */
 import axios from '@/global/axios.js'
-import * as links from '@/global/linkdo.js'
+import * as action from '@/global/action.js'
 // 登录
-export const loginByUserName = (account, password, verificationCode) => {
+export const login = (account, password, verificationCode) => { // loginByUserName
   return axios({
-    url: links.LOGIN_SUBMIT,
+    url: action.LOGIN,
     method: 'POST',
     data: {account, password, verificationCode}
   })
 }
 
 // 登录验证码
-export const loginVerificationCode = (userCode) => {
+export const admLogin = (userCode) => { //loginVerificationCode
   return axios({
-    url: links.LOGIN_VERIFICATIONCODE,
+    url: action.ADM_LOGIN,
     method: 'POST',
     data: {userCode}
   })
 }
 
 // 登出
-export const loginOut = () => {
+export const logout = () => { // loginOut
   return axios({
-    url: links.LOGIN_OUT,
+    url: action.LOGOUT,
     method: 'POST'
   })
 }

@@ -1,53 +1,61 @@
+'use strict'
 /*
   user api
 */
 import axios from '@/global/axios.js'
-import * as links from '@/global/linkdo.js'
+import * as action from '@/global/action.js'
 
 // 获取当前账号信息
-export const queryCurrentUserData = () => {
+export const myUserInfo = () => { // queryCurrentUserData
   return axios({
-    url: links.GET_CURRENT_USER_DATA,
+    url: action.MY_USER_INFO,
     method: 'GET'
   })
 }
 // 账号管理 - 列表
-export const queryUserList = (pageNum, pageSize, userCode) => {
+export const userList = (pageNum, pageSize, userCode) => { // queryUserList
   return axios({
-    url: links.GET_USER_LIST_DATA,
+    url: action.USER_LIST,
     method: 'POST',
     data: {pageNum, pageSize, userCode}
   })
 }
 // 账号删除
-export const delUser = (userCode) => {
+export const deleteUserInfo = (userCode) => { // delUser
   return axios({
-    url: links.DEL_USER,
+    url: action.DELETE_USER_INFO,
     method: 'POST',
     data: {userCode}
   })
 }
 // 账号信息更新
-export const updateUserInfo = (userName, userMobile, userEmail, userCode, userTel, qq, wx) => {
+export const updateUserInfo = (userName, userMobile, userEmail, userCode, userTel, qq, wx) => { // updateUserInfo
   return axios({
-    url: links.SET_USER_INFO,
+    url: action.UPDATE_USER_INFO,
     method: 'POST',
     data: {userName, userMobile, userEmail, userCode, userTel, qq, wx}
   })
 }
 // 创建账号
-export const addUserInfo = (userName, userMobile, userEmail, roleCode, password) => {
+export const addUserInfo = (userName, userMobile, userEmail, roleCode, password) => { // addUserInfo
   return axios({
-    url: links.CREAT_NEW_ACCOUNT,
+    url: action.ADD_USER_INFO,
     method: 'POST',
     data: {userName, userMobile, userEmail, roleCode, password}
   })
 }
 // 更新账号密码
-export const updateUserPassword = (oldPassword, newPassword, userCode) => {
+export const updateUserPassword = (oldPassword, newPassword, userCode) => { // updateUserPassword
   return axios({
-    url: links.SET_USER_PASSWORD,
+    url: action.UPDATE_USER_PASSWORD,
     method: 'POST',
     data: {oldPassword, newPassword, userCode}
+  })
+}
+// 查询角色信息
+export const adminRoles = () => { // queryRoles
+  return axios({
+    url: action.ADMIN_ROLES,
+    method: 'GET'
   })
 }

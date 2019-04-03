@@ -6,9 +6,9 @@
       span 账号权限
     ul.menuList
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_user_myUserInfo")>=0')
-        router-link(to="/account/my") 我的账号
+        router-link(to="/user/my") 我的账号
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_user_userList")>=0')
-        router-link(to="/account/mgmt") 账号管理
+        router-link(to="/user/mgmt") 账号管理
 
   .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer")>=0')
     h3.menuT.lv1
@@ -16,9 +16,7 @@
       span 客户管理
     ul.menuList
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_list")>=0')
-        router-link(to="/client/mgmt") 客户管理
-      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0')
-        router-link(to="/client/account") 客户账号管理
+        router-link(to="/customer/mgmt") 客户管理
 
   .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order")>=0')
     h3.menuT.lv1
@@ -50,11 +48,11 @@
       span 管家与客户服务
     ul.menuList
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_houseKeepers")>=0')
-        router-link(to="/service/butler") 管家管理
+        router-link(to="/butler") 管家管理
       li.menuItem.lv2
-        router-link(to="/service/budget") 提交预算报告
+        router-link(to="/budget") 提交预算报告
       li.menuItem.lv2
-        router-link(to="/service/worklist") 工单管理
+        router-link(to="/worklist") 工单管理
 </template>
 <script>
 import { mapState } from 'vuex'

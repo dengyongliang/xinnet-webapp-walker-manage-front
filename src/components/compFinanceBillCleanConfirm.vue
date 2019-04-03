@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as types from '@/store/types'
 export default {
   components: {
   },
@@ -46,7 +44,6 @@ export default {
   methods: {
     billSubmit () {
       this.loadingBtn = true
-      this.confirmBillClean(params)
       this.$store.dispatch('CUSTOMER_BILL_PAY', {id: this.$refs.id.value}).then((response) => {
         this.loadingBtn = false
         if (!response) {

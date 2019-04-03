@@ -1,26 +1,24 @@
+@@ -1,127 +0,0 @@
 <template lang="pug">
   div
     .search
       Input(placeholder="企业名称/客户ID",ref="queryInput",v-model="customerCode")
       Button(type="primary",@click="querySubmit",:loading="loadingBtn") 搜索
-    Form(:label-width="150", v-show="showed")
+    Form(:label-width="150", v-if="showed")
       FormItem(label="企业名称：")
         span.text {{customerName}}
       FormItem(label="客户ID：")
         span.text {{customerCode}}
         input(type="hidden",:value="customerId", ref="customerId")
-      FormItem(label="预付款余额：")
-        span.text {{payBalance}} 元
+
       comp-re-money(
-        label1="增加预付款金额：",
-        label2="再次输入增加预付款：",
+        label1="信用额度：",
+        label2="再次输入信用额度：",
         ref="reMoney"
       )
         span.unit(slot="right1") 元
         span.unit(slot="right2") 元
-
       FormItem(label="")
-        <!-- Button(@click="close()") 取消 -->
         Button(type="primary",@click="submit",:loading="loadingBtn") 确定
 </template>
 
@@ -42,16 +40,13 @@ export default {
   },
   data () {
     return {
+      value: '',
       loadingBtn: false,
+      creditMoney: '',
       showed: false,
-      showErrorMoney: false,
-      showErrorReMoney: false,
-      errorTextMoney: '',
-      errorTextReMoney: '',
-      customerName: '',
       customerId: '',
       customerCode: '',
-      payBalance: ''
+      customerName: ''
     }
   },
   methods: {
@@ -63,21 +58,21 @@ export default {
       if (result) {
         let params = {
           customerId: this.$refs.customerId.value,
-          payMoney: this.$refs.reMoney.value1
+          creditMoney: this.$refs.reMoney.value1
         }
-        this.$store.dispatch('ADD_PAY_MONEY', params).then((response) => {
+        this.$store.dispatch('ADD_CREDIT_MONEY', params).then((response) => {
           this.loadingBtn = false
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            this.$Message.success('预付款修改成功！')
+            this.$Message.success('额度修改成功！')
             this.$emit('refreshData')
           } else {
             if (response.data.code === '100') {
-              this.$Message.error('客户账号异常！')
+              this.$Message.error('客户账号异常')
             } else if (response.data.code === '400') {
-              this.$Message.error('结算失败！')
+              this.$Message.error('结算失败')
             }
           }
         }).catch(() => {})
@@ -100,10 +95,7 @@ export default {
             this.customerId = response.data.data.id
             this.customerCode = response.data.data.code
             this.customerName = response.data.data.name
-            this.payBalance = response.data.data.payBalance
             this.showed = true
-            this.showErrorMoney = false
-            this.showErrorReMoney = false
           } else {
             this.$Message.error('查询不到指定信息')
           }

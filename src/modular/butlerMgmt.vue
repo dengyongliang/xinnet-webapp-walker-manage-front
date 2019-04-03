@@ -39,8 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compButlerModify from '@/components/compButlerModify'
 import compButlerAdd from '@/components/compButlerAdd'
 export default {
@@ -171,7 +170,7 @@ export default {
             let params = {
               userCode: userCode
             }
-            this.$store.dispatch('DEL_USER', params).then((response) => {
+            this.$store.dispatch('DELETE_USER_INFO', params).then((response) => {
               if (!response) {
                 return false
               }
@@ -216,7 +215,7 @@ export default {
       return params
     },
     queryList (curPage) {
-      this.$store.dispatch('QUERY_BUTLER_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('HOUSE_KEEPERS', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {
@@ -238,10 +237,7 @@ export default {
       this.drawerDetail = false
       // 查询数据
       this.queryList(1)
-    },
-    ...mapActions({
-      delUser: types.DEL_USER
-    })
+    }
   },
   computed: {
     ...mapState([

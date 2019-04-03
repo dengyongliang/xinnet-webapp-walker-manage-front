@@ -14,8 +14,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import validateFormResult from '@/global/validateForm'
 import compInput from './compInput'
 import compRePassword from './compRePassword'

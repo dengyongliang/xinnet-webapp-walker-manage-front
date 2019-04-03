@@ -36,7 +36,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import * as types from '@/store/types'
 import compCreatBudgetReport from '@/components/compCreatBudgetReport'
 import compModifyBudgetReport from '@/components/compModifyBudgetReport'
 import moment from 'moment'
@@ -139,7 +138,7 @@ export default {
           let params = {
             reportId: id
           }
-          this.$store.dispatch('DEL_BUDGET_REPORT', params).then((response) => {
+          this.$store.dispatch('DELETE_BUDGET_REPORT', params).then((response) => {
             if (!response) {
               return false
             }
@@ -192,7 +191,7 @@ export default {
       this.queryList(1)
     },
     queryList (curPage) {
-      this.$store.dispatch('QUERY_BUDGET_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('BUDGET_REPORT_MANAGE', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

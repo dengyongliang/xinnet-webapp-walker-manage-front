@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compRadio from './compRadio'
 import compSelect from './compSelect'
@@ -84,7 +82,7 @@ export default {
           orderType: this.$refs.orderType.value,
           orderPayType: this.$refs.orderPayType.value
         }
-        this.$store.dispatch('ORDER_ENTRY', param).then((response) => {
+        this.$store.dispatch('ENTRY_ORDER', param).then((response) => {
           this.loadingBtn = false
           if (!response) {
             return false
@@ -112,7 +110,7 @@ export default {
       let params = {
         customerId: obj.value
       }
-      this.$store.dispatch('QUERY_COMPANYS', params).then((response) => {
+      this.$store.dispatch('COMPANYS', params).then((response) => {
         if (!response) {
           return false
         }

@@ -1,14 +1,14 @@
 export default {
-  path: '/account',
+  path: '/user',
   component (resolve) {
     return require(['@/page/main'], resolve)
   },
   children: [
     {
       path: '/',
-      name: 'account_my',
+      name: 'user_my',
       component (resolve) {
-        return require(['@/modular/account/accountMy'], resolve)
+        return require(['@/modular/user/accountMy'], resolve)
       },
       meta: {
         title: '我的账号'
@@ -16,9 +16,9 @@ export default {
     },
     {
       path: 'my',
-      name: 'account_my',
+      name: 'user_my',
       component (resolve) {
-        return require(['@/modular/account/accountMy'], resolve)
+        return require(['@/modular/user/accountMy'], resolve)
       },
       meta: {
         title: '我的账号'
@@ -26,9 +26,9 @@ export default {
     },
     {
       path: 'mgmt',
-      name: 'account_mgmt',
+      name: 'user_mgmt',
       component (resolve) {
-        return require(['@/modular/account/accountMgmt'], resolve)
+        return require(['@/modular/user/accountMgmt'], resolve)
       },
       meta: {
         title: '账号管理'

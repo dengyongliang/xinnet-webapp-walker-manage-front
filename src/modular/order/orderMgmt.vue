@@ -51,15 +51,14 @@
 </template>
 
 <script>
-import * as types from '@/store/types'
-import * as links from '@/global/linkdo.js'
+import * as action from '@/global/action.js'
 import moment from 'moment'
 export default {
   components: {
   },
   data () {
     return {
-      exportLink: links.EXPORT_ORDER_LIST,
+      exportLink: action.EXPORT_ORDER,
       searchUserId: '',
       time: '',
       param: {
@@ -296,7 +295,7 @@ export default {
       return param
     },
     queryOrderList (curPage) {
-      this.$store.dispatch('QUERY_ORDER_LIST', this.queryOrderListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('ORDER_LIST', this.queryOrderListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

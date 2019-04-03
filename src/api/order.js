@@ -1,21 +1,22 @@
+'use strict'
 /*
   order api
 */
 import axios from '@/global/axios.js'
-import * as links from '@/global/linkdo.js'
+import * as action from '@/global/action.js'
 // 订单管理 - 列表
-export const queryOrderList = (pageNum, pageSize, createTimeBegin, createTimeEnd, orderGoodsInfo, orderGoodsType, orderMode, orderPayType, orderType) => {
+export const orderList = (pageNum, pageSize, createTimeBegin, createTimeEnd, orderGoodsInfo, orderGoodsType, orderMode, orderPayType, orderType) => {
   return axios({
-    url: links.QUERY_ORDER_LIST,
+    url: action.ORDER_LIST,
     method: 'POST',
     data: {pageNum, pageSize, createTimeBegin, createTimeEnd, orderGoodsInfo, orderGoodsType, orderMode, orderPayType, orderType}
   })
 }
 
 // 订单录入
-export const orderEntry = (customerId, companyId, orderGoodsInfo, orderMoney, orderType, orderPayType) => {
+export const entryOrder = (customerId, companyId, orderGoodsInfo, orderMoney, orderType, orderPayType) => {
   return axios({
-    url: links.SUBMIT_ADD_ORDER_ENTRY,
+    url: action.ENTRY_ORDER,
     method: 'POST',
     data: {customerId, companyId, orderGoodsInfo, orderMoney, orderType, orderPayType}
   })

@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compPaymentAdd from '@/components/compPaymentAdd'
 export default {
   components: {
@@ -116,7 +115,7 @@ export default {
       return params
     },
     queryList (curPage) {
-      this.$store.dispatch('QUERY_PAYMENT_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('PAY_MONEY_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

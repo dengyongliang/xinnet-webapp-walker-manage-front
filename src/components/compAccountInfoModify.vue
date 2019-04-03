@@ -12,8 +12,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
 export default {

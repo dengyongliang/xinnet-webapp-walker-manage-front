@@ -1,14 +1,14 @@
 export default {
-  path: '/client',
+  path: '/customer',
   component (resolve) {
     return require(['@/page/main'], resolve)
   },
   children: [
     {
       path: '/',
-      name: 'client_mgmt',
+      name: 'customer_mgmt',
       component (resolve) {
-        return require(['@/modular/client/clientMgmt'], resolve)
+        return require(['@/modular/customer/clientMgmt'], resolve)
       },
       meta: {
         title: '客户管理'
@@ -16,9 +16,9 @@ export default {
     },
     {
       path: 'mgmt',
-      name: 'client_mgmt',
+      name: 'customer_mgmt',
       component (resolve) {
-        return require(['@/modular/client/clientMgmt'], resolve)
+        return require(['@/modular/customer/clientMgmt'], resolve)
       },
       meta: {
         title: '客户管理'

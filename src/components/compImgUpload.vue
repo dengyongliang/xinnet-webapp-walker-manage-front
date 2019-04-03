@@ -19,8 +19,7 @@
 </template>
 
 <script>
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+import * as action from '@/global/action.js'
 export default {
   name: 'compImgUpload',
   props: {
@@ -51,7 +50,7 @@ export default {
   },
   data () {
     return {
-      uploadAction: links.UPLOAD_IMG,
+      uploadAction: action.UPLOAD_FILE,
       uploadList: [],
       defaultList: [],
       visible: false,

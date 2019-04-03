@@ -4,9 +4,9 @@
   h1.pageTitle.clear 客户管理
     .tR
       span 搜索
-      Input(style="width:200px",placeholder="企业名称/客户ID",v-model.trim="searchUserId")
-      Button(type="primary", @click="searchListData",:loading="loadingBtn") 搜索
-      Button(@click="showDrawerClient('creat')") + 新增客户
+      Input(style="width:200px",placeholder="姓名/用户名/邮箱/手机",v-model.trim="searchUserId")
+      Button(type="primary", @click="searchClientData",:loading="loadingBtn") 搜索
+      Button(@click="showDrawerClient('creat')") + 新建账号
 
   .secMain
     <!-- 列表主体 -->
@@ -19,18 +19,17 @@
   <!-- 添加/修改 账户 抽屉 -->
   Drawer(:closable="true" width="640" v-model="drawerClientMgmt",:title="drawerTitle",@on-visible-change="drawerChange",:mask-closable="maskClosable")
     comp-client-mgmt(
-      @refreshData="searchListData",
       v-if="drawerClientMgmt",
       :status="status",
+      @refreshData="searchClientData",
       :enterprise = "enterprise",
       :orgCode = "orgCode",
-      :id = "id",
-      :userId = "userId",
-      :userName = "userName",
+      :customerUserId = "customerUserId",
       :accountPeriod = "accountPeriod",
       :creditBalance = "creditBalance",
       :orgFile = "orgFile",
       :open = "open",
+      :admin = "admin",
       :contactor = "contactor",
       :mobile = "mobile",
       :email = "email",
@@ -40,7 +39,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import * as types from '@/store/types'
 import compClientMgmt from '@/components/compClientMgmt'
 export default {
   components: {
@@ -55,22 +53,16 @@ export default {
         {
           title: '创建时间',
           key: 'createTime',
-          className: 'tdDate'
+          className: 'col1'
         },
         {
           title: '企业名称',
           key: 'name',
-          className: 'col2',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {
-              }, this.clientList[params.index].name)
-            ])
-          }
+          className: 'col2'
         },
         {
           title: '客户ID',
-          key: 'code',
+          key: 'customerUserId',
           className: 'col3'
         },
         {
@@ -81,30 +73,12 @@ export default {
         {
           title: '额度',
           key: 'creditBalance',
-          className: 'col5',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {
-              }, this.clientList[params.index].creditBalance + ' 元')
-            ])
-          }
+          className: 'col5'
         },
         {
           title: '状态',
           key: 'status',
-          className: 'col6',
-          render: (h, params) => {
-            if (this.clientList[params.index].status === 1) {
-              return h('div', [
-                h('span', {}, '启用')
-              ])
-            }
-            if (this.clientList[params.index].status === 0) {
-              return h('div', [
-                h('span', {}, '停用')
-              ])
-            }
-          }
+          className: 'col6'
         },
         {
           title: '操作',
@@ -121,13 +95,12 @@ export default {
                     let param = {
                       enterprise: this.clientList[params.index].name,
                       orgCode: this.clientList[params.index].orgCode,
-                      id: this.clientList[params.index].code,
+                      customerUserId: this.clientList[params.index].customerUserId,
                       accountPeriod: this.clientList[params.index].accountPeriod,
                       creditBalance: this.clientList[params.index].creditBalance,
                       orgFile: this.clientList[params.index].orgFile,
-                      open: this.clientList[params.index].status,
-                      userId: this.clientList[params.index].userId,
-                      userName: this.clientList[params.index].userName,
+                      open: this.clientList[params.index].open,
+                      admin: this.clientList[params.index].admin,
                       contactor: this.clientList[params.index].contactor,
                       mobile: this.clientList[params.index].mobile,
                       email: this.clientList[params.index].email,
@@ -156,7 +129,7 @@ export default {
       accountPeriod: '',
       creditBalance: '',
       orgFile: '',
-      open: 2,
+      open: false,
       admin: '',
       contactor: '',
       mobile: '',
@@ -165,17 +138,20 @@ export default {
     }
   },
   methods: {
-    searchListData () {
+    searchClientData () {
       // 关闭 drawer弹出层
       this.drawerClientMgmt = false
       // 查询数据
-      this.getClientList(1)
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.getClientList(curPage)
+      this.queryList(curPage)
     },
     drawerChange () {
+      if (!this.drawerClientMgmt) {
+        this.status = ''
+      }
     },
     showDrawerClient (status, param) {
       if (status === 'creat') {
@@ -183,13 +159,12 @@ export default {
         this.drawerTitle = '新增客户'
         this.enterprise = ''
         this.orgCode = ''
-        this.id = 0
-        this.userId = ''
-        this.userName = ''
+        this.customerUserId = 0
         this.accountPeriod = ''
         this.creditBalance = ''
         this.orgFile = ''
-        this.open = 2
+        this.open = ''
+        this.admin = ''
         this.contactor = ''
         this.mobile = ''
         this.email = ''
@@ -199,13 +174,12 @@ export default {
         this.drawerTitle = '客户详情'
         this.enterprise = param.enterprise
         this.orgCode = param.orgCode
-        this.id = param.id
-        this.userId = param.userId
-        this.userName = param.userName
+        this.customerUserId = param.customerUserId
         this.accountPeriod = param.accountPeriod
         this.creditBalance = param.creditBalance
         this.orgFile = param.orgFile
         this.open = param.open
+        this.admin = param.admin
         this.contactor = param.contactor
         this.mobile = param.mobile
         this.email = param.email
@@ -215,19 +189,19 @@ export default {
       }
       this.drawerClientMgmt = true
     },
-    getClientListParam (obj) {
+    queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      let param = {
+      let params = {
         pageNum: obj.pageNum,
         pageSize: 20,
-        customerCode: this.searchUserId
+        userId: this.searchUserId
       }
-      return param
+      return params
     },
-    getClientList (curPage) {
-      this.$store.dispatch('QUERY_CLIENT_LIST', this.getClientListParam({pageNum: curPage})).then((response) => {
+    queryList (curPage) {
+      this.$store.dispatch('QUERY_WORK_LIST', this.queryListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {
@@ -251,7 +225,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.getClientList(1)
+    this.queryList(1)
   }
 }
 </script>

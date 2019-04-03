@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress'
-import account from './account'
-import client from './client'
+import user from './user'
+import customer from './customer'
 import order from './order'
 import finance from './finance'
-import service from './service'
 Vue.use(Router)
 
 const RouterMain = new Router({
@@ -43,21 +42,50 @@ const RouterMain = new Router({
       children: [
         {
           path: '/',
-          name: 'account_my',
+          name: 'user_my',
           component (resolve) {
-            return require(['@/modular/account/accountMy'], resolve)
+            return require(['@/modular/user/accountMy'], resolve)
           },
           meta: {
             title: '我的账号'
           }
+        },
+        {
+          path: 'butler',
+          name: 'butler_mgmt',
+          component (resolve) {
+            return require(['@/modular/butlerMgmt'], resolve)
+          },
+          meta: {
+            title: '管家管理'
+          }
+        },
+        {
+          path: 'budget',
+          name: 'budget_mgmt',
+          component (resolve) {
+            return require(['@/modular/budget'], resolve)
+          },
+          meta: {
+            title: '提交预算报告'
+          }
+        },
+        {
+          path: 'worklist',
+          name: 'worklist',
+          component (resolve) {
+            return require(['@/modular/worklist'], resolve)
+          },
+          meta: {
+            title: '工单管理'
+          }
         }
       ]
     },
-    account,
-    client,
+    user,
+    customer,
     order,
-    finance,
-    service
+    finance
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {

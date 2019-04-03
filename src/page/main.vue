@@ -10,9 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '../store/types'
-import { emitter as restEmitter } from '../global/http'
+import { mapState } from 'vuex'
 import menuBody from '../modular/menu'
 import headerBody from '../modular/header'
 export default {
@@ -29,41 +27,14 @@ export default {
   mounted () {
   },
   beforeMount () {
-    let vm = this
     // 获取账号信息
-    this.$store.dispatch('QUERY_CURRENT_USER_DATA')
-    restEmitter.on('noLogin', () => {
-      vm.$Message.error('登录超时，请重新登录！')
-      setTimeout(() => {
-        vm.$router.replace({ path: '/login' })
-      }, 300)
-    })
-    restEmitter.on('noPermission', () => {
-      vm.$Message.error('权限错误！')
-      setTimeout(() => {
-        vm.$router.replace({ path: '/' })
-      }, 300)
-    })
-    restEmitter.on('paramError', () => {
-      vm.$Message.error('参数错误！')
-    })
-    restEmitter.on('requestError', () => {
-      vm.$Message.error('请求失败！')
-    })
-    restEmitter.on('errorOther', () => {
-      vm.$Message.error('连接错误！')
-    })
-    restEmitter.on('errorServer', () => {
-      vm.$Message.error('连接到服务器失败！')
-    })
+    this.$store.dispatch('MY_USER_INFO')
   },
   methods: {
   },
   computed: {
     ...mapState([
-      'pending',
-      'islogin',
-      'showBodySpin'
+      'islogin'
     ])
   }
 }

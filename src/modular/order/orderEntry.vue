@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compOrderEntry from '@/components/compOrderEntry'
 export default {
   components: {
@@ -168,7 +167,7 @@ export default {
       return param
     },
     queryOrderList (curPage) {
-      this.$store.dispatch('QUERY_ORDER_LIST', this.queryOrderListParam({pageNum: curPage})).then((response) => {
+      this.$store.dispatch('ORDER_LIST', this.queryOrderListParam({pageNum: curPage})).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

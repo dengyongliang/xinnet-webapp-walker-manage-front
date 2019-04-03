@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as types from '@/store/types'
 import validateFormResult from '@/global/validateForm'
 import compInput from './compInput'
 import compSelect from './compSelect'
@@ -392,7 +390,7 @@ export default {
       }
     }).catch(() => {})
 
-    this.$store.dispatch('QUERY_BUDGET_REPORT_DETAIL', {reportId: this.reportId}).then((response) => {
+    this.$store.dispatch('FIND_BUDGET_REPORT_DETAIL', {reportId: this.reportId}).then((response) => {
       this.loadingBtn = false
       if (!response) {
         return false

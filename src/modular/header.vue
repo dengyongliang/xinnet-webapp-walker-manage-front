@@ -10,7 +10,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import * as types from '@/store/types'
 export default {
   data () {
     return {
@@ -25,7 +24,7 @@ export default {
   },
   methods: {
     logout () {
-      this.$store.dispatch('LOGIN_OUT').then((response) => {
+      this.$store.dispatch('LOGOUT').then((response) => {
         if (!response) {
           return false
         }
