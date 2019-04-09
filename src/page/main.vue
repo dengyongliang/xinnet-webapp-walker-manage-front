@@ -28,7 +28,7 @@ export default {
   },
   beforeMount () {
     // 获取账号信息
-    this.$store.dispatch('MY_USER_INFO')
+    this.$store.dispatch('MY_USER_INFO').then((response) => {}).catch(() => {})
   },
   methods: {
   },

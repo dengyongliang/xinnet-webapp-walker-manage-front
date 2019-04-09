@@ -5,7 +5,7 @@ export default {
   mutations: {
   },
   actions: {
-    LOGIN({ commit }, params) {
+    LOGIN ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.login(params.account, params.password, params.verificationCode).then(response => {
           resolve(response)
@@ -14,7 +14,7 @@ export default {
         })
       })
     },
-    ADM_LOGIN({ commit }, params) {
+    ADM_LOGIN ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.admLogin(params.userCode).then(response => {
           resolve(response)
@@ -23,7 +23,7 @@ export default {
         })
       })
     },
-    LOGOUT({ commit }) {
+    LOGOUT ({ commit }) {
       return new Promise((resolve, reject) => {
         api.logout().then(response => {
           commit('LOGIN_FALSE')

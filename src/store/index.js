@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import login from './login.js'
 import user from './user.js'
 import customer from './customer.js'
 import finance from './finance.js'
@@ -35,6 +36,7 @@ export default function makeStore () {
     getters: {
     },
     modules: {
+      login,
       user,
       customer,
       finance,

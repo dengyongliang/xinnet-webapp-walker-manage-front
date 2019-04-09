@@ -14,7 +14,7 @@ export const login = (account, password, verificationCode) => { // loginByUserNa
 }
 
 // 登录验证码
-export const admLogin = (userCode) => { //loginVerificationCode
+export const admLogin = (userCode) => { // loginVerificationCode
   return axios({
     url: action.ADM_LOGIN,
     method: 'POST',

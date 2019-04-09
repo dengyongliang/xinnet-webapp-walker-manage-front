@@ -1,5 +1,6 @@
 'use strict'
 const suffix = process.env.NODE_ENV === 'production' ? '' : '.js'
+const adminApi = process.env.NODE_ENV === 'production' ? '/admin-api' : ''
 // 登出
 export const LOGOUT = '/admin/logout' + suffix // LOGIN_OUT
 // 登录
@@ -51,13 +52,13 @@ export const ADD_CREDIT_MONEY = '/manage/finance/addCreditMoney' + suffix // SUB
 // 查询订单列表
 export const ORDER_LIST = '/manage/order/orderList' + suffix // QUERY_ORDER_LIST
 // 导出订单列表
-export const EXPORT_ORDER = '/manage/order/exportOrder' + suffix // EXPORT_ORDER_LIST
+export const EXPORT_ORDER = adminApi + '/manage/order/exportOrder' + suffix // EXPORT_ORDER_LIST
 // 添加录入订单
 export const ENTRY_ORDER = '/manage/order/entryOrder' + suffix // SUBMIT_ADD_ORDER_ENTRY
 // 查询管家
 export const CUSTOMER_USERS = '/manage/customer/customerUsers' + suffix // QUERY_BUTLER
 // 上传图片
-export const UPLOAD_FILE = '/manage/customer/uploadfile' + suffix // UPLOAD_IMG
+export const UPLOAD_FILE = adminApi + '/manage/customer/uploadfile' + suffix // UPLOAD_IMG
 // 停/启用客户
 export const SET_CUSTOMER_STATUS = '/manage/customer/setCustomerStatus' + suffix // SET_CUSTOMER_STATUS
 // 客户可用企业列表

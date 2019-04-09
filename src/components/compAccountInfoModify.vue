@@ -47,13 +47,12 @@ export default {
         this.$refs.userMobile,
         this.$refs.userEmail
       ])
-
       if (result) {
         let params = {
-          userName: this.$refs.userName,
-          userMobile: this.$refs.userMobile,
-          userEmail: this.$refs.userEmail,
-          userCode: this.$refs.userCode,
+          userName: this.$refs.userName.value,
+          userMobile: this.$refs.userMobile.value,
+          userEmail: this.$refs.userEmail.value,
+          userCode: this.$refs.userCode.value,
           roleId: this.roleId
         }
         this.$store.dispatch('UPDATE_USER_INFO', params).then((response) => {
