@@ -1,38 +1,27 @@
-export default {
-  path: '/user',
-  component (resolve) {
-    return require(['@/page/main'], resolve)
+export default [
+  {
+    path: 'user',
+    name: 'user_my',
+    redirect: 'user/my'
   },
-  children: [
-    {
-      path: '/',
-      name: 'user_my',
-      component (resolve) {
-        return require(['@/modular/user/accountMy'], resolve)
-      },
-      meta: {
-        title: '我的账号'
-      }
+  {
+    path: 'user/my',
+    name: 'user_my',
+    component (resolve) {
+      return require(['@/modular/user/accountMy'], resolve)
     },
-    {
-      path: 'my',
-      name: 'user_my',
-      component (resolve) {
-        return require(['@/modular/user/accountMy'], resolve)
-      },
-      meta: {
-        title: '我的账号'
-      }
-    },
-    {
-      path: 'mgmt',
-      name: 'user_mgmt',
-      component (resolve) {
-        return require(['@/modular/user/accountMgmt'], resolve)
-      },
-      meta: {
-        title: '账号管理'
-      }
+    meta: {
+      title: '我的账号'
     }
-  ]
-}
+  },
+  {
+    path: 'user/mgmt',
+    name: 'user_mgmt',
+    component (resolve) {
+      return require(['@/modular/user/accountMgmt'], resolve)
+    },
+    meta: {
+      title: '账号管理'
+    }
+  }
+]

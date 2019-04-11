@@ -1,28 +1,17 @@
-export default {
-  path: '/customer',
-  component (resolve) {
-    return require(['@/page/main'], resolve)
+export default [
+  {
+    path: 'customer',
+    name: 'customer_mgmt',
+    redirect: 'customer/mgmt'
   },
-  children: [
-    {
-      path: '/',
-      name: 'customer_mgmt',
-      component (resolve) {
-        return require(['@/modular/customer/clientMgmt'], resolve)
-      },
-      meta: {
-        title: '客户管理'
-      }
+  {
+    path: 'customer/mgmt',
+    name: 'customer_mgmt',
+    component (resolve) {
+      return require(['@/modular/customer/clientMgmt'], resolve)
     },
-    {
-      path: 'mgmt',
-      name: 'customer_mgmt',
-      component (resolve) {
-        return require(['@/modular/customer/clientMgmt'], resolve)
-      },
-      meta: {
-        title: '客户管理'
-      }
+    meta: {
+      title: '客户管理'
     }
-  ]
-}
+  }
+]

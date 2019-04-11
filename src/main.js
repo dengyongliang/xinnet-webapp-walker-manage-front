@@ -12,6 +12,7 @@ import iView from 'iview'
 // 自定义方法及变量
 import GLOBAL from './global/global'
 import DATAS from './global/datas'
+import './global/error' // 日志
 require('es6-promise').polyfill()
 
 Vue.prototype.GLOBALS = GLOBAL

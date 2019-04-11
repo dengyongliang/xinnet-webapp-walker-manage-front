@@ -79,13 +79,17 @@ const RouterMain = new Router({
           meta: {
             title: '工单管理'
           }
-        }
+        },
+        ...customer,
+        ...finance,
+        ...order,
+        ...user
       ]
-    },
-    user,
-    customer,
-    order,
-    finance
+    }
+    // user
+    // customer,
+    // order
+    // finance
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {

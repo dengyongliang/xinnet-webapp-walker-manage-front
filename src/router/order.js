@@ -1,38 +1,27 @@
-export default {
-  path: '/order',
-  component (resolve) {
-    return require(['@/page/main'], resolve)
+export default [
+  {
+    path: 'order',
+    name: 'order_mgmt',
+    redirect: 'order/mgmt'
   },
-  children: [
-    {
-      path: '/',
-      name: 'order_mgmt',
-      component (resolve) {
-        return require(['@/modular/order/orderMgmt'], resolve)
-      },
-      meta: {
-        title: '订单管理'
-      }
+  {
+    path: 'order/mgmt',
+    name: 'order_mgmt',
+    component (resolve) {
+      return require(['@/modular/order/orderMgmt'], resolve)
     },
-    {
-      path: 'mgmt',
-      name: 'order_mgmt',
-      component (resolve) {
-        return require(['@/modular/order/orderMgmt'], resolve)
-      },
-      meta: {
-        title: '订单管理'
-      }
-    },
-    {
-      path: 'entry',
-      name: 'order_entry',
-      component (resolve) {
-        return require(['@/modular/order/orderEntry'], resolve)
-      },
-      meta: {
-        title: '订单录入'
-      }
+    meta: {
+      title: '订单管理'
     }
-  ]
-}
+  },
+  {
+    path: 'order/entry',
+    name: 'order_entry',
+    component (resolve) {
+      return require(['@/modular/order/orderEntry'], resolve)
+    },
+    meta: {
+      title: '订单录入'
+    }
+  }
+]
