@@ -70,10 +70,7 @@ export default {
       }
       let val = this.value
       let validate = this.validate
-      if (val === '' && this.required) {
-        this.showError = true
-        this.errorText = `请输入${this.label.substr(0, this.label.length - 1) || ''}！`
-      } else {
+      if (val !== '') {
         if (validate === 'email') {
           if (!this.GLOBALS.IS_EMAIL_AVAILABLE(val)) {
             this.showError = true
