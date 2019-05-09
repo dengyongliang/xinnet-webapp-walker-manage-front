@@ -22,7 +22,12 @@
         "open": true,
         "admin":"sadfsdfsadf",
         "accountPeriod":"askdjkfsld",
-        "creditBalance":"sdfsdfsd"
+        "creditBalance":"sdfsdfsd",
+        "roles": [
+          {
+            "id": 2
+          }
+        ]
       },
       {
         "id": 2,
@@ -41,7 +46,12 @@
         "open": false,
         "admin":"sadfsdfsadf",
         "accountPeriod":"askdjkfsld",
-        "creditBalance":"sdfsdfsd"
+        "creditBalance":"sdfsdfsd",
+        "roles": [
+          {
+            "id": 1
+          }
+        ]
       },
       {
         "id": 3,
@@ -60,7 +70,12 @@
         "open": true,
         "admin":"sadfsdfsadf",
         "accountPeriod":"askdjkfsld",
-        "creditBalance":"sdfsdfsd"
+        "creditBalance":"sdfsdfsd",
+        "roles": [
+          {
+            "id": 2
+          }
+        ]
       }
     ]
   }

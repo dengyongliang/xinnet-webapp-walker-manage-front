@@ -1,4 +1,3 @@
-@@ -1,127 +0,0 @@
 <template lang="pug">
   div
     .search
@@ -10,7 +9,8 @@
       FormItem(label="客户ID：")
         span.text {{customerCode}}
         input(type="hidden",:value="customerId", ref="customerId")
-
+      FormItem(label="当前信誉额度：")
+        span.text 0.00元
       comp-re-money(
         label1="信用额度：",
         label2="再次输入信用额度：",

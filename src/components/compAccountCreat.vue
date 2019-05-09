@@ -4,9 +4,10 @@
     comp-input(name='userMobile',label="联系手机：",ref="userMobile",defaultValue="", validate="mobile")
     comp-input(name='userEmail',label="联系邮箱：",ref="userEmail",defaultValue="", validate="email")
     FormItem(label="角色：")
-      RadioGroup(v-model="roleCode.value",@on-change="onChange",ref="roleCode")
-        Radio(v-for="item in rolesList",:label="item.roleCode", :key="item.roleCode") {{item.roleName}}
-      Alert(type="error",show-icon, style="display:inline-block",v-show="roleCode.error!=0") 请选择角色权限！
+      comp-radio(:list="rolesList", ref="roleCode")
+      //- RadioGroup(v-model="roleCode.value",@on-change="onChange",ref="roleCode")
+      //-   Radio(v-for="item in rolesList",:label="item.roleCode", :key="item.roleCode") {{item.roleName}}
+      //- Alert(type="error",show-icon, style="display:inline-block",v-show="roleCode.error!=0") 请选择角色权限！
     comp-re-password(defaultValue="",ref="compRePassword",label1="请输入登录密码：",label2="重复输入密码：")
 
     FormItem(label="")
@@ -18,9 +19,11 @@ import { mapState } from 'vuex'
 import validateFormResult from '@/global/validateForm'
 import compInput from './compInput'
 import compRePassword from './compRePassword'
+import compRadio from './compRadio'
 export default {
   components: {
     compInput,
+    compRadio,
     compRePassword
   },
   props: {
@@ -45,6 +48,7 @@ export default {
         this.$refs.userName,
         this.$refs.userMobile,
         this.$refs.userEmail,
+        this.$refs.roleCode,
         this.$refs.compRePassword
       ])
 
@@ -83,7 +87,11 @@ export default {
   computed: {
     ...mapState({
       rolesList (state) {
-        return state.user.rolesList
+        return this.GLOBALS.CONVERT_RADIO(state.user.rolesList, {
+          label: 'id',
+          code: 'roleCode',
+          value: 'roleName'
+        })
       }
     })
   },

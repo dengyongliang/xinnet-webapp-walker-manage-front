@@ -10,6 +10,7 @@ const IS_PHONE_AVAILABLE = (str) => {
     return true
   }
 }
+// 有效邮箱
 const IS_EMAIL_AVAILABLE = (val) => {
   var reg = new RegExp('^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$')
   if (!reg.test(val)) {
@@ -18,6 +19,7 @@ const IS_EMAIL_AVAILABLE = (val) => {
     return true
   }
 }
+// 有效金额
 const IS_MONEY_AVAILABLE = (val) => {
   var reg = /(^([+-]?)[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^([+-]?)(0){1}$)|(^([+-]?)[0-9]\.[0-9]([0-9])?$)/
   if (!reg.test(val)) {
@@ -26,12 +28,44 @@ const IS_MONEY_AVAILABLE = (val) => {
     return true
   }
 }
-
+// 正整数
+const IS_POSITIVE_INT = (val) => {
+  var reg = /(^[1-9]\d*$)/
+  if (reg.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
+function CONVERT_RADIO (roles, map) {
+  const result = []
+  // 遍历 roles
+  roles.forEach((item) => {
+    // 读取 map 的键值映射
+    const label = item[ map.label ]
+    const code = item[ map.code ]
+    const value = item[ map.value ]
+    let disabled = false
+    if (typeof map.disabled !== 'undefined') {
+      // 1 可以选，0 不可以选
+      disabled = !item[map.disabled]
+    }
+    result.push({
+      label,
+      code,
+      value,
+      disabled
+    })
+  })
+  return result
+}
 export default
 {
   TITLE,
   regPw,
   IS_PHONE_AVAILABLE,
   IS_EMAIL_AVAILABLE,
-  IS_MONEY_AVAILABLE
+  IS_MONEY_AVAILABLE,
+  IS_POSITIVE_INT,
+  CONVERT_RADIO
 }

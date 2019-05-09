@@ -1,7 +1,7 @@
 <template lang="pug">
   div(style="display:inline-block")
     RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
-      Radio(v-for="item in list",:label="item.label",:key="item.label") {{item.value}}
+      Radio(v-for="item in list",:label="item.label.toString()",:key="item.label",@click.native="getMoreParams(item)") {{item.value}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
@@ -36,7 +36,8 @@ export default {
     return {
       value: '',
       showError: false,
-      errorText: `请选择${this.label}！`
+      errorText: `请选择${this.label}！`,
+      param: {}
     }
   },
   methods: {
@@ -45,6 +46,10 @@ export default {
     },
     onChange () {
       this.showError = false
+    },
+    getMoreParams (param) {
+      this.param = param
+      console.log(param)
     }
   },
   beforeMount () {
@@ -53,7 +58,6 @@ export default {
     }
   },
   mounted () {
-
   },
   computed: {
   },

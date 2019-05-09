@@ -93,6 +93,11 @@ export default {
             this.showError = true
             this.errorText = '只允许输入数字！'
           }
+        } else if (validate === 'positiveInt') {
+          if (!this.GLOBAL.IS_MONEY_AVAILABLE(val)) {
+            this.showError = true
+            this.errorText = '只允许输入正整数！'
+          }
         } else if (validate === 'money') {
           if (!this.GLOBALS.IS_MONEY_AVAILABLE(val)) {
             this.showError = true

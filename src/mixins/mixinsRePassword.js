@@ -4,7 +4,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'text'
+      default: 'rePassword'
     },
     disabled: {
       type: Boolean,

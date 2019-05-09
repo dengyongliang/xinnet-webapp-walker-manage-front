@@ -2,7 +2,7 @@
   Form(:label-width="150")
     FormItem(label="账号ID：")
       span.text {{detailData.userCode}}
-      input(type="hidden",:value="userCode",ref="userCode")
+      input(type="hidden",:value="detailData.userCode",ref="userCode")
     comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="detailData.userName",:show="modify")
       span.text(v-if="!modify",slot="left") {{detailData.userName}}
     comp-input(name='userEmail',label="邮箱：",:maxLength="64",ref="userEmail",:defaultValue="detailData.userEmail",:show="modify", validate="email")

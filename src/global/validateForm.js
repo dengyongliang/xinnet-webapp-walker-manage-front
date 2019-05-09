@@ -34,6 +34,13 @@ export default function validateFormResult (validateArray) {
             // break
           }
         }
+        if (validate === 'positiveInt') {
+          if (!GLOBAL.IS_MONEY_AVAILABLE(value)) {
+            v.showValidateResult({text: '只允许输入正整数！'})
+            flag = false
+            // break
+          }
+        }
       }
     } else if (v.type === 'select') {
       let value = v.value

@@ -4,9 +4,7 @@
     comp-input(name='userName',label="姓名：",ref="userName",:defaultValue="detailData.userName", )
     comp-input(name='userMobile',label="手机：",ref="userMobile",:defaultValue="detailData.userMobile", validate="mobile")
     FormItem(label="角色：")
-      RadioGroup(v-model="roleId",@on-change="onChange",ref="roleId")
-        Radio(v-for="item in rolesList",:label="item.id", :key="item.id") {{item.roleName}}
-    input(type="hidden",:value="detailData.userCode",ref="userCode")
+      comp-radio(:list="rolesList", ref="roleCode",:defaultValue="this.detailData.roleId.toString()")
     FormItem(label="")
       Button(type="primary",@click="btnModifyInfo",:loading="loadingBtn") 修改
 </template>
@@ -14,10 +12,12 @@
 <script>
 import { mapState } from 'vuex'
 import compInput from './compInput'
+import compRadio from './compRadio'
 import validateFormResult from '@/global/validateForm'
 export default {
   components: {
-    compInput
+    compInput,
+    compRadio
   },
   props: {
     detailData: {
@@ -35,8 +35,7 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false,
-      roleId: ''
+      loadingBtn: false
     }
   },
   methods: {
@@ -52,9 +51,10 @@ export default {
           userName: this.$refs.userName.value,
           userMobile: this.$refs.userMobile.value,
           userEmail: this.$refs.userEmail.value,
-          userCode: this.$refs.userCode.value,
-          roleId: this.roleId
+          userCode: this.$refs.roleCode.param.code,
+          roleId: this.$refs.roleCode.value
         }
+        console.log(params)
         this.$store.dispatch('UPDATE_USER_INFO', params).then((response) => {
           this.loadingBtn = false
           if (!response) {
@@ -91,14 +91,17 @@ export default {
         return state.user.myUserInfo
       },
       rolesList (state) {
-        return state.user.rolesList
+        return this.GLOBALS.CONVERT_RADIO(state.user.rolesList, {
+          label: 'id',
+          code: 'roleCode',
+          value: 'roleName'
+        })
       }
     })
   },
   beforeMount () {
   },
   mounted () {
-    this.roleId = this.detailData.roleId
   }
 }
 </script>

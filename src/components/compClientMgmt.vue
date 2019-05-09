@@ -8,15 +8,15 @@
     FormItem(label="客户ID：",v-if="status=='view'")
       input(type="hidden",:value="id", ref="id")
       span.text() {{id}}
-    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod",:number="true")
+    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod",validate="positiveInt")
       span.text(v-if="status==='view' && !modify",slot="left") {{accountPeriod}}
       span.unit(slot="right") 个月
-    comp-input(name='creditBalance',label="额度：",:show="status==='creat'",ref="creditBalance",:defaultValue="creditBalance",:number="true")
+    comp-input(name='creditBalance',label="额度：",:show="status==='creat'",ref="creditBalance",:defaultValue="creditBalance",validate="money")
       span.text(v-if="status==='view'",slot="left") {{creditBalance}}
       span.unit(slot="right") 元
     FormItem(label="状态：",v-if="status=='view'")
       span.text(v-if="customerStatus===1") 已开启
-      span.text(v-if="customerStatus===2") 已关闭
+      span.text(v-if="customerStatus===0") 已关闭
     FormItem(label="管家：")
       span.text(v-show="status==='view' && !modify") {{userName}}
       comp-select(name="customerUserId",:list="butlerList",ref="customerUserId",v-show="status==='creat' || modify",:defaultValue="userId")
