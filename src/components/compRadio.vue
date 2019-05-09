@@ -37,7 +37,7 @@ export default {
       value: '',
       showError: false,
       errorText: `请选择${this.label}！`,
-      param: {}
+      param: {}// 向外部提供更多数据
     }
   },
   methods: {
@@ -55,6 +55,13 @@ export default {
   beforeMount () {
     if (this.defaultValue !== '') {
       this.value = this.defaultValue
+      this.param = this.list.filter((v) => {
+        if (this.defaultValue === v.label.toString()) {
+          console.log(v)
+          return v
+        }
+      })[0]
+      console.log(this.param)
     }
   },
   mounted () {

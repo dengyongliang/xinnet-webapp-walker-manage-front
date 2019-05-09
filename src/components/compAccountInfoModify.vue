@@ -52,7 +52,7 @@ export default {
           userMobile: this.$refs.userMobile.value,
           userEmail: this.$refs.userEmail.value,
           userCode: this.$refs.roleCode.param.code,
-          roleId: this.$refs.roleCode.value
+          roleId: parseInt(this.$refs.roleCode.value)
         }
         console.log(params)
         this.$store.dispatch('UPDATE_USER_INFO', params).then((response) => {
