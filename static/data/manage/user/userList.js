@@ -23,6 +23,7 @@
         "admin":"sadfsdfsadf",
         "accountPeriod":"askdjkfsld",
         "creditBalance":"sdfsdfsd",
+        "userCode": "X88304255",
         "roles": [
           {
             "id": 2
@@ -47,6 +48,7 @@
         "admin":"sadfsdfsadf",
         "accountPeriod":"askdjkfsld",
         "creditBalance":"sdfsdfsd",
+        "userCode": "X88304255",
         "roles": [
           {
             "id": 1
@@ -71,6 +73,7 @@
         "admin":"sadfsdfsadf",
         "accountPeriod":"askdjkfsld",
         "creditBalance":"sdfsdfsd",
+        "userCode": "X88304255",
         "roles": [
           {
             "id": 2

@@ -1,6 +1,5 @@
 <template lang="pug">
   Form(:label-width="150")
-    comp-input(name='oldPassword',label="原密码：",ref="oldPassword",defaultValue="")
     comp-re-password(defaultValue="",ref="compRePassword",label1="新密码：",label2="重复新密码：")
     input(type="hidden",:value="userCode",ref="userCode")
     FormItem(label="")
@@ -9,12 +8,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import compInput from './compInput'
 import compRePassword from './compRePassword'
 import validateFormResult from '@/global/validateForm'
 export default {
   components: {
-    compInput,
     compRePassword
   },
   props: {
@@ -32,16 +29,15 @@ export default {
     btnModifyPw () {
       this.loadingBtn = true
       let result = validateFormResult([
-        this.$refs.oldPassword,
         this.$refs.compRePassword
       ])
 
       if (result) {
         let params = {
-          oldPassword: this.$refs.oldPassword.value,
           newPassword: this.$refs.compRePassword.value1,
-          userCode: this.$refs.userCode
+          userCode: this.$refs.userCode.value
         }
+        console.log(params)
         this.$store.dispatch('UPDATE_USER_PASSWORD', params).then((response) => {
           this.loadingBtn = false
           if (!response) {
