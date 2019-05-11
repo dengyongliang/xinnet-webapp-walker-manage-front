@@ -1,5 +1,5 @@
 import GLOBAL from './global'
-export default function validateFormResult (validateArray) {
+export default function validateFormResult (validateArray, event = 'submit') {
   let len = validateArray.length
   let flag = true
   for (var i = 0; i < len; i++) {
@@ -8,11 +8,11 @@ export default function validateFormResult (validateArray) {
       let value = v.value
       let label = v.label
       let validate = v.validate
-      if (value === '') {
+      if (value === '' && event === 'submit') {
         v.showValidateResult({text: `请输入${label.substr(0, label.length - 1) || ''}！`})
         flag = false
         // break
-      } else {
+      } else if (value !== '') {
         if (validate === 'email') {
           if (!GLOBAL.IS_EMAIL_AVAILABLE(value)) {
             v.showValidateResult({text: '请输入正确的邮件地址，如xinnet@xinnet.com！'})
