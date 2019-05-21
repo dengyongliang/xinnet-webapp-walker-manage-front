@@ -35,7 +35,7 @@ export default function validateFormResult (validateArray, event = 'submit') {
           }
         }
         if (validate === 'positiveInt') {
-          if (!GLOBAL.IS_MONEY_AVAILABLE(value)) {
+          if (!GLOBAL.IS_POSITIVE_INT(value)) {
             v.showValidateResult({text: '只允许输入正整数！'})
             flag = false
             // break
