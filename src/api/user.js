@@ -29,11 +29,11 @@ export const deleteUserInfo = (userCode) => { // delUser
   })
 }
 // 账号信息更新
-export const updateUserInfo = (userName, userMobile, userEmail, userCode, userTel, roleId, qq, wx) => { // updateUserInfo
+export const updateUserInfo = (userName, userMobile, userEmail, userCode, userTel, qq, wx, roleId) => { // updateUserInfo
   return axios({
     url: action.UPDATE_USER_INFO,
     method: 'POST',
-    data: {userName, userMobile, userEmail, userCode, userTel, roleId, qq, wx}
+    data: {userName, userMobile, userEmail, userCode, userTel, qq, wx, roleId}
   })
 }
 // 创建账号

@@ -10,7 +10,7 @@
         span.text {{customerCode}}
         input(type="hidden",:value="customerId", ref="customerId")
       FormItem(label="当前信誉额度：")
-        span.text 0.00元
+        span.text {{creditBalance}}元
       comp-re-money(
         label1="信用额度：",
         label2="再次输入信用额度：",
@@ -46,7 +46,8 @@ export default {
       showed: false,
       customerId: '',
       customerCode: '',
-      customerName: ''
+      customerName: '',
+      creditBalance: 0.00
     }
   },
   methods: {
@@ -95,6 +96,7 @@ export default {
             this.customerId = response.data.data.id
             this.customerCode = response.data.data.code
             this.customerName = response.data.data.name
+            this.creditBalance = response.data.data.creditBalance
             this.showed = true
           } else {
             this.$Message.error('查询不到指定信息')

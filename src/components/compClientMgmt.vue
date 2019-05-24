@@ -40,6 +40,13 @@
       span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
       span.unit(v-if="status==='creat' || modify",slot="right") 非必填
 
+    Divider(:dashed='true')
+
+    strong.t 超级管理员信息
+    comp-input(name='superName',label="姓名：",:show="status==='creat' || modify",ref="superName")
+      span.text(v-if="status==='view' && !modify",slot="left") {{contactor}}
+    comp-input(name='superEmail',label="邮箱：",:show="status==='creat' || modify",ref="superEmail",:maxLength="64", validate="email")
+      span.text(v-if="status==='view' && !modify",slot="left") {{email}}
     FormItem(label="")
       Button(type="primary",@click="btnSubmit('new')",v-show='status==="creat"',:loading="loadingBtn") 确定
       Button(type="primary",@click="btnModify",v-show='status==="view" && !modify') 修改
@@ -181,8 +188,7 @@ export default {
         this.$refs.orgFile,
         this.$refs.contactor,
         this.$refs.mobile,
-        this.$refs.email,
-        this.$refs.tel
+        this.$refs.email
       ])
 
       if (!result) {
