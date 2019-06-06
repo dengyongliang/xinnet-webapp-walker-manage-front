@@ -36,7 +36,7 @@ export default {
     },
     CUSTOMER_CREATE ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.customerCreate(params.name, params.orgCode, params.accountPeriod, params.creditBalance, params.customerUserId, params.orgFile, params.contactor, params.mobile, params.email, params.tel).then(response => {
+        api.customerCreate(params.name, params.orgCode, params.accountPeriod, params.creditBalance, params.customerUserId, params.orgFile, params.contactor, params.mobile, params.email, params.tel, params.superName, params.superEmail).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -45,7 +45,7 @@ export default {
     },
     CUSTOMER_UPDATE ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.customerUpdate(params.name, params.orgCode, params.accountPeriod, params.creditBalance, params.customerUserId, params.orgFile, params.contactor, params.mobile, params.email, params.tel, params.code).then(response => {
+        api.customerUpdate(params.name, params.orgCode, params.accountPeriod, params.creditBalance, params.customerUserId, params.orgFile, params.contactor, params.mobile, params.email, params.tel, params.superName, params.superEmail, params.code).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

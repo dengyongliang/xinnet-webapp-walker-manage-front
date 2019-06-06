@@ -30,19 +30,19 @@ export const findCustomer = (customerCode) => { // findCustomer
   })
 }
 // 创建账号
-export const customerCreate = (name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel) => { // createCustomer
+export const customerCreate = (name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail) => { // createCustomer
   return axios({
     url: action.CUSTOMER_CREATE,
     method: 'POST',
-    data: {name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel}
+    data: {name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail}
   })
 }
 // 创建账号
-export const customerUpdate = (name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, code) => { // updateCustomer
+export const customerUpdate = (name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail, code) => { // updateCustomer
   return axios({
     url: action.CUSTOMER_UPDATE,
     method: 'POST',
-    data: {name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, code}
+    data: {name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail, code}
   })
 }
 // 停/启用客户

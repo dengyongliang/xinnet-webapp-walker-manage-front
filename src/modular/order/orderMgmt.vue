@@ -46,7 +46,7 @@
       <Table :columns="columns" :data="orderList" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
 
 </template>
 
@@ -125,6 +125,10 @@ export default {
         {
           value: '3',
           label: '退费'
+        },
+        {
+          value: '4',
+          label: '转入'
         }
       ],
       orderPayTypeList: [
@@ -180,6 +184,11 @@ export default {
           className: 'col4'
         },
         {
+          title: '公司名称',
+          key: 'companyName',
+          className: 'col4'
+        },
+        {
           title: '下单用户',
           key: 'userCode',
           className: 'col5'
@@ -222,6 +231,11 @@ export default {
             if (this.orderList[params.index].orderType === 3) {
               return h('div', [
                 h('span', {}, '退费')
+              ])
+            }
+            if (this.orderList[params.index].orderType === 4) {
+              return h('div', [
+                h('span', {}, '转入')
               ])
             }
           }

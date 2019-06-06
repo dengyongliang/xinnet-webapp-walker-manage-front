@@ -40,13 +40,13 @@
       span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
       span.unit(v-if="status==='creat' || modify",slot="right") 非必填
 
-    Divider(:dashed='true')
-
-    strong.t 超级管理员信息
-    comp-input(name='superName',label="姓名：",:show="status==='creat' || modify",ref="superName")
-      span.text(v-if="status==='view' && !modify",slot="left") {{contactor}}
-    comp-input(name='superEmail',label="邮箱：",:show="status==='creat' || modify",ref="superEmail",:maxLength="64", validate="email")
-      span.text(v-if="status==='view' && !modify",slot="left") {{email}}
+    div(v-if="status==='creat'")
+      Divider(:dashed='true')
+      strong.t(v-if="status==='creat'") 超级管理员信息
+      comp-input(name='superName',label="姓名：",ref="superName")
+        span.text(v-if="status==='view' && !modify",slot="left") {{superName}}
+      comp-input(name='superEmail',label="邮箱：",ref="superEmail",:maxLength="64", validate="email")
+        span.text(v-if="status==='view' && !modify",slot="left") {{superEmail}}
     FormItem(label="")
       Button(type="primary",@click="btnSubmit('new')",v-show='status==="creat"',:loading="loadingBtn") 确定
       Button(type="primary",@click="btnModify",v-show='status==="view" && !modify') 修改
@@ -188,7 +188,9 @@ export default {
         this.$refs.orgFile,
         this.$refs.contactor,
         this.$refs.mobile,
-        this.$refs.email
+        this.$refs.email,
+        this.$refs.superName,
+        this.$refs.superEmail
       ])
 
       if (!result) {
@@ -204,7 +206,9 @@ export default {
           contactor: this.$refs.contactor.value,
           mobile: this.$refs.mobile.value,
           email: this.$refs.email.value,
-          tel: this.$refs.tel.value
+          tel: this.$refs.tel.value,
+          superName: this.$refs.superName.value,
+          superEmail: this.$refs.superEmail.value
         }
         if (type !== 'new') {
           let id = this.$refs.id.value
@@ -246,9 +250,9 @@ export default {
                 this.$refs.enterprise.showValidateResult({text: '企业名称重复，请重新输入！'})
                 // vm.$Message.error('企业名称重复，请重新输入！')
               } else if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
+                this.$Message.error('邮箱已存在！')
               } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
+                this.$Message.error('用户被锁定！')
               } else {
                 this.$Message.error('新建客户失败！')
               }
