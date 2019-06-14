@@ -31,17 +31,10 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false,
-      roleCode: {
-        error: 0,
-        value: ''
-      }
+      loadingBtn: false
     }
   },
   methods: {
-    onChange (e) {
-      this.roleCode.error = 0
-    },
     creatAccount () {
       this.loadingBtn = true
       let result = validateFormResult([
@@ -57,9 +50,10 @@ export default {
           userName: this.$refs.userName.value,
           userMobile: this.$refs.userMobile.value,
           userEmail: this.$refs.userEmail.value,
-          roleCode: this.roleCode.value,
+          roleCode: this.$refs.roleCode.param.code,
           password: this.$refs.compRePassword.value1
         }
+        console.log(params)
         this.$store.dispatch('ADD_USER_INFO', params).then((response) => {
           this.loadingBtn = false
           if (!response) {

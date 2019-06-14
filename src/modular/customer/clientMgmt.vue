@@ -22,19 +22,7 @@
       @refreshData="searchListData",
       v-if="drawerClientMgmt",
       :status="status",
-      :enterprise = "enterprise",
-      :orgCode = "orgCode",
-      :id = "id",
-      :userId = "userId",
-      :userName = "userName",
-      :accountPeriod = "accountPeriod",
-      :creditBalance = "creditBalance",
-      :orgFile = "orgFile",
-      :open = "open",
-      :contactor = "contactor",
-      :mobile = "mobile",
-      :email = "email",
-      :tel = "tel"
+      :obj="obj"
     )
 </template>
 
@@ -124,7 +112,7 @@ export default {
                       accountPeriod: this.clientList[params.index].accountPeriod,
                       creditBalance: this.clientList[params.index].creditBalance,
                       orgFile: this.clientList[params.index].orgFile,
-                      open: this.clientList[params.index].status,
+                      status: this.clientList[params.index].status,
                       userId: this.clientList[params.index].userId,
                       userName: this.clientList[params.index].userName,
                       contactor: this.clientList[params.index].contactor,
@@ -149,18 +137,7 @@ export default {
         pagePages: 1,
         pageItems: 1
       },
-      enterprise: '',
-      orgCode: '',
-      customerUserId: 0,
-      accountPeriod: '',
-      creditBalance: '',
-      orgFile: '',
-      open: 2,
-      admin: '',
-      contactor: '',
-      mobile: '',
-      email: '',
-      tel: ''
+      obj: {}
     }
   },
   methods: {
@@ -180,35 +157,52 @@ export default {
       if (status === 'creat') {
         this.status = 'creat'
         this.drawerTitle = '新增客户'
-        this.enterprise = ''
-        this.orgCode = ''
-        this.id = 0
-        this.userId = ''
-        this.userName = ''
-        this.accountPeriod = ''
-        this.creditBalance = ''
-        this.orgFile = ''
-        this.open = 2
-        this.contactor = ''
-        this.mobile = ''
-        this.email = ''
-        this.tel = ''
+        this.obj = {
+          enterprise: '',
+          orgCode: '',
+          id: 0,
+          userId: '',
+          userName: '',
+          accountPeriod: '',
+          creditBalance: '',
+          orgFile: '',
+          status: 2,
+          contactor: '',
+          mobile: '',
+          email: '',
+          tel: ''
+        }
+        // this.enterprise = ''
+        // this.orgCode = ''
+        // this.id = 0
+        // this.userId = ''
+        // this.userName = ''
+        // this.accountPeriod = ''
+        // this.creditBalance = ''
+        // this.orgFile = ''
+        // this.open = 2
+        // this.contactor = ''
+        // this.mobile = ''
+        // this.email = ''
+        // this.tel = ''
       } else if (status === 'view') {
         this.status = 'view'
         this.drawerTitle = '客户详情'
-        this.enterprise = param.enterprise
-        this.orgCode = param.orgCode
-        this.id = param.id
-        this.userId = param.userId
-        this.userName = param.userName
-        this.accountPeriod = param.accountPeriod
-        this.creditBalance = param.creditBalance
-        this.orgFile = param.orgFile
-        this.open = param.open
-        this.contactor = param.contactor
-        this.mobile = param.mobile
-        this.email = param.email
-        this.tel = param.tel
+        this.obj = param
+        console.log(this.obj)
+        // this.enterprise = param.enterprise
+        // this.orgCode = param.orgCode
+        // this.id = param.id
+        // this.userId = param.userId
+        // this.userName = param.userName
+        // this.accountPeriod = param.accountPeriod
+        // this.creditBalance = param.creditBalance
+        // this.orgFile = param.orgFile
+        // this.open = param.open
+        // this.contactor = param.contactor
+        // this.mobile = param.mobile
+        // this.email = param.email
+        // this.tel = param.tel
       } else {
         this.drawerTitle = ''
       }

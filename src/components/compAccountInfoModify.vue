@@ -51,7 +51,7 @@ export default {
           userName: this.$refs.userName.value,
           userMobile: this.$refs.userMobile.value,
           userEmail: this.$refs.userEmail.value,
-          userCode: this.$refs.roleCode.param.code,
+          userCode: this.detailData.userCode,
           roleId: parseInt(this.$refs.roleCode.value)
         }
         console.log(params)

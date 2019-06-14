@@ -2,7 +2,7 @@
   .pageMain
     header-body(v-if="islogin")
 
-    .frameBottom(v-if="islogin")
+    .frameBottom(v-if="islogin", class="clear")
       .frameMenu
         menu-body
       .frameBody
@@ -51,19 +51,22 @@ export default {
   min-height:100%;
 }
 .frameBottom .frameMenu{
+  float: left;
   width:220px;
   min-height:100%;
   background:#f6f8f9;
-  position:fixed;
+  /* position:fixed;
   top:0px;
-  left:0px;
+  left:0px; */
   border-right:1px solid #ecedef;
 }
 
 .frameBottom .frameBody{
+  float: left;
   min-height:300px;
-  margin-left: 220px;
+  /* margin-left: 220px; */
   padding-top: 70px;
+  width: calc(100% - 220px);
 }
 
 </style>

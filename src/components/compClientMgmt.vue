@@ -1,52 +1,51 @@
 <template lang="pug">
   Form(:label-width="150")
     strong.t 基本信息
-    comp-input(name='enterprise',label="企业名称：",:show="status==='creat' || modify",ref="enterprise",:defaultValue="enterprise",:maxLength="64")
-      span.text(v-if="status==='view' && !modify",slot="left") {{enterprise}}
-    comp-input(name='orgCode',label="机构代码证号：",:show="status==='creat' || modify",ref="orgCode",:defaultValue="orgCode",:maxLength="30")
-      span.text(v-if="status==='view' && !modify",slot="left") {{orgCode}}
+    comp-input(name='enterprise',label="企业名称：",:show="status==='creat' || modify",ref="enterprise",:defaultValue="obj.enterprise.toString()",:maxLength="64")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.enterprise}}
+    comp-input(name='orgCode',label="机构代码证号：",:show="status==='creat' || modify",ref="orgCode",:defaultValue="obj.orgCode.toString()",:maxLength="30")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.orgCode}}
     FormItem(label="客户ID：",v-if="status=='view'")
-      input(type="hidden",:value="id", ref="id")
-      span.text() {{id}}
-    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="accountPeriod",validate="positiveInt")
-      span.text(v-if="status==='view' && !modify",slot="left") {{accountPeriod}}
+      input(type="hidden",:value="obj.id", ref="id")
+      span.text() {{obj.id}}
+    comp-input(name='accountPeriod',label="账期：",:show="status==='creat' || modify",ref="accountPeriod",:defaultValue="obj.accountPeriod.toString()",validate="positiveInt")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.accountPeriod}}
       span.unit(slot="right") 个月
-    comp-input(name='creditBalance',label="额度：",:show="status==='creat'",ref="creditBalance",:defaultValue="creditBalance",validate="money")
-      span.text(v-if="status==='view'",slot="left") {{creditBalance}}
+    comp-input(name='creditBalance',label="额度：",:show="status==='creat'",ref="creditBalance",:defaultValue="obj.creditBalance.toString()",validate="money")
+      span.text(v-if="status==='view'",slot="left") {{obj.creditBalance}}
       span.unit(slot="right") 元
     FormItem(label="状态：",v-if="status=='view'")
-      span.text(v-if="customerStatus===1") 已开启
-      span.text(v-if="customerStatus===0") 已关闭
+      span.text(v-if="obj.status===1") 已开启
+      span.text(v-if="obj.status===0") 已关闭
     FormItem(label="管家：")
-      span.text(v-show="status==='view' && !modify") {{userName}}
-      comp-select(name="customerUserId",:list="butlerList",ref="customerUserId",v-show="status==='creat' || modify",:defaultValue="userId")
-
-      a(class="stopStartClient",href="javascript:;", @click="closeButler(0)",v-show="status==='view' && customerStatus===1") 停用客户
-      a(class="stopStartClient",href="javascript:;", @click="closeButler(1)",v-show="status==='view' && customerStatus===0") 启用客户
+      span.text(v-show="status==='view' && !modify") {{obj.userName}}
+      comp-select(name="customerUserId",:list="butlerList",ref="customerUserId",v-show="status==='creat' || modify",:defaultValue="obj.userId.toString()")
+      a(class="stopStartClient",href="javascript:;", @click="closeButler(0)",v-show="status==='view' && obj.status===1") 停用客户
+      a(class="stopStartClient",href="javascript:;", @click="closeButler(1)",v-show="status==='view' && obj.status===0") 启用客户
 
     FormItem(label="机构代码证：")
-      comp-img-upload(:modify="modify",name="upfile",:file="orgFile",:status="status",ref="orgFile",errorText="请上传机构代码证！")
+      comp-img-upload(:modify="modify",name="upfile",:file="obj.orgFile",:status="status",ref="orgFile",errorText="请上传机构代码证！")
 
     Divider(:dashed='true')
 
     strong.t 联系人信息
-    comp-input(name='contactor',label="联系人：",:show="status==='creat' || modify",ref="contactor",:defaultValue="contactor")
-      span.text(v-if="status==='view' && !modify",slot="left") {{contactor}}
-    comp-input(name='userMobile',label="手机：",:show="status==='creat' || modify",ref="mobile",:defaultValue="mobile", validate="mobile")
-      span.text(v-if="status==='view' && !modify",slot="left") {{mobile}}
-    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="email",:maxLength="64", validate="email")
-      span.text(v-if="status==='view' && !modify",slot="left") {{email}}
-    comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="tel",:required="false")
-      span.text(v-if="status==='view' && !modify",slot="left") {{tel}}
+    comp-input(name='contactor',label="联系人：",:show="status==='creat' || modify",ref="contactor",:defaultValue="obj.contactor.toString()")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.contactor}}
+    comp-input(name='userMobile',label="手机：",:show="status==='creat' || modify",ref="mobile",:defaultValue="obj.mobile.toString()", validate="mobile")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.mobile}}
+    comp-input(name='userEmail',label="邮箱：",:show="status==='creat' || modify",ref="email",:defaultValue="obj.email.toString()",:maxLength="64", validate="email")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.email}}
+    comp-input(name='tel',label="固话：",:show="status==='creat' || modify",ref="tel",:defaultValue="obj.tel.toString()",:required="false")
+      span.text(v-if="status==='view' && !modify",slot="left") {{obj.tel}}
       span.unit(v-if="status==='creat' || modify",slot="right") 非必填
 
     div(v-if="status==='creat'")
       Divider(:dashed='true')
       strong.t(v-if="status==='creat'") 超级管理员信息
       comp-input(name='superName',label="姓名：",ref="superName")
-        span.text(v-if="status==='view' && !modify",slot="left") {{superName}}
+        span.text(v-if="status==='view' && !modify",slot="left") {{obj.superName}}
       comp-input(name='superEmail',label="邮箱：",ref="superEmail",:maxLength="64", validate="email")
-        span.text(v-if="status==='view' && !modify",slot="left") {{superEmail}}
+        span.text(v-if="status==='view' && !modify",slot="left") {{obj.superEmail}}
     FormItem(label="")
       Button(type="primary",@click="btnSubmit('new')",v-show='status==="creat"',:loading="loadingBtn") 确定
       Button(type="primary",@click="btnModify",v-show='status==="view" && !modify') 修改
@@ -73,57 +72,11 @@ export default {
       type: String,
       default: ''
     },
-    enterprise: {
-      type: String,
-      default: ''
-    },
-    orgCode: {
-      type: String,
-      default: ''
-    },
-    id: {
-      type: Number,
-      default: 0
-    },
-    userId: {
-      type: String,
-      default: ''
-    },
-    userName: {
-      type: String,
-      default: ''
-    },
-    accountPeriod: {
-      type: String,
-      default: ''
-    },
-    creditBalance: {
-      type: String,
-      default: ''
-    },
-    orgFile: {
-      type: String,
-      default: ''
-    },
-    open: {
-      type: Number,
-      default: 2
-    },
-    contactor: {
-      type: String,
-      default: ''
-    },
-    mobile: {
-      type: String,
-      default: ''
-    },
-    email: {
-      type: String,
-      default: ''
-    },
-    tel: {
-      type: String,
-      default: ''
+    obj: {
+      type: Object,
+      default: function () {
+        return {}
+      }
     }
   },
   data () {
@@ -142,7 +95,7 @@ export default {
     },
     closeButler (status) {
       let params = {
-        code: this.id,
+        code: this.obj.id,
         status: status
       }
 
@@ -158,10 +111,10 @@ export default {
             this.$Modal.remove()
             if (response.data.code === '1000') {
               if (status === 0) {
-                this.customerStatus = 0
+                this.obj.status = 0
                 this.$Message.success('停用成功')
               } else {
-                this.customerStatus = 1
+                this.obj.status = 1
                 this.$Message.success('启用成功')
               }
             } else {
@@ -179,19 +132,34 @@ export default {
     },
     btnSubmit (type) {
       this.loadingBtn = true
-      let result = validateFormResult([
-        this.$refs.enterprise,
-        this.$refs.orgCode,
-        this.$refs.accountPeriod,
-        this.$refs.creditBalance,
-        this.$refs.customerUserId,
-        this.$refs.orgFile,
-        this.$refs.contactor,
-        this.$refs.mobile,
-        this.$refs.email,
-        this.$refs.superName,
-        this.$refs.superEmail
-      ])
+      let result = false
+      if (type !== 'new') {
+        result = validateFormResult([
+          this.$refs.enterprise,
+          this.$refs.orgCode,
+          this.$refs.accountPeriod,
+          this.$refs.creditBalance,
+          this.$refs.customerUserId,
+          this.$refs.orgFile,
+          this.$refs.contactor,
+          this.$refs.mobile,
+          this.$refs.email
+        ])
+      } else {
+        result = validateFormResult([
+          this.$refs.enterprise,
+          this.$refs.orgCode,
+          this.$refs.accountPeriod,
+          this.$refs.creditBalance,
+          this.$refs.customerUserId,
+          this.$refs.orgFile,
+          this.$refs.contactor,
+          this.$refs.mobile,
+          this.$refs.email,
+          this.$refs.superName,
+          this.$refs.superEmail
+        ])
+      }
 
       if (!result) {
         this.loadingBtn = false
@@ -206,9 +174,7 @@ export default {
           contactor: this.$refs.contactor.value,
           mobile: this.$refs.mobile.value,
           email: this.$refs.email.value,
-          tel: this.$refs.tel.value,
-          superName: this.$refs.superName.value,
-          superEmail: this.$refs.superEmail.value
+          tel: this.$refs.tel.value
         }
         if (type !== 'new') {
           let id = this.$refs.id.value
@@ -236,6 +202,8 @@ export default {
             }
           }).catch(() => {})
         } else {
+          params.superName = this.$refs.superName.value
+          params.superEmail = this.$refs.superEmail.value
           this.$store.dispatch('CUSTOMER_CREATE', params).then((response) => {
             this.loadingBtn = false
             if (!response) {

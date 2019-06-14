@@ -1,40 +1,59 @@
 {
-  "msg": "query is success",
-  "code": "1000",
-  "data": {
-    "totalNum": 100,
-    "totalPage": 1,
-    "list": [
-      {
-        "id": 2,
-        "userCode": "user_housetest",
-        "userName": "测试管家",
-        "userMobile": "15848555554",
-        "userEmail": "baiyu1@xinnet.com",
-        "customerCount": 2,
-        "status": 1,
-        "roles": null
-      },
-      {
-        "id": 2,
-        "userCode": "user_housetest",
-        "userName": "测试管家222",
-        "userMobile": "15848555554",
-        "userEmail": "baiyu1@xinnet.com",
-        "customerCount": 0,
-        "status": 1,
-        "roles": null
-      },
-      {
-        "id": 2,
-        "userCode": "user_housetest",
-        "userName": "测试管家",
-        "userMobile": "15848555554",
-        "userEmail": "baiyu1@xinnet.com",
-        "customerCount": 0,
-        "status": 3,
-        "roles": null
-      }
-    ]
-  }
+	"msg": "query is success",
+	"code": "1000",
+	"data": [{
+		"id": 115,
+		"userCode": "M35337968",
+		"userName": "邓永亮",
+		"userMobile": "15110066180",
+		"userEmail": "350047337@qq.com",
+		"userTel": "12345678",
+		"userSex": 1,
+		"qq": "350047337",
+		"wx": "wx11",
+		"status": 1,
+		"roles": [],
+		"customers": [],
+		"customerCount": 0,
+		"userCompanys": null,
+		"domainAuths": null,
+		"defaultRoleId": null,
+		"userTitle": null
+	}, {
+		"id": 116,
+		"userCode": "M79705779",
+		"userName": "姜丹卉",
+		"userMobile": "13269308180",
+		"userEmail": "jiangdanhui@xinnet.com",
+		"userTel": "010-87127957",
+		"userSex": 0,
+		"qq": "当时说",
+		"wx": "wdadhhj",
+		"status": 1,
+		"roles": [],
+		"customers": [],
+		"customerCount": 0,
+		"userCompanys": null,
+		"domainAuths": null,
+		"defaultRoleId": null,
+		"userTitle": null
+	}, {
+		"id": 119,
+		"userCode": "M08204707",
+		"userName": "于海艳",
+		"userMobile": "18612260004",
+		"userEmail": "yuhy@xinnet.com",
+		"userTel": "8019",
+		"userSex": 0,
+		"qq": "6512058266",
+		"wx": "651058266",
+		"status": 1,
+		"roles": [],
+		"customers": [],
+		"customerCount": 0,
+		"userCompanys": null,
+		"domainAuths": null,
+		"defaultRoleId": null,
+		"userTitle": null
+	}]
 }

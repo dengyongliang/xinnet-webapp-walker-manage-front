@@ -73,3 +73,7 @@ export const ADD_BUDGET_REPORT = '/manage/report/addBudgetReport' + suffix // AD
 export const UPDATE_BUDGET_REPORT = '/manage/report/updateBudgetReport' + suffix // UPDATE_BUDGET_REPORT
 // 域名预算报告-修改预算报告
 export const DELETE_BUDGET_REPORT = '/manage/report/deleteBudgetReport' + suffix // DELETE_BUDGET_REPORT
+// 工单管理-列表
+export const WORK_ORDER_LIST = '/manage/workOrder/workOrderManage' + suffix // DELETE_BUDGET_REPORT
+// 工单管理-设置状态
+export const WORK_ORDER_UPDATE = '/manage/workOrder/setWorkOrderStatus' + suffix // DELETE_BUDGET_REPORT

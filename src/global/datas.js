@@ -14,8 +14,14 @@ const ORDER_GOODS_TYPE = [
   {4: '域名保护'},
   {5: '域名转入'}
 ]
+const WORKORDER_STATUS = [
+  {1: '待处理'},
+  {2: '处理中'},
+  {3: '已完成'}
+]
 export default
 {
   BUSINESS_LIST,
-  ORDER_GOODS_TYPE
+  ORDER_GOODS_TYPE,
+  WORKORDER_STATUS
 }
