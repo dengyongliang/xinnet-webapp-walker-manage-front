@@ -1,7 +1,7 @@
 <template lang="pug">
   div(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",style="width:240px",:name="name",@on-change="selectChange",:disabled="disabled")
+    Select(v-model="value",:style="styles",:name="name",@on-change="selectChange",:disabled="disabled")
       Option(v-for="item in list",:value="item.value.toString()", :key="item.value", @click.native="getMoreParams(item)") {{ item.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
@@ -43,6 +43,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    styles: {
+      type: String,
+      default: 'width: 240px'
     }
   },
   data () {

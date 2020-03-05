@@ -35,6 +35,22 @@
         :class="{ 'error': showError }",
         :validate="validate"
       )
+      Input(
+        type="textarea",
+        v-if="type === 'textarea' && show",
+        :name="name",
+        :placeholder="placeholder",
+        :style="styles",
+        @on-blur="onBlur",
+        @on-focus="onFocus",
+        ref="input",
+        :maxlength = "maxLength",
+        v-model = "value",
+        :required = "required",
+        :disabled = "disabled",
+        :class="{ 'error': showError }",
+        :validate="validate"
+      )
       slot(name="right")
       Alert(type="error",show-icon, style="display:inline-block",v-show="showError",ref="msgError") {{errorText}}
 </template>

@@ -19,8 +19,15 @@ const WORKORDER_STATUS = [
   {2: '处理中'},
   {3: '已完成'}
 ]
+const SITE_TYPE = {
+  '0': '未建站',
+  '1': '正规',
+  '2': '疑似非法',
+  '3': '出售'
+}
 export default
 {
+  SITE_TYPE,
   BUSINESS_LIST,
   ORDER_GOODS_TYPE,
   WORKORDER_STATUS

@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compDatePicker(style="display:inline-block")
     slot(name="left")
-    DatePicker(:type="types",placeholder="",v-model="value", ref="time",:format="format", @on-change="dataChange",)
+    DatePicker(:type="types",placeholder="",v-model="value", ref="time",:format="format", @on-change="dataChange",:style="styles")
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
@@ -38,6 +38,10 @@ export default {
     types: {
       type: String,
       default: 'daterange'
+    },
+    styles: {
+      type: String,
+      default: ''
     }
   },
   data () {

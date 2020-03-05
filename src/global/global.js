@@ -59,13 +59,26 @@ function CONVERT_RADIO (roles, map) {
   })
   return result
 }
+const TRIM_ALL = (val) => {
+  return val.replace(/\s+/g, '')
+}
+const IS_DOMAIN_AVAILABLE = (val) => {
+  var reg = /^[0-9a-zA-Z\u4e00-\u9faf]+[0-9a-zA-Z\u4e00-\u9faf-]*\.[a-zA-Z\u4e00-\u9faf]{2,4}(?:\.[a-zA-Z\u4e00-\u9faf]{2,4})?$/
+  if (!reg.test(val)) {
+    return false
+  } else {
+    return true
+  }
+}
 export default
 {
+  TRIM_ALL,
   TITLE,
   regPw,
   IS_PHONE_AVAILABLE,
   IS_EMAIL_AVAILABLE,
   IS_MONEY_AVAILABLE,
   IS_POSITIVE_INT,
-  CONVERT_RADIO
+  CONVERT_RADIO,
+  IS_DOMAIN_AVAILABLE
 }

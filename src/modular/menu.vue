@@ -17,7 +17,13 @@
     ul.menuList
       li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_customer_list")>=0')
         router-link(to="/customer/mgmt") 客户管理
-
+  .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order")>=0')
+    h3.menuT.lv1
+      i.font.fontL.font-file
+      span 关注域名
+    ul.menuList
+      li.menuItem.lv2(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order_orderList")>=0')
+        router-link(to="/focus/mgmt") 关注域名信息
   .menuBox(v-if='myUserInfo.menus.indexOf("super")>=0 || myUserInfo.menus.indexOf("manage_order")>=0')
     h3.menuT.lv1
       i.font.fontL.font-file

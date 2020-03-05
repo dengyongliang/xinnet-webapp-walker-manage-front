@@ -8,7 +8,7 @@ import * as action from '@/global/action.js'
 export const customerList = (pageNum, pageSize, customerCode) => { // queryClientList
   return axios({
     url: action.CUSTOMER_LIST,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, customerCode}
   })
 }
@@ -17,7 +17,7 @@ export const customerList = (pageNum, pageSize, customerCode) => { // queryClien
 export const findCustomerList = () => { // findCustomerList
   return axios({
     url: action.FIND_CUSTOMER_LIST,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -25,7 +25,7 @@ export const findCustomerList = () => { // findCustomerList
 export const findCustomer = (customerCode) => { // findCustomer
   return axios({
     url: action.FIND_CUSTOMER,
-    method: 'POST',
+    method: 'get',
     data: {customerCode}
   })
 }
@@ -33,7 +33,7 @@ export const findCustomer = (customerCode) => { // findCustomer
 export const customerCreate = (name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail) => { // createCustomer
   return axios({
     url: action.CUSTOMER_CREATE,
-    method: 'POST',
+    method: 'get',
     data: {name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail}
   })
 }
@@ -41,7 +41,7 @@ export const customerCreate = (name, orgCode, accountPeriod, creditBalance, cust
 export const customerUpdate = (name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail, code) => { // updateCustomer
   return axios({
     url: action.CUSTOMER_UPDATE,
-    method: 'POST',
+    method: 'get',
     data: {name, orgCode, accountPeriod, creditBalance, customerUserId, orgFile, contactor, mobile, email, tel, superName, superEmail, code}
   })
 }
@@ -49,7 +49,7 @@ export const customerUpdate = (name, orgCode, accountPeriod, creditBalance, cust
 export const setCustomerStatus = (code, status) => { // setCustomerStatus
   return axios({
     url: action.SET_CUSTOMER_STATUS,
-    method: 'POST',
+    method: 'get',
     data: {code, status}
   })
 }
@@ -57,7 +57,7 @@ export const setCustomerStatus = (code, status) => { // setCustomerStatus
 export const houseKeepers = (pageNum, pageSize, userId) => { // queryButlerList
   return axios({
     url: action.HOUSE_KEEPERS,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, userId}
   })
 }
@@ -65,7 +65,7 @@ export const houseKeepers = (pageNum, pageSize, userId) => { // queryButlerList
 export const addKeeper = (userName, userEmail) => { // addButler
   return axios({
     url: action.ADD_KEEPER,
-    method: 'POST',
+    method: 'get',
     data: {userName, userEmail}
   })
 }
@@ -73,7 +73,7 @@ export const addKeeper = (userName, userEmail) => { // addButler
 export const customerUsers = () => { // queryButler
   return axios({
     url: action.CUSTOMER_USERS,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -81,7 +81,7 @@ export const customerUsers = () => { // queryButler
 export const companys = (customerId) => { // queryCompanys
   return axios({
     url: action.COMPANYS,
-    method: 'POST',
+    method: 'get',
     data: {customerId}
   })
 }

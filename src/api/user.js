@@ -16,7 +16,7 @@ export const myUserInfo = () => { // queryCurrentUserData
 export const userList = (pageNum, pageSize, userCode) => { // queryUserList
   return axios({
     url: action.USER_LIST,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, userCode}
   })
 }
@@ -24,7 +24,7 @@ export const userList = (pageNum, pageSize, userCode) => { // queryUserList
 export const deleteUserInfo = (userCode) => { // delUser
   return axios({
     url: action.DELETE_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userCode}
   })
 }
@@ -32,7 +32,7 @@ export const deleteUserInfo = (userCode) => { // delUser
 export const updateUserInfo = (userName, userMobile, userEmail, userCode, userTel, qq, wx, roleId) => { // updateUserInfo
   return axios({
     url: action.UPDATE_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userName, userMobile, userEmail, userCode, userTel, qq, wx, roleId}
   })
 }
@@ -40,7 +40,7 @@ export const updateUserInfo = (userName, userMobile, userEmail, userCode, userTe
 export const addUserInfo = (userName, userMobile, userEmail, roleCode, password) => { // addUserInfo
   return axios({
     url: action.ADD_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userName, userMobile, userEmail, roleCode, password}
   })
 }
@@ -48,7 +48,7 @@ export const addUserInfo = (userName, userMobile, userEmail, roleCode, password)
 export const updateUserPassword = (oldPassword, newPassword, userCode) => { // updateUserPassword
   return axios({
     url: action.UPDATE_USER_PASSWORD,
-    method: 'POST',
+    method: 'get',
     data: {oldPassword, newPassword, userCode}
   })
 }

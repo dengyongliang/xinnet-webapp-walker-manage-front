@@ -7,6 +7,7 @@ import finance from './finance.js'
 import order from './order.js'
 import worklist from './worklist.js'
 import report from './report.js'
+import followDomain from './followDomain.js'
 
 Vue.use(Vuex)
 export default function makeStore () {
@@ -42,7 +43,8 @@ export default function makeStore () {
       finance,
       order,
       report,
-      worklist
+      worklist,
+      followDomain
     }
   })
 }

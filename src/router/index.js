@@ -5,6 +5,7 @@ import user from './user'
 import customer from './customer'
 import order from './order'
 import finance from './finance'
+import focus from './focus'
 Vue.use(Router)
 
 const RouterMain = new Router({
@@ -83,7 +84,8 @@ const RouterMain = new Router({
         ...customer,
         ...finance,
         ...order,
-        ...user
+        ...user,
+        ...focus
       ]
     }
     // user

@@ -77,3 +77,7 @@ export const DELETE_BUDGET_REPORT = '/manage/report/deleteBudgetReport' + suffix
 export const WORK_ORDER_LIST = '/manage/workOrder/workOrderManage' + suffix // DELETE_BUDGET_REPORT
 // 工单管理-设置状态
 export const WORK_ORDER_UPDATE = '/manage/workOrder/setWorkOrderStatus' + suffix // DELETE_BUDGET_REPORT
+// 关注域名列表
+export const FOLLOW_DOMAIN_LIST = '/manage/followdomain/followDomainList' + suffix
+// 关注域名列表
+export const FOLLOW_DOMAIN_CREATE_DOMAIN = '/manage/followdomain/createDomain' + suffix

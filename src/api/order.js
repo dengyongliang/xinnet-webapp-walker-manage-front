@@ -8,7 +8,7 @@ import * as action from '@/global/action.js'
 export const orderList = (pageNum, pageSize, createTimeBegin, createTimeEnd, orderGoodsInfo, orderGoodsType, orderMode, orderPayType, orderType) => {
   return axios({
     url: action.ORDER_LIST,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, createTimeBegin, createTimeEnd, orderGoodsInfo, orderGoodsType, orderMode, orderPayType, orderType}
   })
 }
@@ -17,7 +17,7 @@ export const orderList = (pageNum, pageSize, createTimeBegin, createTimeEnd, ord
 export const entryOrder = (customerId, companyId, orderGoodsInfo, orderMoney, orderType, orderPayType) => {
   return axios({
     url: action.ENTRY_ORDER,
-    method: 'POST',
+    method: 'get',
     data: {customerId, companyId, orderGoodsInfo, orderMoney, orderType, orderPayType}
   })
 }
