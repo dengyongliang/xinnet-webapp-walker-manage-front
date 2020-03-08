@@ -1,14 +1,14 @@
 <template lang="pug">
   div.compDatePicker(style="display:inline-block")
     slot(name="left")
-    DatePicker(:type="types",placeholder="",v-model="value", ref="time",:format="format", @on-change="dataChange",:style="styles")
+    DatePicker(:type="types",v-model="value", ref="time",:format="format", @on-change="dataChange",:style="styles",:class="{ 'error': showError }")
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
 <script>
 export default {
-  name: 'compSelect',
+  name: 'compDatePicker',
   props: {
     onParentmethod: {
       type: Function
@@ -46,7 +46,7 @@ export default {
   },
   data () {
     return {
-      value: [],
+      value: this.types === 'date' ? '' : [],
       showError: false,
       errorText: `请选择${this.label}！`
     }
@@ -77,9 +77,14 @@ export default {
       if (val.length) {
         this.value = val
       } else {
-        this.value = []
+        this.value = this.types === 'date' ? '' : []
       }
     }
   }
 }
 </script>
+<style>
+.compDatePicker .error .ivu-input{
+  border-color: #f00!important;
+}
+</style>

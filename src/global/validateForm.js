@@ -63,6 +63,13 @@ export default function validateFormResult (validateArray, event = 'submit') {
         flag = false
         // break
       }
+    } else if (v.type === 'checkbox') {
+      let value = v.value
+      if (!value.length) {
+        v.showValidateResult()
+        flag = false
+        // break
+      }
     } else if (v.type === 'rePassword') {
       let password = v.$refs.password.value
       let rePassword = v.$refs.rePassword.value
@@ -112,9 +119,17 @@ export default function validateFormResult (validateArray, event = 'submit') {
       }
     } else if (v.type === 'datePicker') {
       let value = v.value
-      if (!value.length || (value.length === 2 && !value[0] && !value[1])) {
-        v.showValidateResult()
-        flag = false
+      let type = v.types
+      if (type === 'date') {
+        if (!value) {
+          v.showValidateResult()
+          flag = false
+        }
+      } else {
+        if (!value.length || (value.length === 2 && !value[0] && !value[1])) {
+          v.showValidateResult()
+          flag = false
+        }
       }
     }
   }

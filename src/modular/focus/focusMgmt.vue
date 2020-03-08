@@ -33,7 +33,8 @@
   Drawer(:closable="true", width="650", v-model="drawerFocusDomainUpdate", title="修改关注域名信息", :mask-closable="maskClosable")
     comp-focus-domain-update(
       v-if="drawerFocusDomainUpdate",
-      :on-close="closeDrawer"
+      @refreshData="searchListData",
+      @closeDrawer="closeDrawer"
     )
 </template>
 
@@ -182,6 +183,7 @@ export default {
                 },
                 on: {
                   click: () => {
+                    this.handleRefresh(this.orderList[params.index])
                   }
                 }
               }, '刷新')
@@ -268,6 +270,22 @@ export default {
     },
     handleUpate () {
       this.drawerFocusDomainUpdate = true
+    },
+    handleRefresh (item) {
+      this.$store.dispatch('FOLLOW_DOMAIN_LIST', {id: item.id}).then((response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        // console.log(response)
+        if (response.data.code === '1000') {
+          this.$Message.success(`刷新成功`)
+          this.searchListData()
+        } else {
+          this.$Message.error('刷新失败')
+        }
+      }).catch(() => {})
     },
     queryOrderListParam (obj) {
       this.page.pageNo = obj.pageNum

@@ -3,6 +3,7 @@ div.compCheckbox(style="display:inline-block")
   CheckboxGroup(v-model="value", @on-change="onChange",)
     Checkbox(v-for="item in list", :label="item.label", :key="item.label")
       span {{item.value}}
+    Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
 <script>
@@ -80,13 +81,9 @@ export default {
   },
   watch: {
     defaultValue (val) {
-      if (val.length) {
-        this.value = val.map((v) => {
-          return v
-        })
-      } else {
-        this.value = []
-      }
+      this.value = val.map((v) => {
+        return v.label
+      })
     }
   }
 }

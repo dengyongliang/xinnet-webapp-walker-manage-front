@@ -1,16 +1,16 @@
 <template lang="pug">
 .compFocusDomainUpdate
   Form(:label-width="100")
-    comp-input(name='domain',label="域名：",ref="domain",placeholder="每行一个域名，最多一次添加500个",styles="width:250px")
+    comp-input(name='domain',label="域名：",ref="domain",placeholder="",disabled="disabled",styles="width:250px")
     comp-input(name='domain',label="注册商：",ref="registrarName",placeholder="",styles="width:250px")
     comp-input(name='domain',label="域名所有人：",ref="whoisUserName",placeholder="",styles="width:250px")
     comp-input(name='domain',label="注册邮箱：",ref="whoisUserEmail",placeholder="",styles="width:250px")
     FormItem(label="注册时间：")
-      comp-date-picker(label="注册时间", ref="whoisApplyTime",styles="width:250px")
+      comp-date-picker(label="注册时间", ref="whoisApplyTime",styles="width:250px",types="date")
     FormItem(label="到期时间：")
-      comp-date-picker(label="到期时间", ref="whoisExpireTime",styles="width:250px")
+      comp-date-picker(label="到期时间", ref="whoisExpireTime",styles="width:250px",types="date")
     FormItem(label="更新日期：")
-      comp-date-picker(label="更新日期", ref="whoisUpdateTime",styles="width:250px")
+      comp-date-picker(label="更新日期", ref="whoisUpdateTime",styles="width:250px",types="date")
     FormItem(label="域名状态：")
       comp-checkbox(:list="listCheckbox", ref="whoisDomainStatus")
     comp-input(name='domain',label="DNS服务器1：",ref="whoisDomainDns1",placeholder="",styles="width:250px")
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import compInput from './compInput'
 import compSelect from './compSelect'
 import compDatePicker from './compDatePicker'
 import compCheckbox from './compCheckbox'
 import validateFormResult from '@/global/validateForm'
+import moment from 'moment'
 export default {
   components: {
     compInput,
@@ -49,7 +49,6 @@ export default {
   data () {
     return {
       loadingBtn: false,
-      templateList: [],
       listCheckbox: [
         {
           label: 'ok',
@@ -119,9 +118,6 @@ export default {
     }
   },
   methods: {
-    close () {
-      this.onClose()
-    },
     submitForm () {
       this.loadingBtn = true
       let result = validateFormResult([
@@ -145,34 +141,35 @@ export default {
 
       if (result) {
         var params = {
-          templateId: this.$refs.templateId.value,
-          groupId: this.$refs.groupId.value,
-          jsonObj: this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',').map((v) => {
-            return {
-              domainName: v.split(' ')[0],
-              domainPwd: v.split(' ')[1],
-              orderGoodsType: 5,
-              orderType: 4
-            }
-          })
+          registrarName: this.$refs.registrarName.value,
+          whoisUserName: this.$refs.whoisUserName.value,
+          whoisUserEmail: this.$refs.whoisUserEmail.value,
+          whoisApplyTime: moment(this.$refs.whoisApplyTime.value).format('YYYY-MM-DD'),
+          whoisExpireTime: moment(this.$refs.whoisExpireTime.value).format('YYYY-MM-DD'),
+          whoisUpdateTime: moment(this.$refs.whoisUpdateTime.value).format('YYYY-MM-DD'),
+          whoisDomainStatus: this.$refs.whoisDomainStatus.value.join(','),
+          whoisDomainDns: this.$refs.whoisDomainDns1.value + ',' + this.$refs.whoisDomainDns2.value,
+          dnsIpContent: this.$refs.dnsIpContent.value,
+          dnsIpAddress: this.$refs.dnsIpAddress.value,
+          beianNum: this.$refs.beianNum.value,
+          beianCompany: this.$refs.beianCompany.value,
+          siteTitle: this.$refs.siteTitle.value,
+          siteKey: this.$refs.siteKey.value,
+          siteDesc: this.$refs.siteDesc.value
         }
+        console.log(params)
         this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
           this.loadingBtn = false
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            response.data.jsonObj.map((v) => {
-              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
-              v.num = v.goodsNumAndPrice[0].num
-              v.unit = v.goodsNumAndPrice[0].unit
-            })
-            // this.$store.commit('SET_PAY_ORDERS', response.data)
-            // this.$router.push({path: '/payConfirm'})
-            localStorage.setItem('data_pay_confirm', JSON.stringify(response.data))
-            newWin.location.href = '/payConfirm'
+            this.$Message.success(`修改成功`)
+            // close
+            this.$emit('closeDrawer')
+            // 添加成功，重新加载列表数据
+            this.$emit('refreshData')
           } else {
-            newWin.close()
             if (response.data.code === '100') {
               this.$Message.error('模板不存在')
             } else if (response.data.code === '200') {
@@ -191,31 +188,9 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      userAuthGroups (state) {
-        let arrGroups = []
-        arrGroups = this.GLOBALS.CONVERT_SELECT_GROUP(state.user.userAuthGroups.companys, {
-          value: 'id',
-          label: 'name',
-          children: 'groups'
-        })
-        return arrGroups
-      }
-    })
   },
   beforeMount () {
-    this.$store.dispatch('TEMPLATES').then(response => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
-          label: 'templateName',
-          value: 'id'
-        })
-      } else {
-      }
-    }).catch(() => {})
+
   },
   watch: {
   }
