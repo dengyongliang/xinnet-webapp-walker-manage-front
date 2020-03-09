@@ -73,12 +73,15 @@ export default {
   computed: {
   },
   watch: {
-    defaultValue (val) {
-      if (val.length) {
-        this.value = val
-      } else {
-        this.value = this.types === 'date' ? '' : []
-      }
+    defaultValue: {
+      handler (newV, oldV) {
+        if (this.types === 'date') {
+          this.value = newV.join('')
+        } else {
+          this.value = newV
+        }
+      },
+      deep: true
     }
   }
 }

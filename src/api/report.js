@@ -8,7 +8,7 @@ import * as action from '@/global/action.js'
 export const budgetReportManage = (pageNum, pageSize, queryCondition) => { // queryBudgetList
   return axios({
     url: action.BUDGET_REPORT_MANAGE,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, queryCondition}
   })
 }
@@ -16,7 +16,7 @@ export const budgetReportManage = (pageNum, pageSize, queryCondition) => { // qu
 export const deleteBudgetReport = (reportId) => { // delBudgetReport
   return axios({
     url: action.DELETE_BUDGET_REPORT,
-    method: 'get',
+    method: 'POST',
     data: {reportId}
   })
 }
@@ -24,7 +24,7 @@ export const deleteBudgetReport = (reportId) => { // delBudgetReport
 export const addBudgetReport = (budgetData) => { // addBudgetReport
   return axios({
     url: action.ADD_BUDGET_REPORT,
-    method: 'get',
+    method: 'POST',
     data: budgetData
   })
 }
@@ -32,7 +32,7 @@ export const addBudgetReport = (budgetData) => { // addBudgetReport
 export const updateBudgetReport = (budgetData) => { // updateBudgetReport
   return axios({
     url: action.UPDATE_BUDGET_REPORT,
-    method: 'get',
+    method: 'POST',
     data: budgetData
   })
 }
@@ -40,7 +40,7 @@ export const updateBudgetReport = (budgetData) => { // updateBudgetReport
 export const findBudgetReportDetail = (reportId) => { // queryBudgetReportDetail
   return axios({
     url: action.FIND_BUDGET_REPORT_DETAIL,
-    method: 'get',
+    method: 'POST',
     data: {reportId}
   })
 }

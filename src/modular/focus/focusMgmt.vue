@@ -33,6 +33,7 @@
   Drawer(:closable="true", width="650", v-model="drawerFocusDomainUpdate", title="修改关注域名信息", :mask-closable="maskClosable")
     comp-focus-domain-update(
       v-if="drawerFocusDomainUpdate",
+      :id = "id",
       @refreshData="searchListData",
       @closeDrawer="closeDrawer"
     )
@@ -56,6 +57,7 @@ export default {
       searchUserId: '',
       time: '',
       selectData: [],
+      id: 0,
       param: {
         orderGoodsInfo: '',
         orderMode: '',
@@ -173,7 +175,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.handleUpate(this.orderList[params.index])
+                    this.handleUpate(this.orderList[params.index].id)
                   }
                 }
               }, '修改'),
@@ -268,11 +270,12 @@ export default {
         this.$Message.error('请选择要删除的域名！')
       }
     },
-    handleUpate () {
+    handleUpate (id) {
+      this.id = id
       this.drawerFocusDomainUpdate = true
     },
     handleRefresh (item) {
-      this.$store.dispatch('FOLLOW_DOMAIN_LIST', {id: item.id}).then((response) => {
+      this.$store.dispatch('FOLLOW_DOMAIN_REFRESE', {id: item.id}).then((response) => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

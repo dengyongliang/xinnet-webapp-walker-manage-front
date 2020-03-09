@@ -8,7 +8,7 @@ import * as action from '@/global/action.js'
 export const queryWorkList = (pageNum, pageSize, domainName, createTimeBegin, createTimeEnd, status) => { // queryWorkList
   return axios({
     url: action.WORK_ORDER_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, createTimeBegin, createTimeEnd, status}
   })
 }
@@ -16,7 +16,7 @@ export const queryWorkList = (pageNum, pageSize, domainName, createTimeBegin, cr
 export const workOrderUpdate = (id, status) => { // workOrderUpdate
   return axios({
     url: action.WORK_ORDER_UPDATE,
-    method: 'get',
+    method: 'POST',
     data: {id, status}
   })
 }

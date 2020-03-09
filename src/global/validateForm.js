@@ -1,14 +1,15 @@
 import GLOBAL from './global'
-export default function validateFormResult (validateArray, event = 'submit') {
+export default function validateFormResult (validateArray) {
   let len = validateArray.length
   let flag = true
   for (var i = 0; i < len; i++) {
     let v = validateArray[i]
-    if (v.type === 'text') {
+    if (v.type === 'text' || v.type === 'textarea') {
       let value = v.value
       let label = v.label
       let validate = v.validate
-      if (value === '' && event === 'submit') {
+
+      if (value === '') {
         v.showValidateResult({text: `请输入${label.substr(0, label.length - 1) || ''}！`})
         flag = false
         // break

@@ -79,5 +79,11 @@ export const WORK_ORDER_LIST = '/manage/workOrder/workOrderManage' + suffix // D
 export const WORK_ORDER_UPDATE = '/manage/workOrder/setWorkOrderStatus' + suffix // DELETE_BUDGET_REPORT
 // 关注域名列表
 export const FOLLOW_DOMAIN_LIST = '/manage/followdomain/followDomainList' + suffix
-// 关注域名列表
-export const FOLLOW_DOMAIN_CREATE_DOMAIN = '/manage/followdomain/createDomain' + suffix
+// 添加关注域名
+export const FOLLOW_DOMAIN_CREATE = '/manage/followdomain/createDomain' + suffix
+// 关注域名详情
+export const FOLLOW_DOMAIN_INFO = '/manage/followdomain/followDomainInfo' + suffix
+// 修改关注域名
+export const FOLLOW_DOMAIN_UPDATE = '/manage/followdomain/updateDomain' + suffix
+// 刷新关注域名
+export const FOLLOW_DOMAIN_REFRESE = '/manage/followdomain/refreseDomain' + suffix

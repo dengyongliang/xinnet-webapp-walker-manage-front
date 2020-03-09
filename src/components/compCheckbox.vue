@@ -80,10 +80,12 @@ export default {
   computed: {
   },
   watch: {
-    defaultValue (val) {
-      this.value = val.map((v) => {
-        return v.label
-      })
+    defaultValue: {
+      handler (newV, oldV) {
+        console.log(newV)
+        this.value = newV
+      },
+      deep: true
     }
   }
 }

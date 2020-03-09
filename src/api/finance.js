@@ -8,7 +8,7 @@ import * as action from '@/global/action.js'
 export const payMoneyList = (pageNum, pageSize, customerCode) => { // queryPaymentList
   return axios({
     url: action.PAY_MONEY_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, customerCode}
   })
 }
@@ -16,7 +16,7 @@ export const payMoneyList = (pageNum, pageSize, customerCode) => { // queryPayme
 export const customerBalanceList = (pageNum, pageSize, customerCode) => { // queryBalanceList
   return axios({
     url: action.CUSTOMER_BALANCE_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, customerCode}
   })
 }
@@ -24,7 +24,7 @@ export const customerBalanceList = (pageNum, pageSize, customerCode) => { // que
 export const customerBillList = (pageNum, pageSize, userId) => { // queryBillList
   return axios({
     url: action.CUSTOMER_BILL_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, userId}
   })
 }
@@ -32,7 +32,7 @@ export const customerBillList = (pageNum, pageSize, userId) => { // queryBillLis
 export const creditMoneyList = (pageNum, pageSize, customerCode) => { // queryCreditList
   return axios({
     url: action.CREDIT_MONEY_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, customerCode}
   })
 }
@@ -40,7 +40,7 @@ export const creditMoneyList = (pageNum, pageSize, customerCode) => { // queryCr
 export const addPayMoney = (customerId, payMoney) => { // addPayment
   return axios({
     url: action.ADD_PAY_MONEY,
-    method: 'get',
+    method: 'POST',
     data: {customerId, payMoney}
   })
 }
@@ -48,7 +48,7 @@ export const addPayMoney = (customerId, payMoney) => { // addPayment
 export const addCreditMoney = (customerId, creditMoney) => { // addCredit
   return axios({
     url: action.ADD_CREDIT_MONEY,
-    method: 'get',
+    method: 'POST',
     data: {customerId, creditMoney}
   })
 }
@@ -57,7 +57,7 @@ export const addCreditMoney = (customerId, creditMoney) => { // addCredit
 export const customerBillPay = (id) => { // customerBillPay
   return axios({
     url: action.CUSTOMER_BILL_PAY,
-    method: 'get',
+    method: 'POST',
     data: {id}
   })
 }
