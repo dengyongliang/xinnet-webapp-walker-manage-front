@@ -311,8 +311,8 @@ export default {
         }
         // console.log(response)
         if (response.data.code === '1000') {
-          this.orderList = response.data.list
-          this.page.pageItems = response.data.totalNum
+          this.orderList = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
         } else {
           if (response.data.code === '900') {
             this.$Message.error('查询失败')
