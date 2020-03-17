@@ -19,6 +19,8 @@
     comp-input(name='domain',label="IP的物理位置：",ref="dnsIpAddress",placeholder="",styles="width:250px",:defaultValue="dnsIpAddress")
     comp-input(name='domain',label="备案号：",ref="beianNum",placeholder="",styles="width:250px",:defaultValue="beianNum")
     comp-input(name='domain',label="备案主体：",ref="beianCompany",placeholder="",styles="width:250px",:defaultValue="beianCompany")
+    FormItem(label="网站类型：")
+      comp-select(name="siteType",:list="siteTypeList",ref="siteType",:defaultValue="siteType", styles="width:250px",)
     comp-input(name='domain',label="网站标题：",ref="siteTitle",placeholder="",styles="width:250px",:defaultValue="siteTitle")
     comp-input(name='domain',label="关键词：",ref="siteKey",placeholder="",styles="width:250px",:defaultValue="siteKey")
     comp-input(name='domain',label="网站描述：",ref="siteDesc",placeholder="",styles="width:250px",:defaultValue="siteDesc")
@@ -63,6 +65,7 @@ export default {
       dnsSelfIpContent: '',
       dnsIpAddress: '',
       beianNum: '',
+      siteType: '',
       beianCompany: '',
       beianCompanyType: '',
       beianAuditTime: '',
@@ -134,46 +137,65 @@ export default {
           label: 'serverHold',
           value: 'serverHold'
         }
+      ],
+      siteTypeList: [
+        {
+          value: '0',
+          label: '未建站'
+        },
+        {
+          value: '1',
+          label: '正规网站'
+        },
+        {
+          value: '2',
+          label: '非法网站'
+        },
+        {
+          value: '3',
+          label: '出售网站'
+        }
       ]
     }
   },
   methods: {
     submitForm () {
       this.loadingBtn = true
-      let result = validateFormResult([
-        this.$refs.registrarName,
-        this.$refs.whoisUserName,
-        this.$refs.whoisUserEmail,
-        this.$refs.whoisApplyTime,
-        this.$refs.whoisExpireTime,
-        this.$refs.whoisUpdateTime,
-        this.$refs.whoisDomainStatus,
-        this.$refs.whoisDomainDns1,
-        this.$refs.whoisDomainDns2,
-        this.$refs.dnsIpContent,
-        this.$refs.dnsIpAddress,
-        this.$refs.beianNum,
-        this.$refs.beianCompany,
-        this.$refs.siteTitle,
-        this.$refs.siteKey,
-        this.$refs.siteDesc
-      ])
-
+      // let result = validateFormResult([
+      //   this.$refs.registrarName,
+      //   this.$refs.whoisUserName,
+      //   this.$refs.whoisUserEmail,
+      //   this.$refs.whoisApplyTime,
+      //   this.$refs.whoisExpireTime,
+      //   this.$refs.whoisUpdateTime,
+      //   this.$refs.whoisDomainStatus,
+      //   this.$refs.whoisDomainDns1,
+      //   this.$refs.whoisDomainDns2,
+      //   this.$refs.dnsIpContent,
+      //   this.$refs.dnsIpAddress,
+      //   this.$refs.beianNum,
+      //   this.$refs.beianCompany,
+      //   this.$refs.siteTitle,
+      //   this.$refs.siteKey,
+      //   this.$refs.siteDesc
+      // ])
+      let result = true
       if (result) {
         var params = {
           id: this.id,
           registrarName: this.$refs.registrarName.value,
           whoisUserName: this.$refs.whoisUserName.value,
           whoisUserEmail: this.$refs.whoisUserEmail.value,
-          whoisApplyTime: moment(this.$refs.whoisApplyTime.value).format('YYYY-MM-DD'),
-          whoisExpireTime: moment(this.$refs.whoisExpireTime.value).format('YYYY-MM-DD'),
-          whoisUpdateTime: moment(this.$refs.whoisUpdateTime.value).format('YYYY-MM-DD'),
+          whoisApplyTime: this.$refs.whoisApplyTime.value.length ? moment(this.$refs.whoisApplyTime.value).format('YYYY-MM-DD') : '',
+          whoisExpireTime: this.$refs.whoisExpireTime.value ? moment(this.$refs.whoisExpireTime.value).format('YYYY-MM-DD') : '',
+          whoisUpdateTime: this.$refs.whoisUpdateTime.value ? moment(this.$refs.whoisUpdateTime.value).format('YYYY-MM-DD') : '',
           whoisDomainStatus: this.$refs.whoisDomainStatus.value.join(','),
-          whoisDomainDns: this.$refs.whoisDomainDns1.value + ',' + this.$refs.whoisDomainDns2.value,
+          whoisDomainDns: (this.$refs.whoisDomainDns1.value.length && this.$refs.whoisDomainDns2.value.length) ? (this.$refs.whoisDomainDns1.value + ',' + this.$refs.whoisDomainDns2.value) : (this.$refs.whoisDomainDns1.value + this.$refs.whoisDomainDns2.value),
           dnsIpContent: this.$refs.dnsIpContent.value,
           dnsIpAddress: this.$refs.dnsIpAddress.value,
           beianNum: this.$refs.beianNum.value,
           beianCompany: this.$refs.beianCompany.value,
+          siteType: this.$refs.siteType.value,
           siteTitle: this.$refs.siteTitle.value,
           siteKey: this.$refs.siteKey.value,
           siteDesc: this.$refs.siteDesc.value
@@ -233,6 +255,7 @@ export default {
           this.dnsIpAddress = response.data.data.dnsIpAddress
           this.beianNum = response.data.data.beianNum
           this.beianCompany = response.data.data.beianCompany
+          this.siteType = response.data.data.siteType + ''
           this.siteTitle = response.data.data.siteTitle
           this.siteKey = response.data.data.siteKey
           this.siteDesc = response.data.data.siteDesc

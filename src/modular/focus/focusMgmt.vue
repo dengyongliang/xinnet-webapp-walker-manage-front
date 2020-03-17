@@ -1,7 +1,7 @@
 <template lang="pug">
 .contFocusMgmt
   <!-- 标题区 -->
-  h1.pageTitle.clear 订单管理
+  h1.pageTitle.clear 关注域名
   .secFilter
     form.filterWrap(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
       table
@@ -144,24 +144,24 @@ export default {
       ],
       columns: [
         {
-          title: '域名',
-          key: 'domainName',
+          title: '注册商',
+          key: 'registrarName',
           className: 'col1'
         },
         {
-          title: '域名所有者',
-          key: 'registrarName',
+          title: '注册时间',
+          key: 'whoisApplyTime',
           className: 'col2'
         },
         {
-          title: '网站类型',
-          key: 'siteType',
-          className: 'col3',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {}, this.DATAS.SITE_TYPE[this.orderList[params.index].siteType])
-            ])
-          }
+          title: '到期时间',
+          key: 'whoisExpireTime',
+          className: 'col3'
+        },
+        {
+          title: '建站情况',
+          key: 'siteInfo',
+          className: 'col2'
         },
         {
           title: '操作',
@@ -275,7 +275,9 @@ export default {
       this.drawerFocusDomainUpdate = true
     },
     handleRefresh (item) {
+      this.$store.commit('SHOW_BODY_SPIN')
       this.$store.dispatch('FOLLOW_DOMAIN_REFRESE', {id: item.id}).then((response) => {
+        this.$store.commit('HIDE_BODY_SPIN')
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {

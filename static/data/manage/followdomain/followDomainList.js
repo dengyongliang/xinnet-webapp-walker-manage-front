@@ -1,7 +1,8 @@
 {
   "msg":"query is success",
   "code":"1000",
-  "list":[
+  "data": {
+    "list":[
       {
           "id": 10,
           "domainName":"xinnet.com",
@@ -16,7 +17,8 @@
           "excepInfo":"IP指向国外",
           "siteInfo":"未建站"
       }
-  ],
+  ]
+  },
   "totalNum":1,
   "totalPage":1
 }

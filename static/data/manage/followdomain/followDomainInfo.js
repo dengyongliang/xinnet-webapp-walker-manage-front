@@ -22,7 +22,7 @@
 		"siteTitle": "网站标题",
 		"siteKey": "网站关键字",
 		"siteDesc": "网站描述",
-		"siteType": "建站情况",
+		"siteType": "0",
 		"ipType": "ip指向情况",
 		"isSale": "是否出售",
 		"isRob": "是否抢注",

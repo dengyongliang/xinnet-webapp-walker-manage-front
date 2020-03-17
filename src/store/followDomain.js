@@ -34,7 +34,7 @@ export default {
     },
     FOLLOW_DOMAIN_UPDATE ({commit}, params) {
       return new Promise((resolve, reject) => {
-        api.followDomainUpdate(params.id, params.registrarName, params.whoisUserName, params.whoisUserEmail, params.whoisApplyTime, params.whoisExpireTime, params.whoisUpdateTime, params.whoisDomainStatus, params.whoisDomainDns, params.dnsIpContent, params.dnsSelfIpContent, params.dnsIpAddress, params.beianNum, params.beianCompany, params.beianCompanyType, params.beianAuditTime, params.siteTitle, params.siteKey, params.siteDesc).then(response => {
+        api.followDomainUpdate(params.id, params.registrarName, params.whoisUserName, params.whoisUserEmail, params.whoisApplyTime, params.whoisExpireTime, params.whoisUpdateTime, params.whoisDomainStatus, params.whoisDomainDns, params.dnsIpContent, params.dnsSelfIpContent, params.dnsIpAddress, params.beianNum, params.beianCompany, params.beianCompanyType, params.beianAuditTime, params.siteTitle, params.siteKey, params.siteDesc, params.siteType).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

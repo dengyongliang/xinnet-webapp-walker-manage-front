@@ -27,11 +27,11 @@ export const followDomainInfo = (id) => {
   })
 }
 
-export const followDomainUpdate = (id, registrarName, whoisUserName, whoisUserEmail, whoisApplyTime, whoisExpireTime, whoisUpdateTime, whoisDomainStatus, whoisDomainDns, dnsIpContent, dnsSelfIpContent, dnsIpAddress, beianNum, beianCompany, beianCompanyType, beianAuditTime, siteTitle, siteKey, siteDesc) => {
+export const followDomainUpdate = (id, registrarName, whoisUserName, whoisUserEmail, whoisApplyTime, whoisExpireTime, whoisUpdateTime, whoisDomainStatus, whoisDomainDns, dnsIpContent, dnsSelfIpContent, dnsIpAddress, beianNum, beianCompany, beianCompanyType, beianAuditTime, siteTitle, siteKey, siteDesc, siteType) => {
   return axios({
     url: action.FOLLOW_DOMAIN_UPDATE,
     method: 'POST',
-    data: {id, registrarName, whoisUserName, whoisUserEmail, whoisApplyTime, whoisExpireTime, whoisUpdateTime, whoisDomainStatus, whoisDomainDns, dnsIpContent, dnsSelfIpContent, dnsIpAddress, beianNum, beianCompany, beianCompanyType, beianAuditTime, siteTitle, siteKey, siteDesc}
+    data: {id, registrarName, whoisUserName, whoisUserEmail, whoisApplyTime, whoisExpireTime, whoisUpdateTime, whoisDomainStatus, whoisDomainDns, dnsIpContent, dnsSelfIpContent, dnsIpAddress, beianNum, beianCompany, beianCompanyType, beianAuditTime, siteTitle, siteKey, siteDesc, siteType}
   })
 }
 export const followDomainRefrese = (id) => {
