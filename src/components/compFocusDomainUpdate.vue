@@ -181,12 +181,14 @@ export default {
       // ])
       let result = true
       if (result) {
+        console.log('============================')
+        console.log(this.$refs.whoisDomainDns2.value)
         var params = {
           id: this.id,
           registrarName: this.$refs.registrarName.value,
           whoisUserName: this.$refs.whoisUserName.value,
           whoisUserEmail: this.$refs.whoisUserEmail.value,
-          whoisApplyTime: this.$refs.whoisApplyTime.value.length ? moment(this.$refs.whoisApplyTime.value).format('YYYY-MM-DD') : '',
+          whoisApplyTime: this.$refs.whoisApplyTime.value ? moment(this.$refs.whoisApplyTime.value).format('YYYY-MM-DD') : '',
           whoisExpireTime: this.$refs.whoisExpireTime.value ? moment(this.$refs.whoisExpireTime.value).format('YYYY-MM-DD') : '',
           whoisUpdateTime: this.$refs.whoisUpdateTime.value ? moment(this.$refs.whoisUpdateTime.value).format('YYYY-MM-DD') : '',
           whoisDomainStatus: this.$refs.whoisDomainStatus.value.join(','),
@@ -246,11 +248,11 @@ export default {
           // this.whoisApplyTime[0] = response.data.data.whoisApplyTime
           // this.whoisExpireTime[0] = response.data.data.whoisExpireTime
           // this.whoisUpdateTime[0] = response.data.data.whoisUpdateTime
-          this.$set(this.whoisDomainStatus, 0, response.data.data.whoisDomainStatus.split(',')[0])
-          this.$set(this.whoisDomainStatus, 1, response.data.data.whoisDomainStatus.split(',')[1])
-          // this.whoisDomainStatus = response.data.data.whoisDomainStatus.split(',')
-          this.whoisDomainDns1 = response.data.data.whoisDomainDns.split(',')[0]
-          this.whoisDomainDns2 = response.data.data.whoisDomainDns.split(',')[1]
+          // this.$set(this.whoisDomainStatus, 0, response.data.data.whoisDomainStatus.split(',')[0])
+          // this.$set(this.whoisDomainStatus, 1, response.data.data.whoisDomainStatus.split(',')[1])
+          this.whoisDomainStatus = response.data.data.whoisDomainStatus.split(',')
+          this.whoisDomainDns1 = response.data.data.whoisDomainDns.split(',').length > 0 ? response.data.data.whoisDomainDns.split(',')[0] : ''
+          this.whoisDomainDns2 = response.data.data.whoisDomainDns.split(',').length > 1 ? response.data.data.whoisDomainDns.split(',')[1] : ''
           this.dnsIpContent = response.data.data.dnsIpContent
           this.dnsIpAddress = response.data.data.dnsIpAddress
           this.beianNum = response.data.data.beianNum

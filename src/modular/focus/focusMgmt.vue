@@ -144,24 +144,29 @@ export default {
       ],
       columns: [
         {
+          title: '域名',
+          key: 'domainName',
+          className: 'col1'
+        },
+        {
           title: '注册商',
           key: 'registrarName',
-          className: 'col1'
+          className: 'col2'
         },
         {
           title: '注册时间',
           key: 'whoisApplyTime',
-          className: 'col2'
+          className: 'col3'
         },
         {
           title: '到期时间',
           key: 'whoisExpireTime',
-          className: 'col3'
+          className: 'col4'
         },
         {
           title: '建站情况',
           key: 'siteInfo',
-          className: 'col2'
+          className: 'col5'
         },
         {
           title: '操作',
